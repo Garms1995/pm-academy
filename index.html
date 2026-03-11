@@ -1,0 +1,3367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PM Academy — SQL & Разработка ПО</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161d;
+    --bg3: #1a1e28;
+    --border: #252a38;
+    --accent: #4fffb0;
+    --accent2: #7b6fff;
+    --accent3: #ff6b6b;
+    --text: #e8eaf0;
+    --text2: #8890a8;
+    --text3: #5a6278;
+    --done: #4fffb0;
+    --card: #161b26;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* TOP NAV */
+  .top-nav {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    backdrop-filter: blur(12px);
+  }
+  .top-nav-inner {
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    height: 56px;
+    gap: 0;
+  }
+  .platform-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-right: 32px;
+    white-space: nowrap;
+    color: var(--text);
+  }
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .course-tabs {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    flex: 1;
+    height: 100%;
+  }
+  .course-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 20px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text3);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.18s;
+    white-space: nowrap;
+    font-family: 'Instrument Sans', sans-serif;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  .course-tab:hover { color: var(--text2); background: rgba(255,255,255,0.02); }
+  .course-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+  .course-tab.active.dev-course { border-bottom-color: #ff9966; }
+  .course-tab .tab-icon { font-size: 16px; }
+  .course-tab .tab-progress {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    background: rgba(79,255,176,0.1);
+    color: var(--accent);
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .course-tab.dev-course .tab-progress {
+    background: rgba(255,153,102,0.12);
+    color: #ff9966;
+  }
+  .nav-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .progress-bar {
+    width: 120px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+  .progress-fill.dev { background: linear-gradient(90deg, #ff6b6b, #ff9966); }
+
+  /* HOME SCREEN */
+  .home-screen {
+    padding: 60px 80px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    animation: fadeUp 0.4s ease;
+  }
+  .home-screen h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 44px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--text), var(--text2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .home-subtitle { font-size: 16px; color: var(--text2); margin-bottom: 48px; line-height: 1.6; }
+  .courses-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .course-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .course-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .course-card.sql::before { background: linear-gradient(90deg, var(--accent2), var(--accent)); }
+  .course-card.dev::before { background: linear-gradient(90deg, #ff6b6b, #ff9966); }
+  .course-card:hover { border-color: var(--accent2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+  .course-card.dev:hover { border-color: #ff9966; }
+  .course-card-icon { font-size: 36px; margin-bottom: 16px; }
+  .course-card h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+  .course-card p { font-size: 14px; color: var(--text3); line-height: 1.6; margin-bottom: 20px; }
+  .course-card-meta { display: flex; gap: 10px; flex-wrap: wrap; }
+  .c-badge { font-size: 11px; padding: 3px 9px; border-radius: 10px; font-weight: 600; }
+  .c-badge.green { background: rgba(79,255,176,0.1); color: var(--accent); }
+  .c-badge.orange { background: rgba(255,153,102,0.12); color: #ff9966; }
+  .c-badge.purple { background: rgba(123,111,255,0.12); color: var(--accent2); }
+  .course-card-arrow { position: absolute; bottom: 24px; right: 24px; font-size: 20px; color: var(--text3); transition: transform 0.2s; }
+  .course-card:hover .course-card-arrow { transform: translateX(4px); color: var(--text2); }
+  .coming-soon-banner { grid-column: 1 / -1; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); border-radius: 12px; padding: 20px 24px; display: flex; align-items: center; gap: 14px; color: var(--text3); font-size: 14px; }
+
+  /* COURSE AREA */
+  .course-area { display: none; flex: 1; height: calc(100vh - 56px); overflow: hidden; }
+  .course-area.active { display: flex; }
+
+  /* LAYOUT */
+  .layout {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* DEV COURSE ACCENT */
+  .dev-sidebar .sidebar-item.active { background: rgba(255,153,102,0.08); color: #ff9966; border-color: rgba(255,153,102,0.2); }
+  .dev-sidebar .sidebar-section { color: #6a4535; }
+  .dev-sidebar .new-badge { background: linear-gradient(135deg, #ff6b6b, #ff9966); }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 20px 0;
+  }
+
+  .sidebar-section {
+    padding: 0 16px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-top: 16px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    margin: 2px 8px;
+    font-size: 14px;
+    color: var(--text2);
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .sidebar-item:hover { background: var(--bg3); color: var(--text); }
+
+  .sidebar-item.active {
+    background: rgba(79, 255, 176, 0.08);
+    color: var(--accent);
+    border: 1px solid rgba(79, 255, 176, 0.15);
+  }
+
+  .sidebar-item.completed .item-icon { color: var(--done); }
+
+  .item-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    min-width: 20px;
+  }
+
+  .item-icon {
+    font-size: 16px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  .check-badge {
+    margin-left: auto;
+    width: 16px; height: 16px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: #000;
+    font-weight: 700;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px 48px;
+    max-width: 860px;
+  }
+
+  .lesson-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--text2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .lesson-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .meta-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+
+  .content-block {
+    margin-bottom: 28px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .content-block p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text2);
+  }
+
+  .content-block p strong { color: var(--text); }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  /* CALLOUT */
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .callout.info {
+    background: rgba(123, 111, 255, 0.1);
+    border: 1px solid rgba(123, 111, 255, 0.25);
+    color: #c4beff;
+  }
+
+  .callout.tip {
+    background: rgba(79, 255, 176, 0.07);
+    border: 1px solid rgba(79, 255, 176, 0.2);
+    color: #a0ffe0;
+  }
+
+  .callout.warning {
+    background: rgba(255, 107, 107, 0.08);
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    color: #ffb3b3;
+  }
+
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* CODE BLOCK */
+  .code-wrap {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text3);
+  }
+
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+  }
+
+  pre {
+    padding: 18px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: var(--text);
+  }
+
+  .kw { color: #7b6fff; }
+  .fn { color: #4fffb0; }
+  .str { color: #ff9966; }
+  .cm { color: #4a5170; font-style: italic; }
+  .num { color: #ff6b9d; }
+
+  /* TABLE */
+  .db-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .db-table th {
+    background: var(--bg3);
+    padding: 10px 14px;
+    text-align: left;
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .db-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(37,42,56,0.5);
+    color: var(--text2);
+  }
+
+  .db-table tr:last-child td { border-bottom: none; }
+  .db-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .pk-badge {
+    font-size: 9px;
+    background: rgba(255, 107, 107, 0.15);
+    color: var(--accent3);
+    border: 1px solid rgba(255,107,107,0.25);
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-left: 6px;
+  }
+
+  .fk-badge {
+    font-size: 9px;
+    background: rgba(123,111,255,0.15);
+    color: var(--accent2);
+    border: 1px solid rgba(123,111,255,0.25);
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-left: 6px;
+  }
+
+  /* INTERACTIVE SQL */
+  .sql-playground {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 24px 0;
+  }
+
+  .playground-header {
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .playground-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .playground-title::before {
+    content: '▶';
+    font-size: 10px;
+    color: var(--accent);
+  }
+
+  textarea.sql-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 18px 20px;
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .playground-actions {
+    padding: 12px 18px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-run {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Instrument Sans', sans-serif;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-run:hover { background: #3de09a; transform: translateY(-1px); }
+
+  .btn-reset {
+    background: transparent;
+    color: var(--text3);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'Instrument Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .btn-reset:hover { color: var(--text2); border-color: var(--text3); }
+
+  .sql-result {
+    margin: 0 18px 18px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    display: none;
+  }
+
+  .result-header {
+    padding: 8px 14px;
+    background: rgba(79,255,176,0.06);
+    border-bottom: 1px solid rgba(79,255,176,0.15);
+    font-size: 12px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .result-error {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--accent3);
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,107,107,0.05);
+  }
+
+  /* QUIZ */
+  .quiz-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+  }
+
+  .quiz-question {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .quiz-option {
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text2);
+    transition: all 0.15s;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg3);
+  }
+
+  .quiz-option:hover { border-color: var(--accent2); color: var(--text); }
+  .quiz-option.correct { border-color: var(--accent); background: rgba(79,255,176,0.08); color: var(--accent); }
+  .quiz-option.wrong { border-color: var(--accent3); background: rgba(255,107,107,0.08); color: var(--accent3); }
+
+  .quiz-feedback {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+    line-height: 1.6;
+  }
+
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: rgba(79,255,176,0.08); border: 1px solid rgba(79,255,176,0.2); color: var(--accent); }
+  .quiz-feedback.wrong { background: rgba(255,107,107,0.08); border: 1px solid rgba(255,107,107,0.2); color: #ffb3b3; }
+
+  /* SCHEMA VIZ */
+  .schema-viz {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+
+  .schema-table {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: 180px;
+  }
+
+  .schema-table-header {
+    background: rgba(123,111,255,0.15);
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .schema-table-header::before { content: '▤'; font-size: 12px; }
+
+  .schema-field {
+    padding: 6px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text2);
+    border-bottom: 1px solid rgba(37,42,56,0.4);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .schema-field:last-child { border-bottom: none; }
+  .field-type { color: var(--text3); font-size: 10px; }
+
+  /* NAV */
+  .lesson-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-nav {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Instrument Sans', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-prev {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+
+  .btn-prev:hover { border-color: var(--text2); color: var(--text); }
+
+  .btn-next {
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #000;
+    border: none;
+    margin-left: auto;
+  }
+
+  .btn-next:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .btn-complete {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Instrument Sans', sans-serif;
+    transition: all 0.2s;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-complete:hover { background: #3de09a; }
+
+  /* WELCOME SCREEN */
+  .welcome-screen {
+    max-width: 640px;
+  }
+
+  .welcome-screen h1 { font-size: 42px; }
+
+  .course-stats {
+    display: flex;
+    gap: 20px;
+    margin: 32px 0;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    min-width: 130px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .stat-label { font-size: 12px; color: var(--text3); }
+
+  .module-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .module-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .module-card:hover {
+    border-color: var(--accent2);
+    transform: translateX(4px);
+  }
+
+  .module-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--border);
+    min-width: 36px;
+  }
+
+  .module-info h3 { font-size: 15px; margin-bottom: 3px; }
+  .module-info p { font-size: 13px; color: var(--text3); }
+
+  .module-arrow { margin-left: auto; color: var(--text3); font-size: 18px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .highlight-row td { color: var(--text) !important; }
+
+  .topic-pill {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    background: rgba(123,111,255,0.12);
+    border: 1px solid rgba(123,111,255,0.2);
+    color: var(--accent2);
+    margin: 3px 3px 3px 0;
+  }
+
+  /* METRIC CARDS */
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin: 20px 0; }
+  .metric-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; transition: border-color 0.2s; }
+  .metric-card:hover { border-color: var(--accent2); }
+  .metric-card-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .metric-card-value { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+  .metric-card-desc { font-size: 12px; color: var(--text3); line-height: 1.5; }
+
+  /* ERROR vs GOOD */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .compare-bad { background: rgba(255,107,107,0.05); border: 1px solid rgba(255,107,107,0.2); border-radius: 10px; overflow: hidden; }
+  .compare-good { background: rgba(79,255,176,0.04); border: 1px solid rgba(79,255,176,0.15); border-radius: 10px; overflow: hidden; }
+  .compare-header { padding: 8px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .compare-bad .compare-header { background: rgba(255,107,107,0.1); color: var(--accent3); }
+  .compare-good .compare-header { background: rgba(79,255,176,0.07); color: var(--accent); }
+  .compare-body { padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text2); line-height: 1.7; }
+
+  /* CHEATSHEET */
+  .cheat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin: 16px 0; }
+  .cheat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .cheat-card-header { padding: 10px 14px; background: rgba(123,111,255,0.1); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 700; color: var(--accent2); display: flex; align-items: center; gap: 7px; }
+  .cheat-card pre { padding: 12px 14px; font-size: 11.5px; }
+
+  /* TABS */
+  .tab-bar { display: flex; gap: 4px; margin-bottom: -1px; }
+  .tab-btn { padding: 8px 16px; border-radius: 8px 8px 0 0; border: 1px solid var(--border); border-bottom: none; font-size: 13px; cursor: pointer; font-family: 'Instrument Sans', sans-serif; color: var(--text3); background: var(--bg3); transition: all 0.15s; }
+  .tab-btn.active { background: var(--card); color: var(--accent); border-color: var(--accent2); }
+  .tab-content { display: none; border: 1px solid var(--border); border-radius: 0 8px 8px 8px; background: var(--card); padding: 20px; }
+  .tab-content.active { display: block; }
+
+  /* STEP LIST */
+  .step-list { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
+  .step-item { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(37,42,56,0.5); }
+  .step-item:last-child { border-bottom: none; }
+  .step-num { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--accent2); min-width: 32px; line-height: 1; }
+  .step-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+  .step-content p { font-size: 13px; color: var(--text3); line-height: 1.5; }
+
+  /* NEW BADGE */
+  .new-badge { font-size: 9px; background: linear-gradient(135deg, var(--accent2), var(--accent)); color: #000; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <div class="platform-logo"><div class="logo-dot"></div>PM Academy</div>
+    <div class="course-tabs">
+      <button class="course-tab active" id="tab-home" onclick="showCourse('home')">
+        <span class="tab-icon">🏠</span> Главная
+      </button>
+      <button class="course-tab" id="tab-sql" onclick="showCourse('sql')">
+        <span class="tab-icon">🗄️</span> SQL для PM
+        <span class="tab-progress" id="sql-tab-progress">0/13</span>
+      </button>
+      <button class="course-tab dev-course" id="tab-dev" onclick="showCourse('dev')">
+        <span class="tab-icon">💻</span> Разработка ПО
+        <span class="tab-progress dev-course" id="dev-tab-progress">0/12</span>
+      </button>
+    </div>
+    <div class="nav-right">
+      <div class="progress-bar-wrap" id="progress-wrap-sql" style="display:none">
+        <span id="progress-text">0 / 13 уроков</span>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+      <div class="progress-bar-wrap" id="progress-wrap-dev" style="display:none">
+        <span id="dev-progress-text">0 / 12 уроков</span>
+        <div class="progress-bar"><div class="progress-fill dev" id="dev-progress-fill"></div></div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HOME SCREEN -->
+<div id="course-home" style="flex:1;overflow-y:auto;display:flex">
+  <div class="home-screen">
+    <h1>PM Academy</h1>
+    <p class="home-subtitle">Технические знания для Product Manager. Изучайте SQL, основы разработки ПО<br>и другие дисциплины — с интерактивными примерами и практикой.</p>
+    <div class="courses-grid">
+      <div class="course-card sql" onclick="showCourse('sql')">
+        <div class="course-card-icon">🗄️</div>
+        <h2>SQL для PM</h2>
+        <p>Реляционные БД, язык запросов, продуктовые метрики. Пишите запросы прямо в браузере на живых данных.</p>
+        <div class="course-card-meta">
+          <span class="c-badge green">14 уроков</span>
+          <span class="c-badge purple">5 модулей</span>
+          <span class="c-badge green">Интерактивный SQL</span>
+        </div>
+        <div class="course-card-arrow">→</div>
+      </div>
+      <div class="course-card dev" onclick="showCourse('dev')">
+        <div class="course-card-icon">💻</div>
+        <h2>Основы разработки ПО</h2>
+        <p>Как работает интернет, что такое API, Git, CI/CD, архитектура — всё что PM должен знать о технологиях.</p>
+        <div class="course-card-meta">
+          <span class="c-badge orange">13 уроков</span>
+          <span class="c-badge purple">5 модулей</span>
+          <span class="c-badge orange">Для PM</span>
+        </div>
+        <div class="course-card-arrow">→</div>
+      </div>
+      <div class="coming-soon-banner">
+        <span style="font-size:22px">🚀</span>
+        <div><strong style="color:var(--text2)">Скоро:</strong> Основы аналитики данных · Продуктовые метрики и фреймворки · Основы UX для PM · Работа с командой разработки</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SQL COURSE -->
+<div class="course-area" id="course-sql">
+  <div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section">Курс</div>
+    <div class="sidebar-item active" onclick="showLesson(0)" id="nav-0">
+      <span class="item-num">00</span>
+      <span class="item-icon">🏠</span>
+      <span>Введение</span>
+    </div>
+
+    <div class="sidebar-section">Модуль 1 — Основы</div>
+    <div class="sidebar-item" onclick="showLesson(1)" id="nav-1">
+      <span class="item-num">01</span>
+      <span class="item-icon">🗄️</span>
+      <span>Что такое реляционная БД</span>
+    </div>
+    <div class="sidebar-item" onclick="showLesson(2)" id="nav-2">
+      <span class="item-num">02</span>
+      <span class="item-icon">🔗</span>
+      <span>Таблицы и связи</span>
+    </div>
+
+    <div class="sidebar-section">Модуль 2 — SELECT</div>
+    <div class="sidebar-item" onclick="showLesson(3)" id="nav-3">
+      <span class="item-num">03</span>
+      <span class="item-icon">📋</span>
+      <span>Первые запросы</span>
+    </div>
+    <div class="sidebar-item" onclick="showLesson(4)" id="nav-4">
+      <span class="item-num">04</span>
+      <span class="item-icon">🔍</span>
+      <span>Фильтры и сортировка</span>
+    </div>
+    <div class="sidebar-item" onclick="showLesson(5)" id="nav-5">
+      <span class="item-num">05</span>
+      <span class="item-icon">📊</span>
+      <span>Агрегация и GROUP BY</span>
+    </div>
+
+    <div class="sidebar-section">Модуль 3 — JOIN</div>
+    <div class="sidebar-item" onclick="showLesson(6)" id="nav-6">
+      <span class="item-num">06</span>
+      <span class="item-icon">🔀</span>
+      <span>JOIN — объединение таблиц</span>
+    </div>
+
+    <div class="sidebar-section">Модуль 4 — Продвинутый SQL</div>
+    <div class="sidebar-item" onclick="showLesson(8)" id="nav-8">
+      <span class="item-num">08</span><span class="item-icon">🔀</span>
+      <span>CASE WHEN <span class="new-badge">NEW</span></span>
+    </div>
+    <div class="sidebar-item" onclick="showLesson(9)" id="nav-9">
+      <span class="item-num">09</span><span class="item-icon">🪟</span>
+      <span>Оконные функции <span class="new-badge">NEW</span></span>
+    </div>
+    <div class="sidebar-item" onclick="showLesson(10)" id="nav-10">
+      <span class="item-num">10</span><span class="item-icon">📦</span>
+      <span>CTE — WITH AS <span class="new-badge">NEW</span></span>
+    </div>
+    <div class="sidebar-section">Модуль 5 — Метрики PM</div>
+    <div class="sidebar-item" onclick="showLesson(11)" id="nav-11">
+      <span class="item-num">11</span><span class="item-icon">📈</span>
+      <span>DAU / MAU / Retention <span class="new-badge">NEW</span></span>
+    </div>
+    <div class="sidebar-item" onclick="showLesson(12)" id="nav-12">
+      <span class="item-num">12</span><span class="item-icon">⚠️</span>
+      <span>Типичные ошибки <span class="new-badge">NEW</span></span>
+    </div>
+    <div class="sidebar-section">Финал</div>
+    <div class="sidebar-item" onclick="showLesson(7)" id="nav-7">
+      <span class="item-num">07</span><span class="item-icon">🎯</span>
+      <span>PM-задачи на практике</span>
+    </div>
+    <div class="sidebar-item" onclick="showLesson(13)" id="nav-13">
+      <span class="item-num">13</span><span class="item-icon">📋</span>
+      <span>Шпаргалка SQL <span class="new-badge">NEW</span></span>
+    </div>
+  </nav>
+
+  <main class="main" id="main-content"></main>
+</div>
+</div>
+
+<!-- DEV COURSE -->
+<div class="course-area" id="course-dev">
+  <div class="layout">
+    <nav class="sidebar dev-sidebar" id="dev-sidebar">
+      <div class="sidebar-section">Курс</div>
+      <div class="sidebar-item active" onclick="showDevLesson(0)" id="dev-nav-0">
+        <span class="item-num">00</span><span class="item-icon">🏠</span>
+        <span>Введение</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 1 — Как работает интернет</div>
+      <div class="sidebar-item" onclick="showDevLesson(1)" id="dev-nav-1">
+        <span class="item-num">01</span><span class="item-icon">🌐</span>
+        <span>HTTP, DNS, браузер</span>
+      </div>
+      <div class="sidebar-item" onclick="showDevLesson(2)" id="dev-nav-2">
+        <span class="item-num">02</span><span class="item-icon">🔌</span>
+        <span>API: REST и GraphQL</span>
+      </div>
+      <div class="sidebar-item" onclick="showDevLesson(3)" id="dev-nav-3">
+        <span class="item-num">03</span><span class="item-icon">🔐</span>
+        <span>Авторизация и безопасность</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 2 — Архитектура</div>
+      <div class="sidebar-item" onclick="showDevLesson(4)" id="dev-nav-4">
+        <span class="item-num">04</span><span class="item-icon">🏗️</span>
+        <span>Frontend vs Backend</span>
+      </div>
+      <div class="sidebar-item" onclick="showDevLesson(5)" id="dev-nav-5">
+        <span class="item-num">05</span><span class="item-icon">📦</span>
+        <span>Микросервисы и монолит</span>
+      </div>
+      <div class="sidebar-item" onclick="showDevLesson(6)" id="dev-nav-6">
+        <span class="item-num">06</span><span class="item-icon">☁️</span>
+        <span>Облако и инфраструктура</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 3 — Процессы разработки</div>
+      <div class="sidebar-item" onclick="showDevLesson(7)" id="dev-nav-7">
+        <span class="item-num">07</span><span class="item-icon">🌿</span>
+        <span>Git и контроль версий</span>
+      </div>
+      <div class="sidebar-item" onclick="showDevLesson(8)" id="dev-nav-8">
+        <span class="item-num">08</span><span class="item-icon">⚙️</span>
+        <span>CI/CD и деплой</span>
+      </div>
+      <div class="sidebar-item" onclick="showDevLesson(9)" id="dev-nav-9">
+        <span class="item-num">09</span><span class="item-icon">🐛</span>
+        <span>Тестирование и QA</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 4 — Работа PM с командой</div>
+      <div class="sidebar-item" onclick="showDevLesson(10)" id="dev-nav-10">
+        <span class="item-num">10</span><span class="item-icon">📋</span>
+        <span>Как писать технические ТЗ</span>
+      </div>
+      <div class="sidebar-item" onclick="showDevLesson(11)" id="dev-nav-11">
+        <span class="item-num">11</span><span class="item-icon">⏱️</span>
+        <span>Оценка задач и спринты</span>
+      </div>
+
+      <div class="sidebar-section">Финал</div>
+      <div class="sidebar-item" onclick="showDevLesson(12)" id="dev-nav-12">
+        <span class="item-num">12</span><span class="item-icon">📖</span>
+        <span>Глоссарий разработчика</span>
+      </div>
+    </nav>
+    <main class="main" id="dev-main-content"></main>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// VIRTUAL DATABASE
+// ─────────────────────────────────────────────
+const DB = {
+  users: [
+    {id:1, name:'Анна Смирнова', email:'anna@mail.ru', plan:'pro', created_at:'2024-01-15', last_login:'2024-11-20'},
+    {id:2, name:'Борис Иванов', email:'boris@mail.ru', plan:'free', created_at:'2024-02-01', last_login:'2024-10-05'},
+    {id:3, name:'Катя Петрова', email:'katya@mail.ru', plan:'pro', created_at:'2024-03-10', last_login:'2024-11-28'},
+    {id:4, name:'Дима Козлов', email:'dima@mail.ru', plan:'enterprise', created_at:'2024-01-08', last_login:'2024-11-29'},
+    {id:5, name:'Елена Новак', email:'elena@mail.ru', plan:'free', created_at:'2024-06-22', last_login:'2024-09-15'},
+    {id:6, name:'Фёдор Жуков', email:'fedor@mail.ru', plan:'pro', created_at:'2024-07-11', last_login:'2024-11-01'},
+  ],
+  orders: [
+    {id:1, user_id:1, product:'Pro Month', amount:990, status:'paid', created_at:'2024-11-01'},
+    {id:2, user_id:3, product:'Pro Month', amount:990, status:'paid', created_at:'2024-11-05'},
+    {id:3, user_id:4, product:'Enterprise', amount:9900, status:'paid', created_at:'2024-11-10'},
+    {id:4, user_id:2, product:'Pro Month', amount:990, status:'failed', created_at:'2024-11-12'},
+    {id:5, user_id:6, product:'Pro Month', amount:990, status:'paid', created_at:'2024-11-15'},
+    {id:6, user_id:1, product:'Pro Month', amount:990, status:'paid', created_at:'2024-10-01'},
+    {id:7, user_id:4, product:'Enterprise', amount:9900, status:'paid', created_at:'2024-10-10'},
+    {id:8, user_id:5, product:'Pro Month', amount:990, status:'failed', created_at:'2024-11-20'},
+  ],
+  events: [
+    {id:1, user_id:1, event:'signup', page:'/',    created_at:'2024-01-15'},
+    {id:2, user_id:1, event:'upgrade', page:'/pricing', created_at:'2024-01-16'},
+    {id:3, user_id:2, event:'signup', page:'/',    created_at:'2024-02-01'},
+    {id:4, user_id:3, event:'signup', page:'/',    created_at:'2024-03-10'},
+    {id:5, user_id:3, event:'upgrade', page:'/pricing', created_at:'2024-03-11'},
+    {id:6, user_id:4, event:'signup', page:'/',    created_at:'2024-01-08'},
+    {id:7, user_id:4, event:'upgrade', page:'/pricing', created_at:'2024-01-09'},
+    {id:8, user_id:5, event:'signup', page:'/',    created_at:'2024-06-22'},
+    {id:9, user_id:6, event:'signup', page:'/',    created_at:'2024-07-11'},
+    {id:10, user_id:6, event:'upgrade', page:'/pricing', created_at:'2024-07-12'},
+  ]
+};
+
+// ─────────────────────────────────────────────
+// SIMPLE SQL PARSER
+// ─────────────────────────────────────────────
+function runSQL(query) {
+  try {
+    const q = query.trim().replace(/\s+/g, ' ').replace(/;$/, '');
+    const upper = q.toUpperCase();
+
+    // SHOW TABLES
+    if (upper === 'SHOW TABLES' || upper === '\\DT') {
+      return { columns: ['table_name'], rows: [['users'], ['orders'], ['events']] };
+    }
+
+    // SELECT
+    if (!upper.startsWith('SELECT')) throw new Error('Поддерживаются только SELECT-запросы');
+
+    // Parse FROM
+    const fromMatch = q.match(/FROM\s+(\w+)(?:\s+(?:AS\s+)?(\w+))?/i);
+    if (!fromMatch) throw new Error('Не найдена секция FROM');
+
+    const tableName = fromMatch[1].toLowerCase();
+    const tableAlias = fromMatch[2] || tableName;
+
+    // JOIN
+    const joinMatch = q.match(/(?:LEFT\s+)?(?:INNER\s+)?JOIN\s+(\w+)(?:\s+(?:AS\s+)?(\w+))?\s+ON\s+([\w.]+)\s*=\s*([\w.]+)/i);
+
+    let rows = DB[tableName] ? [...DB[tableName]] : null;
+    if (!rows) throw new Error(`Таблица "${tableName}" не найдена. Доступны: users, orders, events`);
+
+    let joinRows = null;
+    let joinTableName = null;
+    let joinAlias = null;
+
+    if (joinMatch) {
+      joinTableName = joinMatch[1].toLowerCase();
+      joinAlias = joinMatch[2] || joinTableName;
+      joinRows = DB[joinTableName] ? [...DB[joinTableName]] : null;
+      if (!joinRows) throw new Error(`Таблица "${joinTableName}" не найдена`);
+
+      const isLeft = q.toUpperCase().includes('LEFT JOIN');
+      const onLeft = joinMatch[3].split('.').pop().toLowerCase();
+      const onRight = joinMatch[4].split('.').pop().toLowerCase();
+
+      const merged = [];
+      for (const row of rows) {
+        const matches = joinRows.filter(jr => String(jr[onRight]) === String(row[onLeft]) || String(jr[onLeft]) === String(row[onRight]));
+        if (matches.length > 0) {
+          for (const jr of matches) {
+            const combined = {};
+            for (const k in row) combined[`${tableAlias}.${k}`] = row[k];
+            for (const k in row) combined[k] = row[k];
+            for (const k in jr) combined[`${joinAlias}.${k}`] = jr[k];
+            for (const k in jr) if (!(k in combined)) combined[k] = jr[k];
+            merged.push(combined);
+          }
+        } else if (isLeft) {
+          const combined = {};
+          for (const k in row) combined[`${tableAlias}.${k}`] = row[k];
+          for (const k in row) combined[k] = row[k];
+          if (joinRows[0]) for (const k in joinRows[0]) { combined[`${joinAlias}.${k}`] = null; if (!(k in combined)) combined[k] = null; }
+          merged.push(combined);
+        }
+      }
+      rows = merged;
+    }
+
+    // WHERE
+    const whereMatch = q.match(/WHERE\s+([\s\S]+?)(?:\s+GROUP BY|\s+ORDER BY|\s+LIMIT|$)/i);
+    if (whereMatch) {
+      const cond = whereMatch[1].trim();
+      rows = rows.filter(row => evalCondition(cond, row));
+    }
+
+    // GROUP BY + aggregation
+    const groupMatch = q.match(/GROUP\s+BY\s+([\w.,\s]+?)(?:\s+ORDER BY|\s+HAVING|\s+LIMIT|$)/i);
+    const hasAgg = /\b(COUNT|SUM|AVG|MAX|MIN)\s*\(/i.test(q);
+
+    if (groupMatch || hasAgg) {
+      const groupCols = groupMatch ? groupMatch[1].split(',').map(c => c.trim().split('.').pop().toLowerCase()) : [];
+      const selectPart = q.match(/SELECT\s+([\s\S]+?)\s+FROM/i)[1];
+      const selectCols = parseSelectCols(selectPart);
+
+      if (groupCols.length > 0) {
+        const groups = {};
+        for (const row of rows) {
+          const key = groupCols.map(c => row[c] ?? row[Object.keys(row).find(k => k.toLowerCase().endsWith('.'+c) || k.toLowerCase() === c)] ?? 'NULL').join('|');
+          if (!groups[key]) groups[key] = { _key: key, _rows: [], _sample: row };
+          groups[key]._rows.push(row);
+        }
+        const aggRows = Object.values(groups).map(g => {
+          const out = {};
+          for (const c of groupCols) {
+            out[c] = g._sample[c] ?? g._sample[Object.keys(g._sample).find(k => k.toLowerCase().endsWith('.'+c) || k.toLowerCase() === c)];
+          }
+          for (const col of selectCols) {
+            const agg = col.match(/^(COUNT|SUM|AVG|MAX|MIN)\((.+)\)$/i);
+            if (agg) {
+              const fn = agg[1].toUpperCase();
+              const field = agg[2].trim() === '*' ? null : agg[2].trim().split('.').pop().toLowerCase();
+              const vals = g._rows.map(r => field ? (parseFloat(r[field]) || 0) : 1);
+              if (fn === 'COUNT') out[col] = g._rows.length;
+              else if (fn === 'SUM') out[col] = vals.reduce((a,b) => a+b, 0);
+              else if (fn === 'AVG') out[col] = +(vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2);
+              else if (fn === 'MAX') out[col] = Math.max(...vals);
+              else if (fn === 'MIN') out[col] = Math.min(...vals);
+            }
+          }
+          return out;
+        });
+        rows = aggRows;
+      } else {
+        // single aggregate row
+        const out = {};
+        for (const col of selectCols) {
+          const agg = col.match(/^(COUNT|SUM|AVG|MAX|MIN)\((.+)\)$/i);
+          if (agg) {
+            const fn = agg[1].toUpperCase();
+            const field = agg[2].trim() === '*' ? null : agg[2].trim().split('.').pop().toLowerCase();
+            const vals = rows.map(r => field ? (parseFloat(r[field]) || 0) : 1);
+            if (fn === 'COUNT') out[col] = rows.length;
+            else if (fn === 'SUM') out[col] = vals.reduce((a,b) => a+b, 0);
+            else if (fn === 'AVG') out[col] = +(vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2);
+            else if (fn === 'MAX') out[col] = Math.max(...vals);
+            else if (fn === 'MIN') out[col] = Math.min(...vals);
+          } else {
+            out[col] = rows[0] ? rows[0][col.split('.').pop().toLowerCase()] : null;
+          }
+        }
+        rows = [out];
+      }
+    }
+
+    // ORDER BY
+    const orderMatch = q.match(/ORDER\s+BY\s+([\w.,\s]+?)(?:\s+ASC|\s+DESC)?(?:\s+LIMIT|$)/i);
+    const orderDir = /ORDER\s+BY\s+[\w.,\s]+\s+DESC/i.test(q) ? -1 : 1;
+    if (orderMatch) {
+      const orderCol = orderMatch[1].trim().split(',')[0].trim().split('.').pop().toLowerCase();
+      rows = rows.sort((a, b) => {
+        const av = a[orderCol], bv = b[orderCol];
+        if (av === null || av === undefined) return 1;
+        if (bv === null || bv === undefined) return -1;
+        if (!isNaN(av) && !isNaN(bv)) return orderDir * (Number(av) - Number(bv));
+        return orderDir * String(av).localeCompare(String(bv));
+      });
+    }
+
+    // LIMIT
+    const limitMatch = q.match(/LIMIT\s+(\d+)/i);
+    if (limitMatch) rows = rows.slice(0, parseInt(limitMatch[1]));
+
+    // SELECT columns
+    const selectPart = q.match(/SELECT\s+([\s\S]+?)\s+FROM/i)[1];
+    if (selectPart.trim() === '*') {
+      const cols = rows.length > 0 ? Object.keys(rows[0]).filter(k => !k.includes('.')) : [];
+      return { columns: cols, rows: rows.map(r => cols.map(c => r[c])) };
+    }
+
+    const selectCols = parseSelectCols(selectPart);
+    const finalRows = rows.map(r => {
+      return selectCols.map(col => {
+        const bare = col.split('.').pop().toLowerCase();
+        if (bare in r) return r[bare];
+        if (col in r) return r[col];
+        return null;
+      });
+    });
+
+    const displayCols = selectCols.map(c => {
+      const agg = c.match(/^(COUNT|SUM|AVG|MAX|MIN)\((.+)\)$/i);
+      if (agg) return `${agg[1].toLowerCase()}(${agg[2]})`;
+      return c.split('.').pop();
+    });
+
+    return { columns: displayCols, rows: finalRows };
+
+  } catch(e) {
+    return { error: e.message };
+  }
+}
+
+function parseSelectCols(selectStr) {
+  const cols = [];
+  let depth = 0, current = '';
+  for (const ch of selectStr) {
+    if (ch === '(') depth++;
+    if (ch === ')') depth--;
+    if (ch === ',' && depth === 0) { cols.push(current.trim()); current = ''; }
+    else current += ch;
+  }
+  if (current.trim()) cols.push(current.trim());
+  return cols;
+}
+
+function evalCondition(cond, row) {
+  try {
+    // Handle AND/OR (simple, left-to-right)
+    if (/\s+AND\s+/i.test(cond)) {
+      return cond.split(/\s+AND\s+/i).every(c => evalCondition(c.trim(), row));
+    }
+    if (/\s+OR\s+/i.test(cond)) {
+      return cond.split(/\s+OR\s+/i).some(c => evalCondition(c.trim(), row));
+    }
+
+    // col LIKE 'pattern'
+    const likeMatch = cond.match(/^([\w.]+)\s+(?:NOT\s+)?LIKE\s+'([^']+)'/i);
+    if (likeMatch) {
+      const val = String(getVal(likeMatch[1], row) || '').toLowerCase();
+      const pattern = likeMatch[2].replace(/%/g, '.*').replace(/_/g, '.').toLowerCase();
+      const matches = new RegExp('^' + pattern + '$').test(val);
+      return /NOT/i.test(cond) ? !matches : matches;
+    }
+
+    // col IN (...)
+    const inMatch = cond.match(/^([\w.]+)\s+(?:NOT\s+)?IN\s*\(([^)]+)\)/i);
+    if (inMatch) {
+      const val = getVal(inMatch[1], row);
+      const list = inMatch[2].split(',').map(v => v.trim().replace(/^'|'$/g, ''));
+      const inList = list.includes(String(val));
+      return /NOT/i.test(cond) ? !inList : inList;
+    }
+
+    // col IS NULL / IS NOT NULL
+    if (/IS\s+NOT\s+NULL/i.test(cond)) {
+      const col = cond.split(/\s+/)[0];
+      return getVal(col, row) !== null && getVal(col, row) !== undefined;
+    }
+    if (/IS\s+NULL/i.test(cond)) {
+      const col = cond.split(/\s+/)[0];
+      return getVal(col, row) === null || getVal(col, row) === undefined;
+    }
+
+    // comparisons: =, !=, <>, <, >, <=, >=
+    const compMatch = cond.match(/^([\w.]+)\s*(=|!=|<>|<=|>=|<|>)\s*('([^']*)'|(\d+(?:\.\d+)?)|(\w+))/);
+    if (compMatch) {
+      const col = compMatch[1];
+      const op = compMatch[2];
+      const rawVal = compMatch[4] !== undefined ? compMatch[4] : (compMatch[5] !== undefined ? Number(compMatch[5]) : compMatch[6]);
+      const rowVal = getVal(col, row);
+
+      const rv = isNaN(rowVal) ? String(rowVal || '') : Number(rowVal);
+      const cv = isNaN(rawVal) ? String(rawVal) : Number(rawVal);
+
+      if (op === '=') return rv == cv;
+      if (op === '!=' || op === '<>') return rv != cv;
+      if (op === '<') return rv < cv;
+      if (op === '>') return rv > cv;
+      if (op === '<=') return rv <= cv;
+      if (op === '>=') return rv >= cv;
+    }
+    return true;
+  } catch(e) { return false; }
+}
+
+function getVal(colExpr, row) {
+  const bare = colExpr.split('.').pop().toLowerCase();
+  if (bare in row) return row[bare];
+  if (colExpr in row) return row[colExpr];
+  return undefined;
+}
+
+function renderResult(result) {
+  if (result.error) {
+    return `<div class="result-error">❌ ${result.error}</div>`;
+  }
+  if (!result.rows || result.rows.length === 0) {
+    return `<div class="result-header">✓ Запрос выполнен — 0 строк</div>`;
+  }
+  let html = `<div class="result-header">✓ Результат — ${result.rows.length} ${rowWord(result.rows.length)}</div>`;
+  html += '<table class="db-table"><thead><tr>';
+  for (const col of result.columns) html += `<th>${col}</th>`;
+  html += '</tr></thead><tbody>';
+  for (const row of result.rows) {
+    html += '<tr>';
+    for (const cell of row) {
+      const display = cell === null ? '<span style="color:var(--text3)">NULL</span>' : String(cell);
+      html += `<td>${display}</td>`;
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+function rowWord(n) {
+  if (n % 10 === 1 && n % 100 !== 11) return 'строка';
+  if ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) return 'строки';
+  return 'строк';
+}
+
+// ─────────────────────────────────────────────
+// LESSONS DATA
+// ─────────────────────────────────────────────
+const completed = new Set();
+let currentLesson = 0;
+
+const lessons = [
+// 0 — WELCOME
+{
+  render: () => `
+    <div class="welcome-screen content-block">
+      <div class="lesson-tag">SQL для Product Manager</div>
+      <h1>Добро пожаловать в курс</h1>
+      <p style="font-size:16px; color:var(--text2); line-height:1.7; margin-bottom:24px;">
+        Этот курс создан специально для PM. Здесь нет лишней теории — только то, что вам нужно, чтобы <strong>самостоятельно анализировать данные продукта</strong>.
+      </p>
+      <div class="course-stats">
+        <div class="stat-card"><div class="stat-num">14</div><div class="stat-label">уроков</div></div>
+        <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">модулей</div></div>
+        <div class="stat-card"><div class="stat-num">∞</div><div class="stat-label">практики</div></div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div>В курсе есть <strong>живой SQL-редактор</strong>. Вы пишете запросы — они выполняются прямо в браузере на реальных таблицах учебного продукта.</div>
+      </div>
+      <div class="module-list">
+        <div class="module-card" onclick="showLesson(1)">
+          <div class="module-num">1</div>
+          <div class="module-info"><h3>Основы реляционных БД</h3><p>Таблицы, ключи, связи — как устроены данные</p></div>
+          <div class="module-arrow">→</div>
+        </div>
+        <div class="module-card" onclick="showLesson(3)">
+          <div class="module-num">2</div>
+          <div class="module-info"><h3>Язык запросов SQL</h3><p>SELECT, WHERE, GROUP BY — читаем данные</p></div>
+          <div class="module-arrow">→</div>
+        </div>
+        <div class="module-card" onclick="showLesson(6)">
+          <div class="module-num">3</div>
+          <div class="module-info"><h3>JOIN и аналитика</h3><p>Объединяем таблицы, решаем PM-задачи</p></div>
+          <div class="module-arrow">→</div>
+        </div>
+        <div class="module-card" onclick="showLesson(8)">
+          <div class="module-num">4</div>
+          <div class="module-info"><h3>Продвинутый SQL <span class="new-badge">NEW</span></h3><p>CASE WHEN, оконные функции, CTE</p></div>
+          <div class="module-arrow">→</div>
+        </div>
+        <div class="module-card" onclick="showLesson(11)">
+          <div class="module-num">5</div>
+          <div class="module-info"><h3>Метрики продукта <span class="new-badge">NEW</span></h3><p>DAU/MAU, Retention, Churn, LTV — SQL для PM</p></div>
+          <div class="module-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  `, nav: { next: 1 }
+},
+
+// 1 — ЧТО ТАКОЕ РЕЛЯЦИОННАЯ БД
+{
+  tag: 'Модуль 1 · Урок 1',
+  title: 'Что такое реляционная БД',
+  time: '10 мин',
+  render: () => `
+    <div class="content-block">
+      <p>Представьте, что данные о вашем продукте хранятся не в одном огромном файле, а в <strong>нескольких связанных таблицах</strong> — как листы в Excel, но умнее.</p>
+    </div>
+    <div class="content-block">
+      <h2>Почему не Excel?</h2>
+      <p>В Excel вы бы хранили всё в одной таблице:</p>
+      <table class="db-table" style="margin:12px 0">
+        <thead><tr><th>user_name</th><th>user_email</th><th>order_product</th><th>order_amount</th><th>order_status</th></tr></thead>
+        <tbody>
+          <tr><td>Анна Смирнова</td><td>anna@mail.ru</td><td>Pro Month</td><td>990</td><td>paid</td></tr>
+          <tr><td>Анна Смирнова</td><td>anna@mail.ru</td><td>Pro Month</td><td>990</td><td>paid</td></tr>
+          <tr><td>Дима Козлов</td><td>dima@mail.ru</td><td>Enterprise</td><td>9900</td><td>paid</td></tr>
+        </tbody>
+      </table>
+      <p>Видите проблему? <strong>Анна упоминается дважды</strong> — данные дублируются. Если она сменит email, придётся менять его везде.</p>
+    </div>
+    <div class="content-block">
+      <h2>Реляционный подход</h2>
+      <p>В реляционной БД данные разделяются на логичные таблицы, которые <strong>ссылаются друг на друга</strong>:</p>
+      <div class="schema-viz">
+        <div class="schema-table">
+          <div class="schema-table-header">users</div>
+          <div class="schema-field"><span style="color:var(--accent3)">▸</span> id <span class="pk-badge">PK</span></div>
+          <div class="schema-field">name <span class="field-type">text</span></div>
+          <div class="schema-field">email <span class="field-type">text</span></div>
+          <div class="schema-field">plan <span class="field-type">text</span></div>
+        </div>
+        <div style="display:flex;align-items:center;color:var(--accent2);font-size:22px;padding:0 4px">→</div>
+        <div class="schema-table">
+          <div class="schema-table-header">orders</div>
+          <div class="schema-field"><span style="color:var(--accent3)">▸</span> id <span class="pk-badge">PK</span></div>
+          <div class="schema-field">user_id <span class="fk-badge">FK</span></div>
+          <div class="schema-field">product <span class="field-type">text</span></div>
+          <div class="schema-field">amount <span class="field-type">int</span></div>
+          <div class="schema-field">status <span class="field-type">text</span></div>
+        </div>
+      </div>
+      <p>Теперь Анна хранится <strong>один раз</strong> в таблице <code style="color:var(--accent2)">users</code> с id=1. В таблице <code style="color:var(--accent2)">orders</code> просто указано <code style="color:var(--accent3)">user_id = 1</code>.</p>
+    </div>
+    <div class="content-block">
+      <h2>Ключевые понятия</h2>
+      <div class="callout info">
+        <span class="callout-icon">🔑</span>
+        <div>
+          <strong>Primary Key (PK)</strong> — уникальный идентификатор строки. Каждая запись имеет свой id, он никогда не повторяется.<br><br>
+          <strong>Foreign Key (FK)</strong> — ссылка на id другой таблицы. Поле <code>user_id</code> в таблице orders — это FK, который указывает на конкретного пользователя.
+        </div>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2>Наша учебная база данных</h2>
+      <p>Весь курс мы работаем с данными вымышленного SaaS-продукта. В базе три таблицы:</p>
+      <div class="schema-viz">
+        <div class="schema-table">
+          <div class="schema-table-header">users</div>
+          <div class="schema-field">id · name · email · plan · created_at · last_login</div>
+        </div>
+        <div class="schema-table">
+          <div class="schema-table-header">orders</div>
+          <div class="schema-field">id · user_id · product · amount · status · created_at</div>
+        </div>
+        <div class="schema-table">
+          <div class="schema-table-header">events</div>
+          <div class="schema-field">id · user_id · event · page · created_at</div>
+        </div>
+      </div>
+      <p>Посмотрите на данные прямо сейчас:</p>
+      ${sqlBlock('SELECT * FROM users', 'Запустите — увидите всех пользователей')}
+    </div>
+    ${quizBlock(1, 'Что означает FK (Foreign Key)?', [
+      'Уникальный идентификатор строки',
+      'Ссылка на id строки в другой таблице',
+      'Первичный ключ таблицы',
+      'Индекс для ускорения поиска'
+    ], 1, 'Верно! Foreign Key — это поле, которое содержит id строки из другой таблицы. Например, user_id в таблице orders — это FK, который указывает на пользователя из таблицы users.')}
+  `, nav: { prev: 0, next: 2 }
+},
+
+// 2 — ТАБЛИЦЫ И СВЯЗИ
+{
+  tag: 'Модуль 1 · Урок 2',
+  title: 'Таблицы и типы связей',
+  time: '12 мин',
+  render: () => `
+    <div class="content-block">
+      <p>Таблицы в реляционной БД — это не просто хранилища данных. Они связаны между собой, и понимание этих связей помогает правильно строить запросы.</p>
+    </div>
+    <div class="content-block">
+      <h2>Три типа связей</h2>
+      <h3>1. Один-к-одному (1:1)</h3>
+      <p>Один пользователь имеет ровно один профиль. Встречается редко.</p>
+      <div class="callout info"><span class="callout-icon">👤</span><div>user → user_profile</div></div>
+
+      <h3 style="margin-top:16px">2. Один-ко-многим (1:N) — самая частая</h3>
+      <p>Один пользователь может сделать <strong>много заказов</strong>. Много заказов принадлежат одному пользователю.</p>
+      <div class="callout info"><span class="callout-icon">🛒</span><div>user (1) → orders (N)<br>user (1) → events (N)</div></div>
+
+      <h3 style="margin-top:16px">3. Многие-ко-многим (N:M)</h3>
+      <p>Один пользователь может иметь много тегов, и один тег может быть у многих пользователей. Реализуется через промежуточную таблицу.</p>
+      <div class="callout info"><span class="callout-icon">🏷️</span><div>users ↔ user_tags ↔ tags</div></div>
+    </div>
+    <div class="content-block">
+      <h2>Нормализация — почему это важно</h2>
+      <p>Нормализация — это процесс организации таблиц так, чтобы:</p>
+      <div class="callout tip">
+        <span class="callout-icon">✓</span>
+        <div>
+          <strong>Не было дублирования данных</strong> — одни и те же данные хранятся в одном месте<br><br>
+          <strong>Было легко обновлять</strong> — изменение email пользователя нужно сделать только в одной строке<br><br>
+          <strong>Сохранялась целостность</strong> — нельзя создать заказ для несуществующего пользователя
+        </div>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2>Посмотрите на связи в нашей БД</h2>
+      <p>Запустите запросы — обратите внимание, как <code style="color:var(--accent3)">user_id</code> в таблице orders соответствует <code style="color:var(--accent3)">id</code> в таблице users:</p>
+      ${sqlBlock('SELECT * FROM orders', 'Видите поле user_id? Это ссылка на таблицу users')}
+      ${sqlBlock('SELECT * FROM events', 'А здесь — события пользователей')}
+    </div>
+    <div class="content-block">
+      <h2>Типы данных</h2>
+      <p>Каждая колонка хранит данные определённого типа. Основные, которые вам встретятся:</p>
+      <table class="db-table">
+        <thead><tr><th>Тип</th><th>Что хранит</th><th>Пример</th></tr></thead>
+        <tbody>
+          <tr><td>INTEGER / INT</td><td>Целые числа</td><td>1, 42, 9900</td></tr>
+          <tr><td>TEXT / VARCHAR</td><td>Строки</td><td>'paid', 'anna@mail.ru'</td></tr>
+          <tr><td>NUMERIC / DECIMAL</td><td>Числа с запятой</td><td>9.99, 1234.50</td></tr>
+          <tr><td>DATE / TIMESTAMP</td><td>Даты и время</td><td>'2024-11-01'</td></tr>
+          <tr><td>BOOLEAN</td><td>Истина/ложь</td><td>true, false</td></tr>
+        </tbody>
+      </table>
+    </div>
+    ${quizBlock(2, 'Таблицы users и orders связаны по типу:', [
+      'Один-к-одному (1:1)',
+      'Один-ко-многим (1:N)',
+      'Многие-ко-многим (N:M)',
+      'Они не связаны'
+    ], 1, 'Правильно! Один пользователь может сделать много заказов. Это классическая связь 1:N. В таблице orders поле user_id (FK) хранит id пользователя из таблицы users.')}
+  `, nav: { prev: 1, next: 3 }
+},
+
+// 3 — ПЕРВЫЕ ЗАПРОСЫ
+{
+  tag: 'Модуль 2 · Урок 3',
+  title: 'Первые запросы: SELECT',
+  time: '15 мин',
+  render: () => `
+    <div class="content-block">
+      <p>SQL расшифровывается как <strong>Structured Query Language</strong> — язык структурированных запросов. Главная команда, которую вы будете использовать 90% времени — это <code style="color:var(--accent)">SELECT</code>.</p>
+    </div>
+    <div class="content-block">
+      <h2>Анатомия SELECT-запроса</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span>Структура запроса</span><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>  <span class="cm">-- что достать (колонки)</span>
+  name, email, plan
+<span class="kw">FROM</span>    <span class="cm">-- откуда (таблица)</span>
+  users
+<span class="kw">WHERE</span>   <span class="cm">-- условие фильтрации</span>
+  plan = <span class="str">'pro'</span>
+<span class="kw">ORDER BY</span> <span class="cm">-- сортировка</span>
+  name
+<span class="kw">LIMIT</span>   <span class="cm">-- максимальное количество строк</span>
+  10</pre>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2>SELECT * — получить всё</h2>
+      <p>Звёздочка <code style="color:var(--accent)">*</code> означает «все колонки»:</p>
+      ${sqlBlock('SELECT * FROM users', 'Попробуйте — получите все строки и все колонки')}
+    </div>
+    <div class="content-block">
+      <h2>Выбираем конкретные колонки</h2>
+      <p>Лучше указывать только нужные колонки — это быстрее и нагляднее:</p>
+      ${sqlBlock('SELECT name, email, plan\nFROM users', 'Только имя, email и тариф')}
+    </div>
+    <div class="content-block">
+      <h2>LIMIT — ограничиваем результат</h2>
+      <p>Когда в таблице миллионы строк, <strong>всегда</strong> добавляйте LIMIT:</p>
+      ${sqlBlock('SELECT * FROM users\nLIMIT 3', 'Только первые 3 пользователя')}
+    </div>
+    <div class="content-block">
+      <h2>ORDER BY — сортировка</h2>
+      ${sqlBlock('SELECT name, created_at\nFROM users\nORDER BY created_at DESC', 'Кто зарегистрировался последним? DESC = от новых к старым')}
+    </div>
+    <div class="content-block">
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>Важно:</strong> SQL не чувствителен к регистру — <code>SELECT</code> и <code>select</code> работают одинаково. Но принято писать ключевые слова ЗАГЛАВНЫМИ для читаемости.</div>
+      </div>
+    </div>
+    ${quizBlock(3, 'Как получить только первые 5 строк из таблицы orders?', [
+      'SELECT * FROM orders WHERE id < 6',
+      'SELECT TOP 5 * FROM orders',
+      'SELECT * FROM orders LIMIT 5',
+      'SELECT * FROM orders [5]'
+    ], 2, 'Верно! LIMIT 5 ограничивает результат пятью строками. Это стандартный синтаксис PostgreSQL. В MS SQL Server вместо LIMIT используется TOP, но в нашем курсе работает LIMIT.')}
+  `, nav: { prev: 2, next: 4 }
+},
+
+// 4 — ФИЛЬТРЫ
+{
+  tag: 'Модуль 2 · Урок 4',
+  title: 'Фильтрация и условия: WHERE',
+  time: '18 мин',
+  render: () => `
+    <div class="content-block">
+      <p><code style="color:var(--accent)">WHERE</code> — это сердце аналитики. Именно с его помощью вы отвечаете на вопросы вроде "покажи мне всех платящих пользователей" или "найди заказы со статусом failed".</p>
+    </div>
+    <div class="content-block">
+      <h2>Операторы сравнения</h2>
+      <table class="db-table">
+        <thead><tr><th>Оператор</th><th>Значение</th><th>Пример</th></tr></thead>
+        <tbody>
+          <tr><td>=</td><td>равно</td><td>plan = 'pro'</td></tr>
+          <tr><td>!= или &lt;&gt;</td><td>не равно</td><td>status != 'failed'</td></tr>
+          <tr><td>&gt;</td><td>больше</td><td>amount > 1000</td></tr>
+          <tr><td>&lt;</td><td>меньше</td><td>amount < 500</td></tr>
+          <tr><td>&gt;=</td><td>больше или равно</td><td>id >= 3</td></tr>
+          <tr><td>&lt;=</td><td>меньше или равно</td><td>id <= 5</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="content-block">
+      <h2>Простые фильтры</h2>
+      ${sqlBlock("SELECT name, email, plan\nFROM users\nWHERE plan = 'pro'", 'Только Pro-пользователи')}
+      ${sqlBlock("SELECT id, product, amount, status\nFROM orders\nWHERE status = 'failed'", 'Неудачные платежи — нужно разобраться!')}
+    </div>
+    <div class="content-block">
+      <h2>AND и OR — несколько условий</h2>
+      ${sqlBlock("SELECT * FROM orders\nWHERE status = 'paid'\nAND amount > 5000", 'Крупные оплаченные заказы')}
+      ${sqlBlock("SELECT * FROM users\nWHERE plan = 'pro'\nOR plan = 'enterprise'", 'Все платящие пользователи')}
+    </div>
+    <div class="content-block">
+      <h2>IN — список значений</h2>
+      <p>Вместо нескольких OR можно использовать IN — гораздо читаемее:</p>
+      ${sqlBlock("SELECT * FROM users\nWHERE plan IN ('pro', 'enterprise')", 'То же самое, но короче и чище')}
+    </div>
+    <div class="content-block">
+      <h2>LIKE — поиск по шаблону</h2>
+      <p><code style="color:var(--accent)">%</code> означает «любые символы»:</p>
+      ${sqlBlock("SELECT name, email\nFROM users\nWHERE email LIKE '%@mail.ru'", 'Все пользователи с почтой @mail.ru')}
+    </div>
+    <div class="content-block">
+      <h2>Задание для PM</h2>
+      <div class="callout tip">
+        <span class="callout-icon">🎯</span>
+        <div>Напишите запрос: найдите все <strong>оплаченные заказы</strong> (status = 'paid') на сумму <strong>больше 1000 рублей</strong>. Попробуйте самостоятельно, потом нажмите Reset чтобы увидеть подсказку.</div>
+      </div>
+      ${sqlBlock("-- Напишите запрос здесь\nSELECT *\nFROM orders\nWHERE ...", 'Используйте AND для двух условий')}
+    </div>
+    ${quizBlock(4, 'Какой запрос найдёт пользователей с тарифом pro ИЛИ enterprise?', [
+      "WHERE plan = 'pro' AND plan = 'enterprise'",
+      "WHERE plan IN ('pro', 'enterprise')",
+      "WHERE plan LIKE 'pro|enterprise'",
+      "WHERE plan = 'pro,enterprise'"
+    ], 1, "Правильно! WHERE plan IN ('pro', 'enterprise') — это компактная запись для OR по одному полю. Первый вариант с AND невозможен: поле не может быть равно двум значениям одновременно.")}
+  `, nav: { prev: 3, next: 5 }
+},
+
+// 5 — АГРЕГАЦИЯ
+{
+  tag: 'Модуль 2 · Урок 5',
+  title: 'Агрегация и GROUP BY',
+  time: '20 мин',
+  render: () => `
+    <div class="content-block">
+      <p>Агрегация — это когда вы хотите не смотреть на строки, а <strong>считать, суммировать, находить среднее</strong>. Именно здесь SQL становится настоящим инструментом PM-аналитики.</p>
+    </div>
+    <div class="content-block">
+      <h2>Агрегатные функции</h2>
+      <table class="db-table">
+        <thead><tr><th>Функция</th><th>Что делает</th><th>Пример</th></tr></thead>
+        <tbody>
+          <tr><td>COUNT(*)</td><td>Количество строк</td><td>Сколько пользователей?</td></tr>
+          <tr><td>COUNT(column)</td><td>Количество непустых значений</td><td>Сколько заказов?</td></tr>
+          <tr><td>SUM(column)</td><td>Сумма</td><td>Общая выручка</td></tr>
+          <tr><td>AVG(column)</td><td>Среднее значение</td><td>Средний чек</td></tr>
+          <tr><td>MAX(column)</td><td>Максимум</td><td>Самый большой заказ</td></tr>
+          <tr><td>MIN(column)</td><td>Минимум</td><td>Самый маленький заказ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="content-block">
+      <h2>Базовые агрегаты</h2>
+      ${sqlBlock("SELECT COUNT(*) FROM users", 'Сколько всего пользователей?')}
+      ${sqlBlock("SELECT SUM(amount), AVG(amount), MAX(amount)\nFROM orders\nWHERE status = 'paid'", 'Финансовые показатели по оплаченным заказам')}
+    </div>
+    <div class="content-block">
+      <h2>GROUP BY — разбивка по категориям</h2>
+      <p>GROUP BY группирует строки и считает агрегат по каждой группе:</p>
+      ${sqlBlock("SELECT status, COUNT(*) \nFROM orders\nGROUP BY status", 'Сколько заказов в каждом статусе?')}
+      ${sqlBlock("SELECT plan, COUNT(*)\nFROM users\nGROUP BY plan", 'Распределение пользователей по тарифам')}
+    </div>
+    <div class="content-block">
+      <h2>Реальные PM-запросы</h2>
+      ${sqlBlock("SELECT plan, COUNT(*)\nFROM users\nGROUP BY plan\nORDER BY COUNT(*) DESC", 'Какой тариф самый популярный?')}
+      ${sqlBlock("SELECT status, SUM(amount)\nFROM orders\nGROUP BY status", 'Выручка и потери по статусу заказов')}
+    </div>
+    <div class="content-block">
+      <div class="callout warning">
+        <span class="callout-icon">💡</span>
+        <div><strong>Правило GROUP BY:</strong> В SELECT можно указывать только те колонки, которые либо перечислены в GROUP BY, либо используются внутри агрегатной функции. Это частая ошибка новичков.</div>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2>Ваш запрос</h2>
+      <div class="callout tip">
+        <span class="callout-icon">🎯</span>
+        <div>Посчитайте <strong>выручку по каждому продукту</strong>. Используйте таблицу orders, поле product и функцию SUM(amount). Фильтруйте только paid-заказы.</div>
+      </div>
+      ${sqlBlock("SELECT product, SUM(amount)\nFROM orders\nWHERE status = 'paid'\nGROUP BY product\nORDER BY SUM(amount) DESC", 'Выручка по продуктам — запустите и проверьте результат!')}
+    </div>
+    ${quizBlock(5, 'Вы хотите узнать количество пользователей на каждом тарифе. Какой запрос правильный?', [
+      "SELECT plan, COUNT(*) FROM users",
+      "SELECT COUNT(*) FROM users GROUP BY plan",
+      "SELECT plan, COUNT(*) FROM users GROUP BY plan",
+      "SELECT plan FROM users COUNT(*) GROUP"
+    ], 2, "Верно! Нужно написать SELECT plan, COUNT(*) — указать и группирующую колонку, и агрегат. Затем GROUP BY plan — по какому полю группировать. Без GROUP BY запрос вернёт одну строку с общим подсчётом.")}
+  `, nav: { prev: 4, next: 6 }
+},
+
+// 6 — JOIN
+{
+  tag: 'Модуль 3 · Урок 6',
+  title: 'JOIN — объединение таблиц',
+  time: '25 мин',
+  render: () => `
+    <div class="content-block">
+      <p>JOIN — это суперсила SQL. Именно здесь данные из разных таблиц <strong>соединяются вместе</strong>. Большинство реальных PM-запросов используют JOIN.</p>
+    </div>
+    <div class="content-block">
+      <h2>Типы JOIN</h2>
+      <div class="callout info">
+        <span class="callout-icon">🔀</span>
+        <div>
+          <strong>INNER JOIN</strong> — только строки, которые есть в обеих таблицах<br><br>
+          <strong>LEFT JOIN</strong> — все строки из левой таблицы + совпадения из правой (NULL если нет совпадения)<br><br>
+          <strong>RIGHT JOIN</strong> — обратный LEFT JOIN (редко используется)
+        </div>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2>INNER JOIN</h2>
+      <p>Покажите мне пользователей <strong>вместе с их заказами</strong>:</p>
+      <div class="code-wrap">
+        <div class="code-header"><span>Синтаксис JOIN</span><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span> u.name, u.plan, o.product, o.amount, o.status
+<span class="kw">FROM</span> users u           <span class="cm">-- u — псевдоним таблицы</span>
+<span class="kw">JOIN</span> orders o          <span class="cm">-- o — псевдоним</span>
+  <span class="kw">ON</span> u.id = o.user_id  <span class="cm">-- условие соединения</span></pre>
+      </div>
+      ${sqlBlock("SELECT u.name, u.plan, o.product, o.amount, o.status\nFROM users u\nJOIN orders o ON u.id = o.user_id", 'Пользователи и их заказы вместе')}
+    </div>
+    <div class="content-block">
+      <h2>LEFT JOIN — все пользователи, даже без заказов</h2>
+      <p>Хотите найти пользователей, которые <strong>ни разу не платили</strong>? LEFT JOIN + проверка на NULL:</p>
+      ${sqlBlock("SELECT u.name, u.plan, o.id\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nWHERE o.id IS NULL", 'Пользователи без заказов — потенциальные для конверсии!')}
+    </div>
+    <div class="content-block">
+      <h2>JOIN + агрегация</h2>
+      <p>Самая мощная комбинация — объединить таблицы и посчитать метрики:</p>
+      ${sqlBlock("SELECT u.name, u.plan, COUNT(o.id), SUM(o.amount)\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nGROUP BY u.name, u.plan\nORDER BY SUM(o.amount) DESC", 'Топ пользователей по выручке')}
+    </div>
+    <div class="content-block">
+      <h2>Три таблицы за раз</h2>
+      ${sqlBlock("SELECT u.name, o.product, e.event\nFROM users u\nJOIN orders o ON u.id = o.user_id\nJOIN events e ON u.id = e.user_id\nWHERE e.event = 'upgrade'", 'Пользователи с заказами, которые также делали upgrade-событие')}
+    </div>
+    ${quizBlock(6, 'Вы хотите найти всех пользователей тарифа free, у которых нет ни одного заказа. Какой JOIN использовать?', [
+      'INNER JOIN — найдёт тех, у кого есть заказы',
+      'LEFT JOIN + WHERE orders.id IS NULL',
+      'RIGHT JOIN от таблицы orders',
+      'Без JOIN — просто WHERE plan = free'
+    ], 1, "Правильно! LEFT JOIN сохраняет всех пользователей. Если у пользователя нет заказов, колонки из таблицы orders будут NULL. Условие WHERE orders.id IS NULL оставит только тех, у кого нет ни одного заказа.")}
+  `, nav: { prev: 5, next: 7 }
+},
+
+// 7 — PM ПРАКТИКА
+{
+  tag: 'Модуль 3 · Финал',
+  title: 'PM-задачи: применяем всё',
+  time: '30 мин',
+  render: () => `
+    <div class="content-block">
+      <p>Финальный урок — только практика. Типичные вопросы, которые PM задаёт каждую неделю.</p>
+    </div>
+    <div class="content-block">
+      <h2>Задача 1: Сколько платящих пользователей?</h2>
+      <p>Базовая метрика — количество пользователей не на бесплатном тарифе:</p>
+      ${sqlBlock("SELECT COUNT(*)\nFROM users\nWHERE plan != 'free'", 'Платящие пользователи')}
+    </div>
+    <div class="content-block">
+      <h2>Задача 2: Конверсия из free в paid</h2>
+      <p>Какой процент пользователей платит? Делим платящих на всех:</p>
+      ${sqlBlock("SELECT \n  COUNT(CASE WHEN plan != 'free' THEN 1 END) AS paid_users,\n  COUNT(*) AS total_users\nFROM users", 'Числители и знаменатель конверсии')}
+    </div>
+    <div class="content-block">
+      <h2>Задача 3: Общая выручка за ноябрь 2024</h2>
+      ${sqlBlock("SELECT SUM(amount)\nFROM orders\nWHERE status = 'paid'\nAND created_at >= '2024-11-01'\nAND created_at < '2024-12-01'", 'MRR за ноябрь')}
+    </div>
+    <div class="content-block">
+      <h2>Задача 4: Кто из пользователей принёс больше всего денег?</h2>
+      ${sqlBlock("SELECT u.name, u.plan, SUM(o.amount) AS total_revenue\nFROM users u\nJOIN orders o ON u.id = o.user_id\nWHERE o.status = 'paid'\nGROUP BY u.name, u.plan\nORDER BY total_revenue DESC\nLIMIT 5", 'Топ-5 клиентов по выручке')}
+    </div>
+    <div class="content-block">
+      <h2>Задача 5: Воронка — от регистрации до апгрейда</h2>
+      <p>Сколько пользователей зарегистрировалось, и сколько из них сделали апгрейд?</p>
+      ${sqlBlock("SELECT event, COUNT(*) AS count\nFROM events\nGROUP BY event\nORDER BY count DESC", 'Простая воронка по событиям')}
+    </div>
+    <div class="content-block">
+      <h2>Попробуйте сами 🎯</h2>
+      <div class="callout tip">
+        <span class="callout-icon">💪</span>
+        <div>
+          Напишите запрос: найдите пользователей на тарифе <strong>pro или enterprise</strong>, которые совершили хотя бы один <strong>paid-заказ</strong>. Выведите имя, тариф и сумму всех их заказов.
+        </div>
+      </div>
+      ${sqlBlock("-- Ваш запрос здесь\n-- Подсказка: нужны JOIN + WHERE + GROUP BY\n\nSELECT u.name, u.plan, SUM(o.amount) AS total\nFROM users u\nJOIN orders o ON u.id = o.user_id\nWHERE u.plan IN ('pro', 'enterprise')\nAND o.status = 'paid'\nGROUP BY u.name, u.plan\nORDER BY total DESC", 'Итоговое задание — всё в одном запросе!')}
+    </div>
+    <div class="content-block">
+      <h2>Что изучить дальше</h2>
+      <div class="callout info">
+        <span class="callout-icon">🚀</span>
+        <div>
+          <span class="topic-pill">Подзапросы (Subqueries)</span>
+          <span class="topic-pill">Оконные функции (OVER/PARTITION BY)</span>
+          <span class="topic-pill">CTE (WITH ... AS)</span>
+          <span class="topic-pill">DATE_TRUNC для группировки по месяцам</span>
+          <span class="topic-pill">CASE WHEN — условная логика</span>
+          <span class="topic-pill">COALESCE — обработка NULL</span>
+        </div>
+      </div>
+      <div class="callout tip" style="margin-top:16px">
+        <span class="callout-icon">🎓</span>
+        <div>Отличная работа! Вы освоили базовый SQL. Продолжайте — впереди ещё продвинутые темы и метрики продукта!</div>
+      </div>
+    </div>
+  `, nav: { prev: 6, next: 8 }
+},
+
+// 8 — CASE WHEN
+{
+  tag: 'Модуль 4 · Урок 8',
+  title: 'CASE WHEN — условная логика',
+  time: '20 мин',
+  render: () => `
+    <div class="content-block">
+      <p><code style="color:var(--accent)">CASE WHEN</code> — это «если/то/иначе» внутри SQL. Позволяет создавать новые категории, считать метрики по условиям и строить сегменты пользователей прямо в запросе — без Excel.</p>
+    </div>
+    <div class="content-block">
+      <h2>Синтаксис</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span>Структура CASE WHEN</span><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">CASE</span>
+  <span class="kw">WHEN</span> условие1 <span class="kw">THEN</span> результат1
+  <span class="kw">WHEN</span> условие2 <span class="kw">THEN</span> результат2
+  <span class="kw">ELSE</span> результат_по_умолчанию
+<span class="kw">END</span> <span class="kw">AS</span> название_колонки</pre>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2>Сегментация пользователей</h2>
+      <p>Хотите разделить пользователей на сегменты по тарифу? CASE WHEN создаёт новую колонку-категорию:</p>
+      ${sqlBlock("SELECT name, plan,\n  CASE\n    WHEN plan = 'enterprise' THEN 'Крупный клиент'\n    WHEN plan = 'pro' THEN 'Платящий'\n    ELSE 'Freemium'\n  END AS segment\nFROM users", 'Сегментация прямо в запросе')}
+    </div>
+    <div class="content-block">
+      <h2>Подсчёт по условиям — мощнейший приём</h2>
+      <p>Комбинация <code style="color:var(--accent)">COUNT + CASE WHEN</code> позволяет считать разные категории в одном запросе:</p>
+      ${sqlBlock("SELECT\n  COUNT(*) AS total_orders,\n  COUNT(CASE WHEN status = 'paid' THEN 1 END) AS paid,\n  COUNT(CASE WHEN status = 'failed' THEN 1 END) AS failed\nFROM orders", 'Разбивка заказов по статусам в одну строку')}
+    </div>
+    <div class="content-block">
+      <h2>CASE WHEN в WHERE и ORDER BY</h2>
+      <p>Можно использовать не только в SELECT, но и для сортировки по приоритету:</p>
+      ${sqlBlock("SELECT name, plan,\n  CASE plan\n    WHEN 'enterprise' THEN 1\n    WHEN 'pro' THEN 2\n    ELSE 3\n  END AS priority\nFROM users\nORDER BY priority", 'Сортировка по кастомному приоритету тарифа')}
+    </div>
+    <div class="content-block">
+      <h2>PM-кейс: доля оплаченных заказов</h2>
+      <p>Классическая задача — посчитать конверсию в % в одном запросе:</p>
+      ${sqlBlock("SELECT\n  COUNT(*) AS total,\n  COUNT(CASE WHEN status = 'paid' THEN 1 END) AS paid_count,\n  ROUND(\n    COUNT(CASE WHEN status = 'paid' THEN 1 END) * 100.0 / COUNT(*),\n    1\n  ) AS paid_pct\nFROM orders", 'Конверсия заказов в % — всё в одном запросе')}
+    </div>
+    ${quizBlock(8, 'Вы хотите посчитать отдельно количество pro и enterprise пользователей в одной строке результата. Что использовать?', [
+      'Два отдельных SELECT с UNION',
+      'GROUP BY plan',
+      'COUNT + CASE WHEN для каждого сегмента',
+      'WHERE plan IN + COUNT'
+    ], 2, "COUNT(CASE WHEN plan = 'pro' THEN 1 END) и COUNT(CASE WHEN plan = 'enterprise' THEN 1 END) — это pivot-техника. Два условных счётчика в одном SELECT дают одну строку с двумя колонками. GROUP BY дал бы две строки, а не одну.")}
+  `, nav: { prev: 7, next: 9 }
+},
+
+// 9 — WINDOW FUNCTIONS
+{
+  tag: 'Модуль 4 · Урок 9',
+  title: 'Оконные функции: ROW_NUMBER, RANK, LAG',
+  time: '25 мин',
+  render: () => `
+    <div class="content-block">
+      <p>Оконные функции — это как GROUP BY, но без схлопывания строк. Вы получаете агрегат <strong>рядом с каждой строкой</strong>, не теряя детали. Это один из самых мощных инструментов аналитики.</p>
+    </div>
+    <div class="content-block">
+      <h2>Синтаксис</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span>Оконная функция</span><span class="code-lang">SQL</span></div>
+        <pre><span class="fn">ФУНКЦИЯ()</span> <span class="kw">OVER</span> (
+  <span class="kw">PARTITION BY</span> колонка   <span class="cm">-- разбивка (как GROUP BY)</span>
+  <span class="kw">ORDER BY</span> колонка       <span class="cm">-- порядок внутри окна</span>
+)</pre>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2>ROW_NUMBER — нумерация строк</h2>
+      <p>Присвоить порядковый номер каждому заказу пользователя:</p>
+      ${sqlBlock("SELECT\n  user_id,\n  product,\n  amount,\n  ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at) AS order_num\nFROM orders", 'Номер заказа по счёту для каждого пользователя')}
+    </div>
+    <div class="content-block">
+      <h2>RANK — рейтинг с пропусками</h2>
+      <p>Ранжирование заказов по сумме (одинаковые суммы — одинаковый ранг):</p>
+      ${sqlBlock("SELECT\n  user_id,\n  amount,\n  status,\n  RANK() OVER (ORDER BY amount DESC) AS amount_rank\nFROM orders\nWHERE status = 'paid'", 'Рейтинг заказов по сумме')}
+    </div>
+    <div class="content-block">
+      <h2>SUM OVER — нарастающий итог</h2>
+      <p>Накопительная выручка по каждому заказу — нарастающим итогом:</p>
+      ${sqlBlock("SELECT\n  id,\n  user_id,\n  amount,\n  status,\n  SUM(amount) OVER (ORDER BY id) AS cumulative_revenue\nFROM orders\nWHERE status = 'paid'", 'Нарастающая выручка — отличный график для стендапа')}
+    </div>
+    <div class="content-block">
+      <h2>COUNT OVER — итог без GROUP BY</h2>
+      <p>Покажи каждый заказ И общее количество заказов этого пользователя рядом:</p>
+      ${sqlBlock("SELECT\n  user_id,\n  product,\n  amount,\n  COUNT(*) OVER (PARTITION BY user_id) AS total_user_orders\nFROM orders", 'Сколько всего заказов у каждого — рядом с каждой строкой')}
+    </div>
+    <div class="content-block">
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>PM-применение:</strong> Оконные функции идеальны для когортного анализа, нарастающих KPI, поиска первого/последнего действия пользователя, и сравнения текущего периода с предыдущим.</div>
+      </div>
+    </div>
+    ${quizBlock(9, 'Какая функция присвоит каждому пользователю номер его заказа по времени (первый=1, второй=2...)?', [
+      'COUNT(*) OVER (PARTITION BY user_id)',
+      'ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at)',
+      'RANK() OVER (ORDER BY created_at)',
+      'SUM(id) OVER (PARTITION BY user_id)'
+    ], 1, "ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at) — PARTITION BY разбивает нумерацию отдельно для каждого пользователя, ORDER BY created_at задаёт порядок. Результат: у каждого юзера заказы пронумерованы 1, 2, 3...")}
+  `, nav: { prev: 8, next: 10 }
+},
+
+// 10 — CTE
+{
+  tag: 'Модуль 4 · Урок 10',
+  title: 'CTE — WITH AS: читаемые сложные запросы',
+  time: '20 мин',
+  render: () => `
+    <div class="content-block">
+      <p>CTE (Common Table Expression) — это способ <strong>разбить сложный запрос на шаги</strong>, дать каждому шагу имя и ссылаться на него. Как переменные в коде. Делает SQL читаемым и поддерживаемым.</p>
+    </div>
+    <div class="content-block">
+      <h2>Синтаксис</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span>Структура CTE</span><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">WITH</span> имя_cte <span class="kw">AS</span> (
+  <span class="cm">-- ваш подзапрос</span>
+  <span class="kw">SELECT</span> ...
+  <span class="kw">FROM</span> ...
+)
+<span class="kw">SELECT</span> *
+<span class="kw">FROM</span> имя_cte
+<span class="kw">WHERE</span> ...</pre>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2>Пример: платящие пользователи</h2>
+      <p>Сначала выделим платящих, потом работаем с ними:</p>
+      ${sqlBlock("WITH paid_users AS (\n  SELECT DISTINCT user_id\n  FROM orders\n  WHERE status = 'paid'\n)\nSELECT u.name, u.plan\nFROM users u\nJOIN paid_users p ON u.id = p.user_id", 'CTE как именованный подзапрос')}
+    </div>
+    <div class="content-block">
+      <h2>Несколько CTE подряд</h2>
+      <p>Можно цепочкой — каждый следующий может ссылаться на предыдущий:</p>
+      ${sqlBlock("WITH\n  revenue AS (\n    SELECT user_id, SUM(amount) AS total\n    FROM orders\n    WHERE status = 'paid'\n    GROUP BY user_id\n  ),\n  top_users AS (\n    SELECT user_id, total\n    FROM revenue\n    WHERE total > 1000\n  )\nSELECT u.name, u.plan, t.total\nFROM users u\nJOIN top_users t ON u.id = t.user_id\nORDER BY t.total DESC", 'Двухшаговый анализ через два CTE')}
+    </div>
+    <div class="content-block">
+      <h2>CTE vs подзапрос — что лучше?</h2>
+      <div class="compare-grid">
+        <div class="compare-bad">
+          <div class="compare-header">❌ Подзапрос (трудно читать)</div>
+          <div class="compare-body">SELECT u.name FROM users u
+JOIN (
+  SELECT user_id
+  FROM orders
+  WHERE status = 'paid'
+  GROUP BY user_id
+  HAVING COUNT(*) > 1
+) paid ON u.id = paid.user_id</div>
+        </div>
+        <div class="compare-good">
+          <div class="compare-header">✓ CTE (легко читать)</div>
+          <div class="compare-body">WITH repeat_buyers AS (
+  SELECT user_id
+  FROM orders
+  WHERE status = 'paid'
+  GROUP BY user_id
+  HAVING COUNT(*) > 1
+)
+SELECT u.name
+FROM users u
+JOIN repeat_buyers r
+  ON u.id = r.user_id</div>
+        </div>
+      </div>
+    </div>
+    <div class="content-block">
+      <div class="callout tip">
+        <span class="callout-icon">🏆</span>
+        <div><strong>Совет PM:</strong> Когда показываете запрос аналитику или разработчику — используйте CTE. Это делает вашу логику понятной и облегчает code review. Хорошие CTE называют по смыслу: <code>active_users</code>, <code>monthly_revenue</code>, <code>churned_accounts</code>.</div>
+      </div>
+    </div>
+    ${quizBlock(10, 'Зачем использовать CTE вместо обычного подзапроса?', [
+      'CTE работает быстрее',
+      'CTE позволяет использовать INSERT и UPDATE',
+      'CTE делает запрос читаемым и позволяет переиспользовать подзапрос',
+      'CTE — единственный способ сделать JOIN'
+    ], 2, "Главное преимущество CTE — читаемость и возможность переиспользовать один подзапрос несколько раз в основном запросе. Скорость выполнения обычно такая же. CTE — это инструмент организации кода, а не оптимизации.")}
+  `, nav: { prev: 9, next: 11 }
+},
+
+// 11 — PRODUCT METRICS
+{
+  tag: 'Модуль 5 · Урок 11',
+  title: 'Продуктовые метрики: DAU, MAU, Retention, Churn',
+  time: '30 мин',
+  render: () => `
+    <div class="content-block">
+      <p>Это урок, ради которого стоило изучать SQL. Здесь мы разберём, как считать ключевые метрики продукта — те самые, которые обсуждаются на стендапах и вносятся в дашборды.</p>
+    </div>
+    <div class="content-block">
+      <h2>Словарь метрик PM</h2>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-card-label">DAU</div>
+          <div class="metric-card-value">Daily</div>
+          <div class="metric-card-desc">Daily Active Users — уникальных активных пользователей в день</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">MAU</div>
+          <div class="metric-card-value">Monthly</div>
+          <div class="metric-card-desc">Monthly Active Users — уникальных активных за месяц</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">Retention</div>
+          <div class="metric-card-value">%</div>
+          <div class="metric-card-desc">Доля пользователей, вернувшихся в следующем периоде</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">Churn</div>
+          <div class="metric-card-value">%</div>
+          <div class="metric-card-desc">Доля пользователей, переставших платить или использовать продукт</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">LTV</div>
+          <div class="metric-card-value">₽</div>
+          <div class="metric-card-desc">Lifetime Value — суммарная выручка с одного пользователя</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">ARPU</div>
+          <div class="metric-card-value">₽/user</div>
+          <div class="metric-card-desc">Average Revenue Per User — средняя выручка на пользователя</div>
+        </div>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2>DAU — уникальные активные пользователи</h2>
+      <p>Активный пользователь = совершил любое событие. COUNT(DISTINCT) убирает дубли:</p>
+      ${sqlBlock("SELECT\n  created_at AS date,\n  COUNT(DISTINCT user_id) AS dau\nFROM events\nGROUP BY created_at\nORDER BY created_at", 'DAU по дням — база для любого графика активности')}
+    </div>
+    <div class="content-block">
+      <h2>MAU — активные за месяц</h2>
+      ${sqlBlock("SELECT COUNT(DISTINCT user_id) AS mau\nFROM events\nWHERE created_at >= '2024-01-01'\nAND created_at < '2024-12-01'", 'MAU за 2024 год')}
+    </div>
+    <div class="content-block">
+      <h2>Sticky Factor = DAU / MAU</h2>
+      <p>Насколько «липкий» ваш продукт? Показывает, как часто активные пользователи заходят.</p>
+      <div class="callout info">
+        <span class="callout-icon">📐</span>
+        <div>Sticky Factor = DAU / MAU × 100%<br><br>
+        Хорошие значения: мессенджеры — 50%+, SaaS — 20-40%, медиа — 10-20%</div>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2>Retention — удержание пользователей</h2>
+      <p>Кто из пользователей, зарегистрировавшихся в январе, совершил upgrade?</p>
+      ${sqlBlock("WITH jan_signups AS (\n  SELECT user_id\n  FROM events\n  WHERE event = 'signup'\n  AND created_at >= '2024-01-01'\n  AND created_at < '2024-04-01'\n),\nupgraded AS (\n  SELECT DISTINCT user_id\n  FROM events\n  WHERE event = 'upgrade'\n)\nSELECT\n  COUNT(j.user_id) AS total_signups,\n  COUNT(u.user_id) AS converted,\n  ROUND(COUNT(u.user_id) * 100.0 / COUNT(j.user_id), 1) AS conversion_pct\nFROM jan_signups j\nLEFT JOIN upgraded u ON j.user_id = u.user_id", 'Retention/конверсия signup → upgrade')}
+    </div>
+    <div class="content-block">
+      <h2>Churn — отток</h2>
+      <p>Пользователи, которые были активны в октябре, но не платили в ноябре:</p>
+      ${sqlBlock("WITH oct_payers AS (\n  SELECT DISTINCT user_id\n  FROM orders\n  WHERE status = 'paid'\n  AND created_at >= '2024-10-01'\n  AND created_at < '2024-11-01'\n),\nnov_payers AS (\n  SELECT DISTINCT user_id\n  FROM orders\n  WHERE status = 'paid'\n  AND created_at >= '2024-11-01'\n  AND created_at < '2024-12-01'\n)\nSELECT\n  COUNT(o.user_id) AS oct_paying,\n  COUNT(n.user_id) AS stayed_nov,\n  COUNT(o.user_id) - COUNT(n.user_id) AS churned\nFROM oct_payers o\nLEFT JOIN nov_payers n ON o.user_id = n.user_id", 'Churn: кто заплатил в октябре, но не в ноябре')}
+    </div>
+    <div class="content-block">
+      <h2>LTV — выручка с пользователя</h2>
+      ${sqlBlock("SELECT\n  u.name,\n  u.plan,\n  COUNT(o.id) AS total_orders,\n  SUM(o.amount) AS ltv\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nAND o.status = 'paid'\nGROUP BY u.name, u.plan\nORDER BY ltv DESC", 'LTV каждого пользователя')}
+    </div>
+    <div class="content-block">
+      <h2>ARPU — средняя выручка на пользователя</h2>
+      ${sqlBlock("SELECT\n  ROUND(SUM(o.amount) * 1.0 / COUNT(DISTINCT u.id), 2) AS arpu\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nAND o.status = 'paid'", 'ARPU — средняя выручка на одного пользователя')}
+    </div>
+    ${quizBlock(11, 'Как правильно посчитать MAU — уникальных активных пользователей за месяц?', [
+      'COUNT(*) FROM events WHERE месяц',
+      'COUNT(DISTINCT user_id) FROM events WHERE месяц',
+      'SUM(user_id) FROM events GROUP BY месяц',
+      'COUNT(user_id) FROM users WHERE last_login в месяце'
+    ], 1, "COUNT(DISTINCT user_id) — ключевое слово DISTINCT убирает дублирующиеся user_id, если один пользователь был активен несколько дней. COUNT(*) считал бы события, а не уникальных пользователей. Это самая частая ошибка при расчёте DAU/MAU.")}
+  `, nav: { prev: 10, next: 12 }
+},
+
+// 12 — COMMON MISTAKES
+{
+  tag: 'Модуль 5 · Урок 12',
+  title: 'Типичные ошибки и как их избежать',
+  time: '15 мин',
+  render: () => `
+    <div class="content-block">
+      <p>Эти ошибки делают все — и джуны, и опытные аналитики. Зная их заранее, вы сэкономите часы отладки и избежите неправильных выводов на важных встречах.</p>
+    </div>
+
+    <div class="content-block">
+      <h2>Ошибка 1: COUNT(*) вместо COUNT(DISTINCT)</h2>
+      <p>COUNT(*) считает строки. Если один пользователь был активен 10 раз — он будет посчитан 10 раз.</p>
+      <div class="compare-grid">
+        <div class="compare-bad">
+          <div class="compare-header">❌ Неверно — считает события</div>
+          <div class="compare-body">SELECT COUNT(*) AS "users"
+FROM events
+-- Вернёт 10, хотя
+-- уникальных юзеров 6!</div>
+        </div>
+        <div class="compare-good">
+          <div class="compare-header">✓ Верно — уникальные юзеры</div>
+          <div class="compare-body">SELECT COUNT(DISTINCT user_id)
+FROM events
+-- Вернёт 6 —
+-- правильный MAU</div>
+        </div>
+      </div>
+      ${sqlBlock("SELECT\n  COUNT(*) AS events_count,\n  COUNT(DISTINCT user_id) AS unique_users\nFROM events", 'Видите разницу? 10 событий, но только 6 уникальных пользователей')}
+    </div>
+
+    <div class="content-block">
+      <h2>Ошибка 2: NULL не равен пустой строке</h2>
+      <p>NULL — это «неизвестное значение». Его нельзя сравнивать через = или !=:</p>
+      <div class="compare-grid">
+        <div class="compare-bad">
+          <div class="compare-header">❌ Не работает</div>
+          <div class="compare-body">WHERE column = NULL
+WHERE column != NULL
+-- Всегда вернёт 0 строк!</div>
+        </div>
+        <div class="compare-good">
+          <div class="compare-header">✓ Правильно</div>
+          <div class="compare-body">WHERE column IS NULL
+WHERE column IS NOT NULL
+-- Работает корректно</div>
+        </div>
+      </div>
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>Важно:</strong> Агрегатные функции <code>SUM</code>, <code>AVG</code>, <code>COUNT(column)</code> игнорируют NULL. <code>COUNT(*)</code> считает всё включая NULL. Это ключевое различие!</div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h2>Ошибка 3: ORDER BY без LIMIT на большой таблице</h2>
+      <div class="compare-grid">
+        <div class="compare-bad">
+          <div class="compare-header">❌ Опасно на prod-базе</div>
+          <div class="compare-body">SELECT * FROM events
+ORDER BY created_at DESC
+-- Загрузит ВСЕ миллионы
+-- строк — БД упадёт</div>
+        </div>
+        <div class="compare-good">
+          <div class="compare-header">✓ Безопасно</div>
+          <div class="compare-body">SELECT * FROM events
+ORDER BY created_at DESC
+LIMIT 100
+-- Только 100 последних</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h2>Ошибка 4: Деление на ноль</h2>
+      <p>Если знаменатель может быть 0 — запрос упадёт. Защищайтесь через NULLIF:</p>
+      <div class="compare-grid">
+        <div class="compare-bad">
+          <div class="compare-header">❌ Падает при делении на 0</div>
+          <div class="compare-body">SELECT paid / total AS rate
+-- ERROR: division by zero
+-- если total = 0</div>
+        </div>
+        <div class="compare-good">
+          <div class="compare-header">✓ Безопасно</div>
+          <div class="compare-body">SELECT paid / NULLIF(total, 0)
+AS rate
+-- Вернёт NULL вместо
+-- ошибки</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h2>Ошибка 5: Неправильный JOIN — дубли строк</h2>
+      <p>Если в правой таблице несколько строк на один id — JOIN их все перемножит:</p>
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div>У пользователя 3 заказа + 2 события = JOIN даст 6 строк (3×2). <strong>Всегда проверяйте COUNT до и после JOIN.</strong> Если строк больше — у вас дубли.</div>
+      </div>
+      ${sqlBlock("SELECT COUNT(*) FROM users", 'Строк в users до JOIN')}
+      ${sqlBlock("SELECT COUNT(*) FROM users u JOIN orders o ON u.id = o.user_id", 'Строк после JOIN — больше, потому что у некоторых юзеров несколько заказов')}
+    </div>
+
+    <div class="content-block">
+      <h2>Ошибка 6: Строку сравниваете с числом</h2>
+      <div class="compare-grid">
+        <div class="compare-bad">
+          <div class="compare-header">❌ Работает случайно</div>
+          <div class="compare-body">WHERE user_id = '1'
+-- Строка вместо числа,
+-- может не сработать</div>
+        </div>
+        <div class="compare-good">
+          <div class="compare-header">✓ Правильно</div>
+          <div class="compare-body">WHERE user_id = 1
+-- Число без кавычек
+-- для integer-полей</div>
+        </div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div>Правило: текстовые значения — в <strong>одинарных кавычках</strong> (<code>'pro'</code>, <code>'paid'</code>). Числа — <strong>без кавычек</strong> (<code>1</code>, <code>990</code>). Даты — в кавычках как строка (<code>'2024-11-01'</code>).</div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h2>Чек-лист перед запуском запроса</h2>
+      <div class="step-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>Есть LIMIT?</h4><p>На продовой базе всегда добавляйте LIMIT на первый запуск</p></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>DISTINCT там где нужно?</h4><p>Считаете пользователей — COUNT(DISTINCT user_id)</p></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>NULL обработан?</h4><p>IS NULL / IS NOT NULL, COALESCE для замены NULL на значение</p></div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>Нет деления на ноль?</h4><p>Используйте NULLIF(знаменатель, 0)</p></div></div>
+        <div class="step-item"><div class="step-num">5</div><div class="step-content"><h4>Проверили кол-во строк после JOIN?</h4><p>SELECT COUNT(*) до и после — должно быть логично</p></div></div>
+      </div>
+    </div>
+    ${quizBlock(12, 'Запрос SELECT COUNT(*) FROM events вернул 10. Сколько уникальных пользователей это означает?', [
+      'Ровно 10',
+      'Максимум 10 — могут быть дубли',
+      'Нельзя сказать — нужен COUNT(DISTINCT user_id)',
+      'Меньше 10, потому что COUNT игнорирует NULL'
+    ], 2, "COUNT(*) считает строки, а не уникальные значения. Один пользователь мог сделать 5 событий — тогда строк 10, но уникальных юзеров 6. Всегда используйте COUNT(DISTINCT user_id) когда нужны уникальные пользователи.")}
+  `, nav: { prev: 11, next: 7 }
+},
+
+// 13 — CHEATSHEET
+{
+  tag: 'Финал · Справочник',
+  title: 'Шпаргалка SQL для PM',
+  time: 'Справочник',
+  render: () => `
+    <div class="content-block">
+      <p>Этот урок — ваш постоянный справочник. Сохраните его и возвращайтесь когда нужно вспомнить синтаксис или найти нужный шаблон запроса.</p>
+    </div>
+
+    <div class="content-block">
+      <h2>🗂 Анатомия запроса (порядок выполнения)</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span>Порядок написания vs порядок выполнения</span><span class="code-lang">SQL</span></div>
+        <pre><span class="cm">-- Порядок НАПИСАНИЯ:          Порядок ВЫПОЛНЕНИЯ:</span>
+<span class="kw">SELECT</span>   колонки              <span class="cm">-- 6. Выбираем колонки</span>
+<span class="kw">FROM</span>     таблица              <span class="cm">-- 1. Берём таблицу</span>
+<span class="kw">JOIN</span>     другая_таблица       <span class="cm">-- 2. Присоединяем</span>
+<span class="kw">WHERE</span>    условие              <span class="cm">-- 3. Фильтруем строки</span>
+<span class="kw">GROUP BY</span> колонка             <span class="cm">-- 4. Группируем</span>
+<span class="kw">HAVING</span>   условие_на_группу   <span class="cm">-- 5. Фильтруем группы</span>
+<span class="kw">ORDER BY</span> колонка             <span class="cm">-- 7. Сортируем</span>
+<span class="kw">LIMIT</span>    N                   <span class="cm">-- 8. Ограничиваем</span></pre>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h2>📋 Готовые шаблоны для PM-задач</h2>
+      <div class="cheat-grid">
+        <div class="cheat-card">
+          <div class="cheat-card-header">👥 Количество по сегментам</div>
+          <pre>SELECT segment_col,
+  COUNT(*) AS cnt
+FROM table
+GROUP BY segment_col
+ORDER BY cnt DESC</pre>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-header">💰 Выручка за период</div>
+          <pre>SELECT SUM(amount) AS revenue
+FROM orders
+WHERE status = 'paid'
+AND created_at >= 'YYYY-MM-01'
+AND created_at &lt; 'YYYY-MM-01'</pre>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-header">📊 DAU / активность по дням</div>
+          <pre>SELECT date_col,
+  COUNT(DISTINCT user_id) AS dau
+FROM events
+GROUP BY date_col
+ORDER BY date_col</pre>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-header">🔍 Топ-N по метрике</div>
+          <pre>SELECT user_id,
+  SUM(amount) AS total
+FROM orders
+WHERE status = 'paid'
+GROUP BY user_id
+ORDER BY total DESC
+LIMIT 10</pre>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-header">🔀 JOIN: пользователь + заказы</div>
+          <pre>SELECT u.name, u.plan,
+  COUNT(o.id) AS orders,
+  SUM(o.amount) AS ltv
+FROM users u
+LEFT JOIN orders o
+  ON u.id = o.user_id
+GROUP BY u.name, u.plan</pre>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-header">🚫 Пользователи без действий</div>
+          <pre>SELECT u.name
+FROM users u
+LEFT JOIN events e
+  ON u.id = e.user_id
+WHERE e.id IS NULL</pre>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-header">📐 Конверсия в %</div>
+          <pre>SELECT
+  COUNT(CASE WHEN cond
+    THEN 1 END) AS converted,
+  COUNT(*) AS total,
+  ROUND(converted*100.0
+    /total, 1) AS pct
+FROM table</pre>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-header">🏷 Сегментация CASE WHEN</div>
+          <pre>SELECT name,
+  CASE
+    WHEN plan='enterprise'
+      THEN 'Large'
+    WHEN plan='pro'
+      THEN 'Mid'
+    ELSE 'Free'
+  END AS segment
+FROM users</pre>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-header">🔢 Нарастающий итог</div>
+          <pre>SELECT id, amount,
+  SUM(amount)
+    OVER (ORDER BY id)
+    AS cumulative
+FROM orders
+WHERE status='paid'</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h2>⚡ Быстрая шпаргалка по операторам</h2>
+      <table class="db-table">
+        <thead><tr><th>Задача</th><th>Оператор / функция</th><th>Пример</th></tr></thead>
+        <tbody>
+          <tr><td>Равно</td><td>=</td><td>WHERE plan = 'pro'</td></tr>
+          <tr><td>Не равно</td><td>!= или &lt;&gt;</td><td>WHERE status != 'failed'</td></tr>
+          <tr><td>Список значений</td><td>IN (...)</td><td>WHERE plan IN ('pro','ent')</td></tr>
+          <tr><td>Диапазон</td><td>BETWEEN a AND b</td><td>WHERE amount BETWEEN 100 AND 1000</td></tr>
+          <tr><td>Поиск по шаблону</td><td>LIKE '%text%'</td><td>WHERE email LIKE '%@gmail%'</td></tr>
+          <tr><td>Пустое значение</td><td>IS NULL</td><td>WHERE deleted_at IS NULL</td></tr>
+          <tr><td>Несколько условий</td><td>AND / OR</td><td>WHERE a=1 AND b=2</td></tr>
+          <tr><td>Количество строк</td><td>COUNT(*)</td><td>SELECT COUNT(*) FROM users</td></tr>
+          <tr><td>Уник. значения</td><td>COUNT(DISTINCT col)</td><td>COUNT(DISTINCT user_id)</td></tr>
+          <tr><td>Сумма</td><td>SUM(col)</td><td>SUM(amount)</td></tr>
+          <tr><td>Среднее</td><td>AVG(col)</td><td>AVG(amount)</td></tr>
+          <tr><td>Максимум/Минимум</td><td>MAX / MIN</td><td>MAX(created_at)</td></tr>
+          <tr><td>Округление</td><td>ROUND(val, decimals)</td><td>ROUND(3.14159, 2)</td></tr>
+          <tr><td>NULL → значение</td><td>COALESCE(col, default)</td><td>COALESCE(amount, 0)</td></tr>
+          <tr><td>Условная логика</td><td>CASE WHEN ... END</td><td>CASE WHEN x > 0 THEN 'pos'</td></tr>
+          <tr><td>Порядковый номер</td><td>ROW_NUMBER() OVER</td><td>ROW_NUMBER() OVER (ORDER BY id)</td></tr>
+          <tr><td>Нарастающий итог</td><td>SUM() OVER (ORDER BY)</td><td>SUM(amt) OVER (ORDER BY date)</td></tr>
+          <tr><td>Именованный подзапрос</td><td>WITH name AS (...)</td><td>WITH cte AS (SELECT ...)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content-block">
+      <h2>🎮 Песочница — пишите любые запросы</h2>
+      <p>Свободная зона для экспериментов. Доступные таблицы: <code style="color:var(--accent2)">users</code>, <code style="color:var(--accent2)">orders</code>, <code style="color:var(--accent2)">events</code></p>
+      ${sqlBlock("-- Ваш запрос\nSELECT * FROM users LIMIT 5", 'Экспериментируйте с любыми запросами!')}
+    </div>
+
+    <div class="content-block">
+      <div class="callout tip">
+        <span class="callout-icon">🎓</span>
+        <div>
+          <strong>Поздравляем — курс пройден!</strong><br><br>
+          Вы освоили: реляционные БД и ключи · SELECT, WHERE, ORDER BY, LIMIT · GROUP BY и агрегаты · JOIN всех видов · CASE WHEN · Оконные функции · CTE · Продуктовые метрики · Типичные ошибки<br><br>
+          <strong>Следующий шаг:</strong> попросите у разработчиков read-only доступ к тестовой БД вашего продукта и начните писать реальные запросы. Используйте эту шпаргалку как опору.
+        </div>
+      </div>
+    </div>
+  `, nav: { prev: 12 }
+}
+];
+function sqlBlock(defaultQuery, hint) {
+  const id = 'sql_' + Math.random().toString(36).substr(2,8);
+  return `
+    <div class="sql-playground">
+      <div class="playground-header">
+        <div class="playground-title">SQL Редактор</div>
+        <span style="font-size:12px;color:var(--text3)">${hint || ''}</span>
+      </div>
+      <textarea class="sql-input" id="${id}" spellcheck="false">${defaultQuery}</textarea>
+      <div class="playground-actions">
+        <button class="btn-run" onclick="execSQL('${id}')">▶ Выполнить</button>
+        <button class="btn-reset" onclick="document.getElementById('${id}').value = ${JSON.stringify(defaultQuery)}">↺ Сбросить</button>
+      </div>
+      <div class="sql-result" id="res_${id}"></div>
+    </div>`;
+}
+
+function quizBlock(id, question, options, correctIdx, explanation) {
+  const opts = options.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${id}, ${i}, ${correctIdx}, '${explanation.replace(/'/g,"\\'")}', this)">${o}</div>`).join('');
+  return `
+    <div class="quiz-block" id="quiz-${id}">
+      <div class="quiz-question">🧠 Проверьте себя: ${question}</div>
+      <div class="quiz-options">${opts}</div>
+      <div class="quiz-feedback" id="qf-${id}"></div>
+    </div>`;
+}
+
+function execSQL(id) {
+  const query = document.getElementById(id).value.trim();
+  const resEl = document.getElementById('res_' + id);
+  const result = runSQL(query);
+  resEl.innerHTML = renderResult(result);
+  resEl.style.display = 'block';
+}
+
+function answerQuiz(quizId, chosen, correct, explanation, el) {
+  const block = document.getElementById('quiz-' + quizId);
+  const opts = block.querySelectorAll('.quiz-option');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  el.classList.add(chosen === correct ? 'correct' : 'wrong');
+  if (chosen !== correct) opts[correct].classList.add('correct');
+  const fb = document.getElementById('qf-' + quizId);
+  fb.className = 'quiz-feedback show ' + (chosen === correct ? 'correct' : 'wrong');
+  fb.innerHTML = chosen === correct ? '✓ ' + explanation : '✗ Не совсем. ' + explanation;
+}
+
+// ─────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────
+function showLesson(idx) {
+  const lesson = lessons[idx];
+  currentLesson = idx;
+
+  // Update sidebar
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + idx);
+  if (navEl) {
+    navEl.classList.add('active');
+    // Mark badge
+    if (completed.has(idx) && !navEl.querySelector('.check-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'check-badge';
+      badge.textContent = '✓';
+      navEl.appendChild(badge);
+    }
+  }
+
+  // Build content
+  let html = '';
+  if (lesson.tag) {
+    html += `<div class="lesson-tag">${lesson.tag}</div>`;
+  }
+  if (lesson.title) {
+    html += `<h1>${lesson.title}</h1>`;
+    if (lesson.time) {
+      html += `<div class="lesson-meta"><span class="meta-badge">⏱ ${lesson.time}</span></div>`;
+    }
+  }
+  html += lesson.render();
+
+  // Nav buttons
+  const nav = lesson.nav || {};
+  html += '<div class="lesson-nav">';
+  if (nav.prev !== undefined) {
+    html += `<button class="btn-nav btn-prev" onclick="completeAndNav(${nav.prev})">← Назад</button>`;
+  }
+  if (nav.next !== undefined) {
+    html += `<button class="btn-nav btn-next" onclick="completeAndNav(${nav.next})">Далее →</button>`;
+  } else if (idx > 0) {
+    html += `<button class="btn-complete" onclick="completeLesson(${idx})">✓ Завершить курс</button>`;
+  }
+  html += '</div>';
+
+  const main = document.getElementById('main-content');
+  main.innerHTML = html;
+  main.scrollTo(0, 0);
+  updateProgress();
+}
+
+function completeAndNav(targetIdx) {
+  completed.add(currentLesson);
+  // add check to sidebar
+  const navEl = document.getElementById('nav-' + currentLesson);
+  if (navEl && !navEl.querySelector('.check-badge') && currentLesson > 0) {
+    const badge = document.createElement('span');
+    badge.className = 'check-badge';
+    badge.textContent = '✓';
+    navEl.appendChild(badge);
+    navEl.classList.add('completed');
+  }
+  showLesson(targetIdx);
+}
+
+function completeLesson(idx) {
+  completed.add(idx);
+  const navEl = document.getElementById('nav-' + idx);
+  if (navEl && !navEl.querySelector('.check-badge')) {
+    const badge = document.createElement('span');
+    badge.className = 'check-badge';
+    badge.textContent = '✓';
+    navEl.appendChild(badge);
+    navEl.classList.add('completed');
+  }
+  updateProgress();
+  document.getElementById('main-content').insertAdjacentHTML('beforeend', `
+    <div class="callout tip" style="margin-top:24px; animation: fadeUp 0.5s ease">
+      <span class="callout-icon">🎉</span>
+      <div><strong>Курс завершён!</strong> Вы прошли все уроки. Теперь вы умеете читать данные из реляционной БД, фильтровать, агрегировать и делать JOIN. Попросите read-only доступ у разработчиков и применяйте это на реальных данных!</div>
+    </div>
+  `);
+}
+
+function updateProgress() {
+  const total = 14; // lessons 0-13, 0 is welcome
+  const done = [...completed].filter(x => x > 0).length;
+  const pct = Math.round((done / (total-1)) * 100);
+  document.getElementById('progress-text').textContent = `${done} / ${total-1} уроков`;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ─────────────────────────────────────────────
+// PLATFORM NAVIGATION
+// ─────────────────────────────────────────────
+let activeCourse = 'home';
+
+function showCourse(course) {
+  activeCourse = course;
+  ['home','sql','dev'].forEach(c => {
+    const el = document.getElementById('course-' + c);
+    if (el) el.style.display = c === course ? 'flex' : 'none';
+  });
+  document.querySelectorAll('.course-tab').forEach(t => t.classList.remove('active'));
+  const tab = document.getElementById('tab-' + course);
+  if (tab) tab.classList.add('active');
+
+  document.getElementById('progress-wrap-sql').style.display = course === 'sql' ? 'flex' : 'none';
+  document.getElementById('progress-wrap-dev').style.display = course === 'dev' ? 'flex' : 'none';
+
+  if (course === 'sql' && currentLesson === 0) showLesson(0);
+  if (course === 'dev' && currentDevLesson === 0) showDevLesson(0);
+}
+
+// Init home
+document.getElementById('course-home').style.display = 'flex';
+document.getElementById('course-sql').style.display = 'none';
+document.getElementById('course-dev').style.display = 'none';
+
+// ─────────────────────────────────────────────
+// DEV COURSE DATA
+// ─────────────────────────────────────────────
+const devCompleted = new Set();
+let currentDevLesson = 0;
+
+function dBlock(html) { return `<div class="content-block">${html}</div>`; }
+function dCallout(type, icon, html) { return `<div class="callout ${type}"><span class="callout-icon">${icon}</span><div>${html}</div></div>`; }
+function dCode(title, code) {
+  return `<div class="code-wrap"><div class="code-header"><span>${title}</span><span class="code-lang">Example</span></div><pre>${code}</pre></div>`;
+}
+function dTable(headers, rows) {
+  const ths = headers.map(h=>`<th>${h}</th>`).join('');
+  const trs = rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
+  return `<table class="db-table"><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
+}
+function dCompare(badTitle, badCode, goodTitle, goodCode) {
+  return `<div class="compare-grid"><div class="compare-bad"><div class="compare-header">❌ ${badTitle}</div><div class="compare-body">${badCode}</div></div><div class="compare-good"><div class="compare-header">✓ ${goodTitle}</div><div class="compare-body">${goodCode}</div></div></div>`;
+}
+function dQuiz(id, question, options, correctIdx, explanation) {
+  const pfx = 'dq';
+  const opts = options.map((o,i)=>`<div class="quiz-option" onclick="answerDevQuiz('${pfx}${id}',${i},${correctIdx},'${explanation.replace(/'/g,"\\'")}',this)">${o}</div>`).join('');
+  return `<div class="quiz-block" id="${pfx}quiz-${id}"><div class="quiz-question">🧠 ${question}</div><div class="quiz-options">${opts}</div><div class="quiz-feedback" id="${pfx}qf-${id}"></div></div>`;
+}
+function dNav(prev, next) {
+  let html = '<div class="lesson-nav">';
+  if (prev !== undefined) html += `<button class="btn-nav btn-prev" onclick="devCompleteAndNav(${prev})">← Назад</button>`;
+  if (next !== undefined) html += `<button class="btn-nav btn-next" style="background:linear-gradient(135deg,#ff6b6b,#ff9966);margin-left:auto" onclick="devCompleteAndNav(${next})">Далее →</button>`;
+  else html += `<button class="btn-complete" style="background:#ff9966;margin-left:auto" onclick="devCompleteFinal()">✓ Завершить курс</button>`;
+  return html + '</div>';
+}
+
+function answerDevQuiz(fullId, chosen, correct, explanation, el) {
+  const block = document.getElementById(fullId + 'quiz-' + fullId.replace('dq',''));
+  // simpler approach: find parent quiz-block
+  const quizBlock = el.closest('.quiz-block');
+  const opts = quizBlock.querySelectorAll('.quiz-option');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  el.classList.add(chosen === correct ? 'correct' : 'wrong');
+  if (chosen !== correct) opts[correct].classList.add('correct');
+  const fb = quizBlock.querySelector('.quiz-feedback');
+  fb.className = 'quiz-feedback show ' + (chosen === correct ? 'correct' : 'wrong');
+  fb.innerHTML = chosen === correct ? '✓ ' + explanation : '✗ Не совсем. ' + explanation;
+}
+
+const devLessons = [
+// 0 — WELCOME
+() => `
+  <div class="welcome-screen content-block">
+    <div class="lesson-tag" style="color:#ff9966">Курс · Основы разработки ПО</div>
+    <h1>Технологии глазами PM</h1>
+    <p style="font-size:16px;color:var(--text2);line-height:1.7;margin-bottom:24px;">
+      Вам не нужно уметь программировать. Но вы <strong>должны понимать</strong> как устроены системы — чтобы правильно ставить задачи, оценивать трудоёмкость и говорить с командой на одном языке.
+    </p>
+    <div class="course-stats">
+      <div class="stat-card"><div class="stat-num" style="color:#ff9966">13</div><div class="stat-label">уроков</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:#ff9966">5</div><div class="stat-label">модулей</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:#ff9966">0</div><div class="stat-label">кода</div></div>
+    </div>
+    ${dCallout('tip','💡','<strong>Цель курса</strong> — не научить вас программировать, а дать понимание технологий на уровне, достаточном для эффективной работы с командой разработки.')}
+    <div class="module-list">
+      <div class="module-card" onclick="showDevLesson(1)" style="--hc:rgba(255,153,102,0.1)">
+        <div class="module-num" style="color:#ff9966">1</div>
+        <div class="module-info"><h3>Как работает интернет</h3><p>HTTP, DNS, браузер, API — что происходит когда вы открываете сайт</p></div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" onclick="showDevLesson(4)">
+        <div class="module-num" style="color:#ff9966">2</div>
+        <div class="module-info"><h3>Архитектура систем</h3><p>Frontend, Backend, микросервисы, облако — как устроены современные продукты</p></div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" onclick="showDevLesson(7)">
+        <div class="module-num" style="color:#ff9966">3</div>
+        <div class="module-info"><h3>Процессы разработки</h3><p>Git, CI/CD, тестирование — как команда создаёт и деплоит код</p></div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" onclick="showDevLesson(10)">
+        <div class="module-num" style="color:#ff9966">4</div>
+        <div class="module-info"><h3>PM и команда</h3><p>Технические ТЗ, оценка задач, спринты — как взаимодействовать эффективно</p></div>
+        <div class="module-arrow">→</div>
+      </div>
+    </div>
+  </div>
+  ${dNav(undefined, 1)}
+`,
+
+// 1 — HTTP / DNS
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 1 · Урок 1</div><h1>Как работает интернет: HTTP и DNS</h1><div class="lesson-meta"><span class="meta-badge">⏱ 15 мин</span></div><p>Каждый раз, когда пользователь открывает ваш продукт, за кулисами происходит сложный процесс. Понимание этого помогает PM ставить правильные вопросы при разборе багов и инцидентов.</p>`)}
+  ${dBlock(`<h2>Что происходит когда вы вводите URL</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>DNS-запрос</h4><p>Браузер спрашивает DNS-сервер: «Какой IP-адрес у example.com?» DNS — это телефонная книга интернета, переводящая имена в адреса.</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>TCP-соединение</h4><p>Браузер устанавливает соединение с сервером по IP-адресу. Для HTTPS — ещё и TLS-handshake для шифрования.</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>HTTP-запрос</h4><p>Браузер отправляет HTTP GET-запрос: «Дай мне страницу /dashboard»</p></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>HTTP-ответ</h4><p>Сервер возвращает HTML, CSS, JavaScript с кодом статуса (200 OK, 404 Not Found...)</p></div></div>
+      <div class="step-item"><div class="step-num">5</div><div class="step-content"><h4>Рендеринг</h4><p>Браузер «рисует» страницу из полученных файлов — это занимает миллисекунды</p></div></div>
+    </div>`)}
+  ${dBlock(`<h2>HTTP-методы — что PM должен знать</h2>
+    ${dTable(['Метод','Что делает','Пример в продукте'],
+      [['GET','Получить данные','Загрузить список задач, открыть профиль'],
+       ['POST','Создать новый ресурс','Создать задачу, зарегистрировать пользователя'],
+       ['PUT / PATCH','Обновить существующий','Изменить название задачи, обновить статус'],
+       ['DELETE','Удалить','Удалить комментарий, отменить подписку']]
+    )}`)}
+  ${dBlock(`<h2>HTTP-коды статусов — язык сервера</h2>
+    ${dTable(['Код','Смысл','Когда встречается'],
+      [['200 OK','Всё хорошо','Страница загрузилась'],
+       ['201 Created','Создано','Пользователь зарегистрировался'],
+       ['301/302','Редирект','Страница переехала на новый URL'],
+       ['400 Bad Request','Неверный запрос','Пользователь отправил неверные данные'],
+       ['401 Unauthorized','Не авторизован','Нужно войти в аккаунт'],
+       ['403 Forbidden','Нет доступа','Нет прав на это действие'],
+       ['404 Not Found','Не найдено','Страница не существует'],
+       ['500 Internal Server Error','Ошибка сервера','Баг на бэкенде'],
+       ['503 Service Unavailable','Сервис недоступен','Сервер перегружен или на техработах']]
+    )}
+    ${dCallout('tip','💡','<strong>PM-лайфхак:</strong> Когда разработчик говорит «получаем 403» — это значит авторизация в порядке, но у пользователя нет прав. «Получаем 500» — значит баг на сервере, нужно смотреть логи.')}
+  `)}
+  ${dBlock(`<h2>HTTPS vs HTTP</h2>
+    ${dCallout('warning','🔐','<strong>HTTPS</strong> — это HTTP + шифрование (TLS/SSL). Все данные между браузером и сервером зашифрованы. Без HTTPS пароли и данные передаются открытым текстом. Любой продукт в 2024 году обязан использовать HTTPS.')}`)}
+  ${dQuiz(1,'Пользователь видит ошибку 403. Что это означает?',
+    ['Страница не найдена','Ошибка сервера','Пользователь не авторизован','Пользователь авторизован, но не имеет прав доступа'],
+    3,'403 Forbidden = авторизация прошла (сервер знает кто вы), но у вас нет прав на это действие. 401 — это «не авторизован» (сервер не знает кто вы). Важное различие для PM при разборе тикетов.')}
+  ${dNav(0, 2)}
+`,
+
+// 2 — API
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 1 · Урок 2</div><h1>API: как системы общаются друг с другом</h1><div class="lesson-meta"><span class="meta-badge">⏱ 20 мин</span></div><p>API (Application Programming Interface) — это контракт между двумя системами. Именно через API ваш мобильный клиент получает данные от сервера, а ваш продукт интегрируется с платёжной системой или CRM.</p>`)}
+  ${dBlock(`<h2>Аналогия: API как официант</h2>
+    ${dCallout('info','🍽️','Вы (клиент) делаете заказ официанту (API). Официант передаёт заказ на кухню (сервер). Кухня готовит и возвращает блюдо через официанта обратно. Вы не взаимодействуете с кухней напрямую — только через официанта по установленному меню.')}
+  `)}
+  ${dBlock(`<h2>REST API — самый распространённый стандарт</h2>
+    ${dCode('Пример REST-запроса и ответа',`<span class="cm">// Запрос: получить список пользователей</span>
+<span class="kw">GET</span> https://api.yourproduct.com/users
+Authorization: Bearer eyJhbGc...
+
+<span class="cm">// Ответ сервера (JSON)</span>
+{
+  "users": [
+    { "id": 1, "name": "Анна", "plan": "pro" },
+    { "id": 2, "name": "Борис", "plan": "free" }
+  ],
+  "total": 2
+}`)}
+    <p>REST — это архитектурный стиль, где каждый URL — это «ресурс», а HTTP-методы (GET, POST...) — действия над ним.</p>
+  `)}
+  ${dBlock(`<h2>Структура REST API URL</h2>
+    ${dTable(['URL','Метод','Действие'],
+      [['<code>/users</code>','GET','Список всех пользователей'],
+       ['<code>/users/42</code>','GET','Конкретный пользователь с id=42'],
+       ['<code>/users</code>','POST','Создать нового пользователя'],
+       ['<code>/users/42</code>','PATCH','Обновить пользователя 42'],
+       ['<code>/users/42</code>','DELETE','Удалить пользователя 42'],
+       ['<code>/users/42/orders</code>','GET','Заказы пользователя 42']]
+    )}`)}
+  ${dBlock(`<h2>GraphQL — современная альтернатива</h2>
+    ${dCompare('REST: несколько запросов','GET /user/1\nGET /user/1/orders\nGET /user/1/events\n\n// 3 запроса для одного экрана','GraphQL: один запрос','query {\n  user(id: 1) {\n    name\n    orders { amount }\n    events { type }\n  }\n}\n// 1 запрос, только нужные поля')}
+    ${dCallout('info','💡','<strong>GraphQL</strong> используют GitHub, Shopify, Meta. Клиент сам указывает какие поля нужны — это снижает объём передаваемых данных и убирает проблему over-fetching (получение лишних данных).')}
+  `)}
+  ${dBlock(`<h2>Webhooks — «обратные» API</h2>
+    ${dCallout('info','🔔','<strong>Webhook</strong> — это когда <em>сервер сам присылает вам данные</em> при наступлении события, не дожидаясь запроса. Например: Stripe присылает webhook на ваш сервер когда проходит платёж. Вместо того чтобы каждую секунду спрашивать «платёж прошёл?» — вы просто ждёте уведомления.')}
+  `)}
+  ${dBlock(`<h2>Что PM должен знать об API</h2>
+    <div class="metric-grid">
+      <div class="metric-card"><div class="metric-card-label">Rate Limiting</div><div class="metric-card-value" style="font-size:16px;color:#ff9966">N req/min</div><div class="metric-card-desc">Ограничение количества запросов. Важно при интеграциях и высоких нагрузках</div></div>
+      <div class="metric-card"><div class="metric-card-label">SLA / Uptime</div><div class="metric-card-value" style="font-size:16px;color:#ff9966">99.9%</div><div class="metric-card-desc">Гарантия доступности внешнего API. Критично для зависимостей продукта</div></div>
+      <div class="metric-card"><div class="metric-card-label">Версионирование</div><div class="metric-card-value" style="font-size:16px;color:#ff9966">v1 / v2</div><div class="metric-card-desc">/api/v1/users vs /api/v2/users — обратная совместимость при изменениях</div></div>
+      <div class="metric-card"><div class="metric-card-label">Документация</div><div class="metric-card-value" style="font-size:16px;color:#ff9966">Swagger</div><div class="metric-card-desc">OpenAPI / Swagger — стандартный формат документирования REST API</div></div>
+    </div>`)}
+  ${dQuiz(2,'Что такое webhook?',
+    ['Инструмент для тестирования API','URL для получения документации','Уведомление от сервера при наступлении события','Метод авторизации в API'],
+    2,'Webhook — это «обратный» API-вызов. Сервер сам присылает данные когда что-то происходит (платёж, регистрация, изменение статуса). Это эффективнее чем постоянно опрашивать API (polling).')}
+  ${dNav(1, 3)}
+`,
+
+// 3 — AUTH
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 1 · Урок 3</div><h1>Авторизация и безопасность</h1><div class="lesson-meta"><span class="meta-badge">⏱ 15 мин</span></div><p>Каждый PM должен понимать разницу между аутентификацией и авторизацией — это частый источник багов и недопонимания в командах.</p>`)}
+  ${dBlock(`<h2>Аутентификация vs Авторизация</h2>
+    ${dTable(['Понятие','Что это','Пример'],
+      [['<strong>Аутентификация</strong> (AuthN)','Кто ты? Проверка личности','Ввод логина и пароля'],
+       ['<strong>Авторизация</strong> (AuthZ)','Что тебе можно? Проверка прав','Может ли пользователь удалить чужой пост?']]
+    )}
+    ${dCallout('tip','💡','Аналогия: <strong>аутентификация</strong> — это паспортный контроль в аэропорту (установить личность). <strong>Авторизация</strong> — это boarding pass (разрешение на конкретный рейс).')}
+  `)}
+  ${dBlock(`<h2>Как работает JWT (токен)</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>Логин</h4><p>Пользователь вводит email + пароль, сервер проверяет их</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>Токен</h4><p>Сервер создаёт JWT-токен: зашифрованная строка с данными пользователя и сроком действия</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Хранение</h4><p>Браузер сохраняет токен (localStorage или httpOnly cookie)</p></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>Запросы</h4><p>При каждом API-запросе браузер отправляет токен в заголовке. Сервер проверяет его без обращения к БД</p></div></div>
+      <div class="step-item"><div class="step-num">5</div><div class="step-content"><h4>Refresh</h4><p>Access token живёт 15-60 минут, refresh token — дни/недели. При истечении — автоматически обновляется</p></div></div>
+    </div>`)}
+  ${dBlock(`<h2>OAuth 2.0 — «Войти через Google»</h2>
+    ${dCallout('info','🔑','OAuth позволяет вашему продукту получить доступ к данным пользователя в другом сервисе (Google, GitHub) без того, чтобы он вводил пароль от того сервиса. Пользователь даёт <strong>разрешение</strong> (consent), сервис выдаёт токен доступа.')}
+  `)}
+  ${dBlock(`<h2>Роли и права (RBAC)</h2>
+    <p>Role-Based Access Control — система ролей, самая распространённая модель авторизации:</p>
+    ${dTable(['Роль','Что может'],
+      [['Admin','Всё — читать, создавать, редактировать, удалять'],
+       ['Editor','Создавать и редактировать, но не удалять'],
+       ['Viewer','Только читать'],
+       ['Owner','Управлять участниками и настройками workspace']]
+    )}`)}
+  ${dBlock(`<h2>Базовые понятия безопасности для PM</h2>
+    <div class="metric-grid">
+      <div class="metric-card"><div class="metric-card-label">XSS</div><div class="metric-card-value" style="font-size:14px;color:#ff6b6b">Cross-Site Scripting</div><div class="metric-card-desc">Внедрение вредоносного JS через пользовательский ввод. Защита — экранирование вывода</div></div>
+      <div class="metric-card"><div class="metric-card-label">CSRF</div><div class="metric-card-value" style="font-size:14px;color:#ff6b6b">Cross-Site Request Forgery</div><div class="metric-card-desc">Поддельный запрос от имени авторизованного пользователя. Защита — CSRF-токены</div></div>
+      <div class="metric-card"><div class="metric-card-label">SQL Injection</div><div class="metric-card-value" style="font-size:14px;color:#ff6b6b">Инъекция в БД</div><div class="metric-card-desc">Вредоносный SQL через формы ввода. Защита — параметризованные запросы</div></div>
+      <div class="metric-card"><div class="metric-card-label">HTTPS/TLS</div><div class="metric-card-value" style="font-size:14px;color:#ff9966">Шифрование</div><div class="metric-card-desc">Обязательно для любого продукта. Защищает данные в транзите</div></div>
+    </div>`)}
+  ${dQuiz(3,'Пользователь вошёл в систему, но видит 403 при попытке удалить запись. В чём проблема?',
+    ['Неверный пароль — ошибка аутентификации','Сессия истекла — нужно войти заново','Авторизация — у пользователя нет прав на удаление','Ошибка сервера — нужно перезагрузить страницу'],
+    2,'403 после успешного входа — это ошибка авторизации, не аутентификации. Пользователь известен системе (аутентифицирован), но его роль/права не позволяют выполнить действие (не авторизован на удаление).')}
+  ${dNav(2, 4)}
+`,
+
+// 4 — FRONTEND/BACKEND
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 2 · Урок 4</div><h1>Frontend vs Backend: кто что делает</h1><div class="lesson-meta"><span class="meta-badge">⏱ 18 мин</span></div><p>Когда вы ставите задачу разработчику, важно понимать кому её ставить. Frontend и backend решают разные проблемы и работают с разными инструментами.</p>`)}
+  ${dBlock(`<h2>Визуальная схема</h2>
+    <div class="schema-viz" style="align-items:stretch">
+      <div class="schema-table" style="flex:1">
+        <div class="schema-table-header" style="background:rgba(79,255,176,0.1);color:var(--accent)">🖥️ FRONTEND</div>
+        <div class="schema-field">Что видит пользователь</div>
+        <div class="schema-field">HTML / CSS / JavaScript</div>
+        <div class="schema-field">React, Vue, Angular</div>
+        <div class="schema-field">Браузер / мобильное приложение</div>
+        <div class="schema-field">UX, анимации, адаптивность</div>
+        <div class="schema-field">Взаимодействие с API</div>
+      </div>
+      <div style="display:flex;align-items:center;font-size:28px;color:var(--accent2);padding:0 8px">⇄</div>
+      <div class="schema-table" style="flex:1">
+        <div class="schema-table-header" style="background:rgba(255,153,102,0.1);color:#ff9966">⚙️ BACKEND</div>
+        <div class="schema-field">Логика и данные</div>
+        <div class="schema-field">Python, Go, Node.js, Java</div>
+        <div class="schema-field">REST / GraphQL API</div>
+        <div class="schema-field">Сервер, облако</div>
+        <div class="schema-field">База данных, кэш</div>
+        <div class="schema-field">Безопасность, авторизация</div>
+      </div>
+    </div>`)}
+  ${dBlock(`<h2>Кому ставить задачу?</h2>
+    ${dTable(['Задача','Кому'],
+      [['Кнопка отображается не так','Frontend'],
+       ['Данные не сохраняются','Backend'],
+       ['Страница загружается медленно','Зависит — возможно оба'],
+       ['Новое поле в форме','Frontend (UI) + Backend (сохранение)'],
+       ['Новый фильтр в таблице','Frontend (UI) + Backend (API/запрос в БД)'],
+       ['Push-уведомления','Backend (логика отправки) + Frontend (разрешение)'],
+       ['Экспорт в CSV','Backend (формирование файла)'],
+       ['Анимация при загрузке','Frontend']]
+    )}`)}
+  ${dBlock(`<h2>Full-stack разработчик</h2>
+    ${dCallout('info','👨‍💻','<strong>Full-stack</strong> — разработчик, работающий и с frontend, и с backend. В небольших командах один разработчик часто покрывает весь стек. В крупных — специализация чётче.')}
+  `)}
+  ${dBlock(`<h2>Мобильная разработка</h2>
+    ${dTable(['Платформа','Технологии','Особенности'],
+      [['iOS Native','Swift, Objective-C','Только iPhone/iPad, высокая производительность'],
+       ['Android Native','Kotlin, Java','Только Android'],
+       ['React Native','JavaScript (React)','Один код для iOS + Android, ~80% native производительности'],
+       ['Flutter','Dart','Один код для iOS + Android + Web, высокая производительность'],
+       ['Progressive Web App','Web-технологии','Сайт с поведением приложения, без магазина']]
+    )}`)}
+  ${dBlock(`<h2>SPA vs SSR vs SSG</h2>
+    ${dTable(['Тип','Что это','Пример применения'],
+      [['SPA (Single Page App)','Страница загружается раз, дальше JS меняет контент','Дашборды, веб-приложения'],
+       ['SSR (Server-Side Rendering)','HTML генерируется на сервере при каждом запросе','Интернет-магазины (SEO важен)'],
+       ['SSG (Static Site Generation)','HTML генерируется заранее, отдаётся как файл','Лендинги, блоги, документация']]
+    )}`)}
+  ${dQuiz(4,'Пользователи жалуются что при нажатии на кнопку "Сохранить" ничего не происходит — данные не сохраняются, хотя визуально форма работает. Кому ставить задачу?',
+    ['Только frontend-разработчику','Только backend-разработчику','Дизайнеру','Зависит — нужно сначала разобраться где проблема'],
+    3,'Правильно! Сначала нужно понять: данные отправляются на сервер? Если нет — проблема во frontend (отправка запроса). Если отправляются, но сервер не сохраняет — backend. Для диагностики: открыть DevTools → Network и посмотреть запрос. Без диагностики нельзя точно сказать кому задача.')}
+  ${dNav(3, 5)}
+`,
+
+// 5 — MICROSERVICES
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 2 · Урок 5</div><h1>Монолит vs Микросервисы</h1><div class="lesson-meta"><span class="meta-badge">⏱ 18 мин</span></div><p>Архитектура влияет на скорость разработки, масштабируемость и сложность поддержки. PM должен понимать trade-offs, чтобы не требовать невозможного и правильно планировать.</p>`)}
+  ${dBlock(`<h2>Монолитная архитектура</h2>
+    ${dCallout('info','🧱','<strong>Монолит</strong> — всё приложение как один большой компонент: авторизация, заказы, уведомления, аналитика — всё в одном коде и деплоится вместе.')}
+    ${dTable(['Плюсы','Минусы'],
+      [['Проще начать и разрабатывать','При масштабировании надо масштабировать всё'],
+       ['Проще тестировать','Один баг может положить всё приложение'],
+       ['Проще отлаживать','Долгий деплой — нужно пересобрать всё'],
+       ['Нет проблем с сетью между сервисами','Сложно масштабировать команду — все в одном коде']]
+    )}`)}
+  ${dBlock(`<h2>Микросервисная архитектура</h2>
+    ${dCallout('info','🔮','<strong>Микросервисы</strong> — приложение разбито на независимые сервисы, каждый отвечает за свою область. Сервис авторизации, сервис уведомлений, сервис платежей — каждый деплоится независимо.')}
+    <div class="schema-viz">
+      <div class="schema-table"><div class="schema-table-header">auth-service</div><div class="schema-field">Логин/регистрация</div><div class="schema-field">JWT-токены</div></div>
+      <div class="schema-table"><div class="schema-table-header">user-service</div><div class="schema-field">Профили пользователей</div><div class="schema-field">Настройки</div></div>
+      <div class="schema-table"><div class="schema-table-header">payment-service</div><div class="schema-field">Биллинг</div><div class="schema-field">Stripe интеграция</div></div>
+      <div class="schema-table"><div class="schema-table-header">notify-service</div><div class="schema-field">Email / Push</div><div class="schema-field">Очередь сообщений</div></div>
+    </div>`)}
+  ${dBlock(`<h2>PM-последствия архитектуры</h2>
+    ${dTable(['Ситуация','Монолит','Микросервисы'],
+      [['Деплой одной фичи','Деплоится всё приложение','Только нужный сервис'],
+       ['Баг в одном модуле','Может лечь всё','Только этот сервис деградирует'],
+       ['Новый разработчик','Нужно понять весь код','Может работать только со своим сервисом'],
+       ['Задача затрагивает 3 сервиса','1 команда всё сделает','Нужна координация 3 команд'],
+       ['Performance','Просто масштабировать (но всё)','Только нужный сервис']]
+    )}`)}
+  ${dBlock(`<h2>Message Queue — как сервисы общаются асинхронно</h2>
+    ${dCallout('info','📬','Когда пользователь регистрируется, сервис регистрации не ждёт пока отправится email. Он кладёт сообщение в <strong>очередь</strong> (Kafka, RabbitMQ). Email-сервис забирает сообщение и отправляет письмо асинхронно. Это делает систему устойчивее и быстрее.')}
+  `)}
+  ${dQuiz(5,'Ваш продукт использует микросервисы. Задача затрагивает сервисы auth, billing и notifications. Как это влияет на планирование?',
+    ['Никак — это всё равно одна задача','Нужна координация 3 команд, больше точек интеграции и тестирования','Микросервисы — это быстрее, задача займёт меньше времени','Нужно только обновить auth-service'],
+    1,'Верно! В микросервисах задача, затрагивающая несколько сервисов, требует координации между командами, согласования API-контрактов, интеграционного тестирования и согласованного деплоя. Это нужно учитывать при оценке и планировании спринта.')}
+  ${dNav(4, 6)}
+`,
+
+// 6 — CLOUD
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 2 · Урок 6</div><h1>Облако и инфраструктура</h1><div class="lesson-meta"><span class="meta-badge">⏱ 15 мин</span></div><p>Почти все современные продукты работают в облаке. Понимание базовых концепций помогает обсуждать надёжность, стоимость и масштабирование с техническими коллегами.</p>`)}
+  ${dBlock(`<h2>Три главных облачных провайдера</h2>
+    ${dTable(['Провайдер','Доля рынка','Известен'],
+      [['AWS (Amazon)','~32%','Самый зрелый, наибольший набор сервисов'],
+       ['Azure (Microsoft)','~23%','Популярен в enterprise, интеграция с продуктами MS'],
+       ['GCP (Google)','~12%','Сильный в ML/AI, Kubernetes, аналитике']]
+    )}`)}
+  ${dBlock(`<h2>Ключевые облачные концепции</h2>
+    <div class="metric-grid">
+      <div class="metric-card"><div class="metric-card-label">IaaS</div><div class="metric-card-value" style="font-size:14px;color:#ff9966">Инфраструктура</div><div class="metric-card-desc">Виртуальные серверы, сети, хранилища. Вы управляете ОС и выше. (EC2, VMs)</div></div>
+      <div class="metric-card"><div class="metric-card-label">PaaS</div><div class="metric-card-value" style="font-size:14px;color:#ff9966">Платформа</div><div class="metric-card-desc">Облако управляет инфрой, вы — кодом и данными. (Heroku, App Engine)</div></div>
+      <div class="metric-card"><div class="metric-card-label">SaaS</div><div class="metric-card-value" style="font-size:14px;color:#ff9966">ПО как сервис</div><div class="metric-card-desc">Готовый продукт по подписке. Jira, Slack, Figma — это SaaS</div></div>
+      <div class="metric-card"><div class="metric-card-label">Serverless</div><div class="metric-card-value" style="font-size:14px;color:#ff9966">Без серверов</div><div class="metric-card-desc">Код запускается по запросу, платите только за выполнение. (AWS Lambda)</div></div>
+    </div>`)}
+  ${dBlock(`<h2>CDN — быстрый контент везде</h2>
+    ${dCallout('info','🌍','<strong>CDN (Content Delivery Network)</strong> — сеть серверов по всему миру. Статические файлы (изображения, JS, CSS) хранятся на ближайшем к пользователю сервере. Пользователь из Владивостока получает файлы с сервера в Сингапуре, а не из Москвы — быстрее в 5 раз.')}
+  `)}
+  ${dBlock(`<h2>Метрики надёжности — что PM должен понимать</h2>
+    ${dTable(['Метрика','Что означает','Пример'],
+      [['Uptime 99.9%','«Три девятки» — ~8.7 часов даунтайма в год','Стандарт для большинства SaaS'],
+       ['Uptime 99.99%','«Четыре девятки» — ~52 мин в год','Финтех, критичные системы'],
+       ['RTO','Recovery Time Objective — сколько времени на восстановление','«Восстановим за 1 час»'],
+       ['RPO','Recovery Point Objective — сколько данных можем потерять','«Потеряем не более 5 минут данных»']]
+    )}`)}
+  ${dBlock(`<h2>Масштабирование</h2>
+    ${dCompare('Вертикальное (Scale Up)','Купить более мощный сервер\n(больше CPU, RAM)\n\n✓ Просто\n✗ Есть физический предел\n✗ Single point of failure','Горизонтальное (Scale Out)','Добавить больше серверов\n(load balancer + N серверов)\n\n✓ Нет физического предела\n✓ Высокая доступность\n✗ Сложнее архитектурно')}
+  `)}
+  ${dQuiz(6,'Пользователи из Японии жалуются на медленную загрузку изображений, хотя серверы продукта в Европе. Какое решение наиболее вероятно поможет?',
+    ['Купить более мощный сервер в Европе','Использовать CDN с узлами в Азии','Сжать все изображения','Перенести всю инфраструктуру в Японию'],
+    1,'CDN — правильное решение. Статические файлы (картинки) будут кэшироваться на CDN-серверах в Азии и отдаваться пользователям быстро. Это дешевле и правильнее чем переносить инфраструктуру или покупать более мощный сервер, который не решает проблему географии.')}
+  ${dNav(5, 7)}
+`,
+
+// 7 — GIT
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 3 · Урок 7</div><h1>Git и контроль версий</h1><div class="lesson-meta"><span class="meta-badge">⏱ 18 мин</span></div><p>Git — это система контроля версий, которую используют все разработчики. PM не обязан писать код в Git, но должен понимать как это работает — чтобы участвовать в обсуждении процессов и читать обсуждения в PR.</p>`)}
+  ${dBlock(`<h2>Зачем нужен Git</h2>
+    ${dCallout('info','📚','Git — это как <strong>«история изменений»</strong> для кода. Каждое изменение фиксируется с автором, временем и описанием. Можно откатиться к любому моменту, работать параллельно без конфликтов, видеть кто и зачем изменил любую строку.')}
+  `)}
+  ${dBlock(`<h2>Ключевые концепции</h2>
+    ${dTable(['Понятие','Что это'],
+      [['Repository (репо)','Хранилище кода проекта с историей всех изменений'],
+       ['Commit','Зафиксированный снимок изменений с сообщением («Добавить кнопку экспорта»)'],
+       ['Branch (ветка)','Независимая копия кода для разработки фичи без влияния на основной код'],
+       ['main / master','Главная ветка — production-ready код'],
+       ['Merge','Слияние изменений из ветки в main'],
+       ['Pull Request (PR)','Запрос на слияние + код-ревью коллег перед мержем'],
+       ['Conflict','Два человека изменили одно место — нужно вручную решить что оставить']]
+    )}`)}
+  ${dBlock(`<h2>Типичный рабочий процесс</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>Создать ветку</h4><p><code>feature/add-export-button</code> — разработчик работает изолированно</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>Коммиты</h4><p>Регулярно фиксирует изменения: «Add CSV export endpoint», «Add UI button», «Add tests»</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Pull Request</h4><p>Открывает PR, описывает что сделано, просит коллег на ревью</p></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>Code Review</h4><p>Коллеги проверяют код, оставляют комментарии, запрашивают правки</p></div></div>
+      <div class="step-item"><div class="step-num">5</div><div class="step-content"><h4>Merge → Deploy</h4><p>После апрувала ветка мержится в main, запускается CI/CD пайплайн</p></div></div>
+    </div>`)}
+  ${dBlock(`<h2>Стратегии ветвления</h2>
+    ${dTable(['Стратегия','Описание','Для кого'],
+      [['GitHub Flow','Одна main ветка + feature branches. Просто и быстро','Стартапы, SaaS с continuous delivery'],
+       ['Git Flow','main + develop + release + hotfix ветки. Чётко, но сложно','Продукты с редкими релизами, мобильные приложения'],
+       ['Trunk-Based','Все коммитят в main, feature flags скрывают незаконченное','Зрелые команды с высоким CI/CD матюрити']]
+    )}
+    ${dCallout('tip','💡','<strong>PM-вывод:</strong> Стратегия ветвления влияет на частоту релизов. GitHub Flow → деплои несколько раз в день. Git Flow → деплои по расписанию. Учитывайте при планировании.')}
+  `)}
+  ${dQuiz(7,'Разработчик говорит «PR висит 3 дня без ревью». Что это означает для PM?',
+    ['Разработчик не начал задачу','Код написан, но не проверен командой — заблокирован мерж в main','Задача задеплоена, но есть баги','CI/CD пайплайн упал'],
+    1,'PR (Pull Request) — это запрос на слияние кода. Если он «висит без ревью» — код написан и готов, но коллеги ещё не проверили. Это блокер для попадания в production. PM должен помочь снять блокер: договориться о ревью, скорректировать приоритеты.')}
+  ${dNav(6, 8)}
+`,
+
+// 8 — CI/CD
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 3 · Урок 8</div><h1>CI/CD и процесс деплоя</h1><div class="lesson-meta"><span class="meta-badge">⏱ 20 мин</span></div><p>CI/CD — это автоматический конвейер от написания кода до попадания в production. Понимание этого процесса помогает PM реалистично оценивать время выпуска фич и правильно коммуницировать с командой.</p>`)}
+  ${dBlock(`<h2>CI — Continuous Integration</h2>
+    ${dCallout('info','🔄','<strong>Continuous Integration</strong> — автоматическая проверка кода при каждом коммите. Как только разработчик пушит код, система автоматически: запускает тесты, проверяет стиль кода, собирает приложение. Если что-то сломалось — немедленно уведомляет.')}
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>Push кода</h4><p>Разработчик отправляет изменения в репозиторий</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>Автоматические проверки</h4><p>Запускаются unit-тесты, линтер, проверка типов — всё автоматически</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Build</h4><p>Код компилируется / собирается в готовый артефакт</p></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>Результат</h4><p>✅ Зелёный — всё ок, можно мержить. ❌ Красный — есть проблемы, нужно починить</p></div></div>
+    </div>`)}
+  ${dBlock(`<h2>CD — Continuous Delivery / Deployment</h2>
+    ${dTable(['Термин','Что означает'],
+      [['Continuous Delivery','После CI — готов к деплою, но деплоит человек вручную'],
+       ['Continuous Deployment','После CI — деплоится в production автоматически, без человека']]
+    )}`)}
+  ${dBlock(`<h2>Среды окружения</h2>
+    ${dTable(['Среда','Назначение','Кто использует'],
+      [['Development (dev / local)','Локальная машина разработчика','Только разработчик'],
+       ['Staging / Preview','Копия production для тестирования','QA, PM, для демо'],
+       ['Production (prod)','Живое окружение, реальные пользователи','Все пользователи']]
+    )}
+    ${dCallout('tip','💡','<strong>PM-правило:</strong> Всегда проверяйте фичу на staging перед деплоем в production. «Работает на dev» — не значит «работает в prod». Данные, конфигурация и нагрузка разные.')}
+  `)}
+  ${dBlock(`<h2>Feature Flags — запускайте фичи без деплоя</h2>
+    ${dCallout('info','🚩','<strong>Feature Flag</strong> — переключатель, который включает/выключает фичу без деплоя. Код уже в production, но фича выключена. PM может включить её для 5% пользователей, проверить метрики, и раскатить на всех — или откатить без деплоя.<br><br>Инструменты: LaunchDarkly, Unleash, GrowthBook, самописные решения.')}
+  `)}
+  ${dBlock(`<h2>Rollback — откат</h2>
+    ${dCallout('warning','⚠️','Если после деплоя что-то сломалось — нужен <strong>rollback</strong>: быстрый откат к предыдущей версии. Хорошие команды могут сделать rollback за минуты. PM должен знать: какое среднее время rollback в вашей команде? Это напрямую влияет на риски деплоя.')}
+  `)}
+  ${dQuiz(8,'Что такое Feature Flag с точки зрения PM?',
+    ['Иконка флага в интерфейсе','Переключатель для включения фичи без деплоя кода','Git-ветка для новой фичи','Тип CI/CD пайплайна'],
+    1,'Feature Flag позволяет деплоить код, но включать фичу позже — для % пользователей, A/B-теста или конкретных сегментов. Это разделяет деплой (технический акт) и релиз (бизнес-решение). PM получает контроль над тем, когда и кому показывать фичу.')}
+  ${dNav(7, 9)}
+`,
+
+// 9 — TESTING
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 3 · Урок 9</div><h1>Тестирование и QA</h1><div class="lesson-meta"><span class="meta-badge">⏱ 15 мин</span></div><p>Понимание видов тестирования помогает PM правильно оценивать задачи, не жать «что так долго» когда команда пишет тесты, и формировать правильные критерии приёмки.</p>`)}
+  ${dBlock(`<h2>Пирамида тестирования</h2>
+    <div style="text-align:center;margin:20px 0">
+      <div style="background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.3);border-radius:8px;padding:14px;margin-bottom:6px;font-size:13px;color:#ffb3b3">
+        🖱️ <strong>E2E / UI тесты</strong> — медленно, дорого, хрупко. Мало. Selenium, Playwright
+      </div>
+      <div style="background:rgba(123,111,255,0.1);border:1px solid rgba(123,111,255,0.25);border-radius:8px;padding:14px;margin-bottom:6px;font-size:13px;color:#c4beff">
+        🔗 <strong>Интеграционные тесты</strong> — проверяют взаимодействие компонентов. Средне. API тесты
+      </div>
+      <div style="background:rgba(79,255,176,0.07);border:1px solid rgba(79,255,176,0.2);border-radius:8px;padding:14px;font-size:13px;color:#a0ffe0">
+        ⚡ <strong>Unit тесты</strong> — быстро, много, изолировано. Каждая функция отдельно
+      </div>
+    </div>`)}
+  ${dBlock(`<h2>Виды тестирования</h2>
+    ${dTable(['Тип','Что проверяет','Кто делает'],
+      [['Unit-тест','Одна функция/метод в изоляции','Разработчик'],
+       ['Интеграционный','Взаимодействие нескольких компонентов или с БД','Разработчик / QA'],
+       ['E2E (end-to-end)','Весь сценарий от начала до конца как пользователь','QA'],
+       ['Регрессионный','Что новый код не сломал старую функциональность','QA'],
+       ['Нагрузочный','Поведение под высокой нагрузкой','QA / DevOps'],
+       ['Ручное тестирование','Проверка сценариев руками','QA / PM'],
+       ['Smoke-тест','Базовая проверка — «система дышит?»','QA / CI']]
+    )}`)}
+  ${dBlock(`<h2>Test Coverage — покрытие тестами</h2>
+    ${dCallout('info','📊','<strong>Test coverage</strong> — процент кода покрытого тестами. 80% coverage — типичная цель. 100% — часто избыточно и дорого. PM-вопрос: «Какое у нас coverage для критических бизнес-сценариев?» важнее чем общий процент.')}
+  `)}
+  ${dBlock(`<h2>Что PM должен знать о QA</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>Критерии приёмки (AC)</h4><p>Пишите чёткие Acceptance Criteria — это основа для тест-кейсов QA</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>Тестовые среды</h4><p>QA нужна стабильная staging-среда с реалистичными данными</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Регрессия</h4><p>При оценке задачи учитывайте время на регрессионное тестирование смежных функций</p></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>Баг vs Feature</h4><p>Чётко разделяйте: это баг (отклонение от ожидаемого поведения) или запрос новой функциональности?</p></div></div>
+    </div>`)}
+  ${dQuiz(9,'QA говорит что «автотесты красные после вашей фичи». Что это значит?',
+    ['QA недоволен дизайном','Автоматические тесты провалились — фича сломала что-то существующее','Тесты не написаны','Нагрузочное тестирование не прошло'],
+    1,'Красные автотесты = провал CI. Это значит что новая фича нарушила ожидаемое поведение существующих функций (регрессия). Нужно либо починить код, либо обновить тесты если изменение поведения — намеренное. Нельзя мержить в production с красными тестами.')}
+  ${dNav(8, 10)}
+`,
+
+// 10 — TECHNICAL TZ
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 4 · Урок 10</div><h1>Как писать технические ТЗ</h1><div class="lesson-meta"><span class="meta-badge">⏱ 22 мин</span></div><p>Качество постановки задачи напрямую определяет качество результата. Хорошее ТЗ экономит часы обсуждений и переделок.</p>`)}
+  ${dBlock(`<h2>Структура хорошей задачи</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>Контекст и цель</h4><p>Зачем? Какую проблему решает? Какой бизнес-результат ожидается?</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>Описание задачи</h4><p>Что нужно сделать? Пользовательская история (User Story) помогает: «Как [пользователь] я хочу [действие] чтобы [результат]»</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Acceptance Criteria</h4><p>Конкретные, проверяемые условия готовности. Разработчик и QA должны однозначно понять «готово» vs «не готово»</p></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>Технические детали</h4><p>Мокапы, API-контракты, edge cases, ограничения, зависимости</p></div></div>
+      <div class="step-item"><div class="step-num">5</div><div class="step-content"><h4>Out of scope</h4><p>Что явно НЕ входит в эту задачу — предотвращает scope creep</p></div></div>
+    </div>`)}
+  ${dBlock(`<h2>Хорошие vs плохие Acceptance Criteria</h2>
+    ${dCompare('❌ Размыто — нельзя проверить','- Кнопка должна работать хорошо\n- Форма должна быть удобной\n- Загрузка должна быть быстрой\n- Ошибки должны показываться','✓ Конкретно — можно проверить','- Кнопка активна только если все\n  обязательные поля заполнены\n- Форма валидирует email-формат\n  в реальном времени\n- Страница загружается < 2 сек\n  при LCP на 3G\n- При ошибке API показывается\n  toast "Попробуйте снова"')}
+  `)}
+  ${dBlock(`<h2>Edge Cases — граничные случаи</h2>
+    ${dCallout('warning','⚠️','Edge cases — самый частый источник багов. PM должен думать об них заранее:<br><br>• Что если поле пустое? Что если текст очень длинный?<br>• Что если пользователь нажал дважды?<br>• Что если нет интернета в момент отправки?<br>• Что если права пользователя изменились пока он на странице?<br>• Что если данных нет (пустое состояние)?')}
+  `)}
+  ${dBlock(`<h2>Шаблон User Story</h2>
+    ${dCode('User Story формат',`<span class="cm">// Формат:</span>
+<span class="kw">Как</span> [роль пользователя]
+<span class="kw">Я хочу</span> [действие]
+<span class="kw">Чтобы</span> [ценность/результат]
+
+<span class="cm">// Пример:</span>
+<span class="kw">Как</span> администратор workspace
+<span class="kw">Я хочу</span> экспортировать список участников в CSV
+<span class="kw">Чтобы</span> делать отчёты в Excel без ручной работы`)}
+  `)}
+  ${dBlock(`<h2>Definition of Done (DoD)</h2>
+    ${dCallout('tip','✓','<strong>Definition of Done</strong> — общее соглашение команды о том, что значит «задача готова». Типичный DoD включает: код написан и прошёл ревью, тесты написаны и зелёные, задеплоено на staging, QA проверил, документация обновлена, PM принял.')}
+  `)}
+  ${dQuiz(10,'Какой acceptance criterion написан правильно?',
+    ['Кнопка должна быть интуитивно понятной','Загрузка должна работать быстро','При загрузке файла > 10MB показывается сообщение об ошибке с текстом «Максимальный размер файла — 10MB»','Форма должна валидироваться'],
+    2,'Хороший AC — конкретный и проверяемый: есть триггер (файл > 10MB), есть ожидаемое поведение (показать сообщение), есть точный текст ошибки. Тестировщик точно знает как проверить. Остальные варианты субъективны: «интуитивно», «быстро», «валидироваться» — каждый поймёт по-своему.')}
+  ${dNav(9, 11)}
+`,
+
+// 11 — ESTIMATION
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Модуль 4 · Урок 11</div><h1>Оценка задач и планирование спринтов</h1><div class="lesson-meta"><span class="meta-badge">⏱ 20 мин</span></div><p>«Почему так долго?» — один из самых частых вопросов PM к команде. Понимание процесса оценки помогает задавать правильные вопросы и строить реалистичные планы.</p>`)}
+  ${dBlock(`<h2>Почему разработка занимает больше времени чем кажется</h2>
+    ${dCallout('warning','⏰','Разработчик оценивает <strong>только время написания кода</strong>. Но задача включает: анализ и уточнение требований · дизайн решения · написание кода · написание тестов · код-ревью (ждать + исправлять) · QA и исправление багов · деплой · мониторинг после деплоя. Реальное время часто в 2-3х от первоначальной оценки.')}
+  `)}
+  ${dBlock(`<h2>Story Points vs Часы</h2>
+    ${dTable(['Метод','Суть','Плюсы / Минусы'],
+      [['Story Points','Относительная сложность (1,2,3,5,8,13...)','✓ Абстрагирует от времени, учитывает неопределённость. ✗ Сложно объяснить стейкхолдерам'],
+       ['Идеальные часы','Часы чистой работы без отвлечений','✓ Понятно стейкхолдерам. ✗ Часто занижают, не учитывают прерывания'],
+       ['T-shirt size','XS/S/M/L/XL','✓ Быстро, интуитивно. ✗ Мало градаций']]
+    )}`)}
+  ${dBlock(`<h2>Planning Poker</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>PM презентует задачу</h4><p>Описывает что нужно сделать, отвечает на вопросы</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>Каждый оценивает молча</div><p>Не влияя на других — выбирает карточку с оценкой</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Одновременное раскрытие</h4><p>Все показывают карточки одновременно — исключает anchoring bias</p></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>Обсуждение расхождений</h4><p>Если оценки сильно расходятся — обсуждают почему, уточняют задачу</p></div></div>
+      <div class="step-item"><div class="step-num">5</div><div class="step-content"><h4>Консенсус</h4><p>Повторяют пока не придут к согласию</p></div></div>
+    </div>`)}
+  ${dBlock(`<h2>Velocity — скорость команды</h2>
+    ${dCallout('info','📈','<strong>Velocity</strong> — среднее количество story points, которое команда завершает за спринт. После 3-4 спринтов velocity стабилизируется и становится основой для планирования. Никогда не давите на команду чтобы увеличить velocity — это ведёт к занижению оценок, не к реальному ускорению.')}
+  `)}
+  ${dBlock(`<h2>Технический долг (Technical Debt)</h2>
+    ${dCallout('warning','🏦','<strong>Tech debt</strong> — накопленные «срезания углов» в коде ради скорости. Как финансовый долг: удобно сейчас, но со временем «проценты» (замедление разработки, баги) накапливаются. PM должен выделять 20-30% спринта на рефакторинг и работу с tech debt — иначе скорость команды неизбежно падает.')}
+  `)}
+  ${dBlock(`<h2>Когда задача «неожиданно» растёт в оценке</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>Unknown unknowns</h4><p>Обнаружились зависимости или сложности которые не были видны на этапе оценки</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>Scope creep</h4><p>В процессе работы добавились требования</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Технический долг</h4><p>Прежде чем добавить фичу — нужно разобраться со старым кодом</p></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>Неполное ТЗ</h4><p>Разработчик в процессе обнаружил незакрытые вопросы</p></div></div>
+    </div>`)}
+  ${dQuiz(11,'Команда стабильно выполняет 40 story points за спринт (velocity=40). Стейкхолдер просит запланировать 80 points в следующий спринт. Как PM должен реагировать?',
+    ['Согласиться — нужно угодить стейкхолдеру','Договориться с командой «поднажать»','Объяснить что velocity — это факт, не цель; 80 points нереалистично','Убрать тестирование чтобы успеть'],
+    2,'Velocity — это историческая скорость команды, не цель и не ограничение которое можно «снять давлением». Планировать 80 points при velocity=40 — это план который заведомо провалится. PM должен защищать команду от нереалистичных ожиданий и объяснять это стейкхолдерам с данными.')}
+  ${dNav(10, 12)}
+`,
+
+// 12 — GLOSSARY
+() => `
+  ${dBlock(`<div class="lesson-tag" style="color:#ff9966">Финал · Справочник</div><h1>Глоссарий разработчика для PM</h1><div class="lesson-meta"><span class="meta-badge">📖 Справочник</span></div><p>Полный словарь технических терминов, которые вы будете слышать каждый день. Сохраните этот раздел и возвращайтесь когда встречаете незнакомый термин.</p>`)}
+  ${dBlock(`<h2>🌐 Сети и протоколы</h2>
+    ${dTable(['Термин','Расшифровка','Что это'],
+      [['HTTP/HTTPS','HyperText Transfer Protocol','Протокол передачи данных в интернете'],
+       ['DNS','Domain Name System','«Телефонная книга» — переводит домены в IP'],
+       ['IP','Internet Protocol','Уникальный адрес устройства в сети'],
+       ['TCP','Transmission Control Protocol','Надёжная доставка данных по порядку'],
+       ['TLS/SSL','Transport Layer Security','Шифрование HTTPS-соединения'],
+       ['CDN','Content Delivery Network','Сеть серверов для быстрой доставки контента'],
+       ['WebSocket','—','Постоянное двустороннее соединение (чаты, realtime)']]
+    )}`)}
+  ${dBlock(`<h2>⚙️ Разработка</h2>
+    ${dTable(['Термин','Что это'],
+      [['Repository','Хранилище кода с историей изменений'],
+       ['Commit','Зафиксированное изменение кода с описанием'],
+       ['Branch','Независимая ветка разработки'],
+       ['Pull Request (PR)','Запрос на ревью и слияние кода'],
+       ['Merge','Слияние изменений из ветки в main'],
+       ['Revert / Rollback','Отмена изменений, откат к предыдущей версии'],
+       ['Refactoring','Улучшение кода без изменения функциональности'],
+       ['Technical Debt','Накопленные «срезания углов» замедляющие разработку'],
+       ['Dependency','Внешняя библиотека или сервис от которого зависит код'],
+       ['Environment Variable','Настройки конфигурации вне кода (API ключи, URL)']]
+    )}`)}
+  ${dBlock(`<h2>🏗️ Архитектура</h2>
+    ${dTable(['Термин','Что это'],
+      [['Frontend','То что видит пользователь (браузер/приложение)'],
+       ['Backend','Серверная логика, API, база данных'],
+       ['Full-stack','Разработчик, работающий и с frontend, и с backend'],
+       ['Monolith','Всё приложение как один компонент'],
+       ['Microservices','Независимые сервисы, каждый за свою область'],
+       ['API','Интерфейс взаимодействия между системами'],
+       ['REST','Стандарт построения API на HTTP'],
+       ['GraphQL','Язык запросов к API, гибкая альтернатива REST'],
+       ['Webhook','«Обратный» API — сервер сам присылает данные при событии'],
+       ['Load Balancer','Распределяет нагрузку между несколькими серверами'],
+       ['Cache','Временное хранилище для быстрого доступа к данным'],
+       ['Queue / Message Broker','Очередь сообщений для асинхронного общения сервисов']]
+    )}`)}
+  ${dBlock(`<h2>☁️ Инфраструктура и DevOps</h2>
+    ${dTable(['Термин','Что это'],
+      [['CI/CD','Автоматизация сборки, тестирования и деплоя'],
+       ['Pipeline','Последовательность автоматизированных шагов в CI/CD'],
+       ['Docker','Контейнеризация — упаковка приложения со всеми зависимостями'],
+       ['Kubernetes (K8s)','Оркестрация контейнеров — управление сотнями Docker-контейнеров'],
+       ['Staging','Тестовая среда, копия production'],
+       ['Production (Prod)','Живое окружение с реальными пользователями'],
+       ['Uptime','Время доступности сервиса (99.9% = три девятки)'],
+       ['SLA','Service Level Agreement — соглашение об уровне сервиса'],
+       ['Incident','Нештатная ситуация нарушающая работу сервиса'],
+       ['On-call','Дежурство — разработчик доступен для экстренного реагирования'],
+       ['Feature Flag','Переключатель фичи без деплоя кода'],
+       ['A/B Test','Сравнение двух версий на части пользователей']]
+    )}`)}
+  ${dBlock(`<h2>🧪 Тестирование</h2>
+    ${dTable(['Термин','Что это'],
+      [['Unit Test','Тест одной функции в изоляции'],
+       ['Integration Test','Тест взаимодействия нескольких компонентов'],
+       ['E2E Test','Тест полного сценария как пользователь'],
+       ['Regression Test','Проверка что новое не сломало старое'],
+       ['Test Coverage','Процент кода покрытый тестами'],
+       ['Bug','Ошибка — отклонение от ожидаемого поведения'],
+       ['Edge Case','Граничный случай который может вести себя нестандартно'],
+       ['Smoke Test','Базовая проверка — ключевые функции работают']]
+    )}`)}
+  ${dBlock(`<h2>📋 Процессы</h2>
+    ${dTable(['Термин','Что это'],
+      [['Sprint','Итерация разработки (обычно 1-2 недели)'],
+       ['Backlog','Список всех задач/идей ожидающих выполнения'],
+       ['Story Points','Относительная оценка сложности задачи'],
+       ['Velocity','Среднее количество story points за спринт'],
+       ['Definition of Done','Критерии готовности задачи'],
+       ['Acceptance Criteria','Условия приёмки — когда задача «сделана»'],
+       ['Epic','Крупная фича разбитая на задачи'],
+       ['Spike','Исследовательская задача для снятия неопределённости'],
+       ['Tech Spike','Прототип/исследование технического решения'],
+       ['Code Review','Проверка кода коллегами перед мержем']]
+    )}
+    ${dCallout('tip','🎓','<strong>Курс пройден!</strong> Теперь вы знаете как работает интернет, понимаете архитектуру современных продуктов, разбираетесь в процессах разработки и умеете ставить технические задачи. Используйте глоссарий как постоянный справочник.')}
+  `)}
+  ${dNav(11, undefined)}
+`
+];
+
+function showDevLesson(idx) {
+  currentDevLesson = idx;
+  document.querySelectorAll('#dev-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('dev-nav-' + idx);
+  if (navEl) {
+    navEl.classList.add('active');
+    if (devCompleted.has(idx) && !navEl.querySelector('.check-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'check-badge';
+      badge.style.background = '#ff9966';
+      badge.textContent = '✓';
+      navEl.appendChild(badge);
+    }
+  }
+  const main = document.getElementById('dev-main-content');
+  main.innerHTML = devLessons[idx]();
+  main.scrollTo(0, 0);
+  updateDevProgress();
+}
+
+function devCompleteAndNav(targetIdx) {
+  devCompleted.add(currentDevLesson);
+  const navEl = document.getElementById('dev-nav-' + currentDevLesson);
+  if (navEl && !navEl.querySelector('.check-badge') && currentDevLesson >= 0) {
+    const badge = document.createElement('span');
+    badge.className = 'check-badge';
+    badge.style.background = '#ff9966';
+    badge.textContent = '✓';
+    navEl.appendChild(badge);
+    navEl.classList.add('completed');
+  }
+  showDevLesson(targetIdx);
+}
+
+function devCompleteFinal() {
+  devCompleted.add(currentDevLesson);
+  updateDevProgress();
+  document.getElementById('dev-main-content').insertAdjacentHTML('beforeend', `
+    <div class="callout tip" style="margin-top:24px;animation:fadeUp 0.5s ease">
+      <span class="callout-icon">🎉</span>
+      <div><strong>Курс «Разработка ПО» завершён!</strong> Вы прошли все уроки. Применяйте эти знания в ежедневной работе с командой!</div>
+    </div>
+  `);
+}
+
+function updateDevProgress() {
+  const total = 13;
+  const done = [...devCompleted].length;
+  const pct = Math.round((done / total) * 100);
+  const el = document.getElementById('dev-progress-text');
+  if (el) el.textContent = `${done} / ${total} уроков`;
+  const fill = document.getElementById('dev-progress-fill');
+  if (fill) fill.style.width = pct + '%';
+  const tabProg = document.getElementById('dev-tab-progress');
+  if (tabProg) tabProg.textContent = `${done}/${total}`;
+}
+
+// Also update SQL tab progress on SQL progress update
+const _origUpdateProgress = updateProgress;
+function updateProgress() {
+  _origUpdateProgress();
+  const done = [...completed].filter(x => x > 0).length;
+  const tabProg = document.getElementById('sql-tab-progress');
+  if (tabProg) tabProg.textContent = `${done}/13`;
+}
+</script>
+</body>
+</html>
