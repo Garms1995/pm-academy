@@ -44,8 +44,8 @@
   .top-nav-inner {
     display: flex;
     align-items: center;
-    padding: 0 28px;
-    height: 56px;
+    padding: 0 20px;
+    height: 52px;
     gap: 0;
   }
   .platform-logo {
@@ -55,9 +55,9 @@
     display: flex;
     align-items: center;
     gap: 9px;
-    margin-right: 32px;
     white-space: nowrap;
     color: var(--text);
+    margin-right: 0;
   }
   .logo-dot {
     width: 8px; height: 8px;
@@ -71,48 +71,24 @@
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(0.8); }
   }
-  .course-tabs {
-    display: flex;
-    align-items: stretch;
-    gap: 2px;
-    flex: 1;
-    height: 100%;
-  }
-  .course-tab {
+
+  /* Nav breadcrumb — shows current course */
+  .nav-breadcrumb {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 0 20px;
-    font-size: 13.5px;
-    font-weight: 600;
+    margin-left: 20px;
+    font-size: 13px;
     color: var(--text3);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.18s;
-    white-space: nowrap;
+  }
+  .nav-breadcrumb .bc-sep { color: var(--border); }
+  .nav-breadcrumb .bc-course {
+    color: var(--text2);
+    font-weight: 600;
     font-family: 'Instrument Sans', sans-serif;
-    background: none;
-    border-top: none;
-    border-left: none;
-    border-right: none;
   }
-  .course-tab:hover { color: var(--text2); background: rgba(255,255,255,0.02); }
-  .course-tab.active { color: var(--text); border-bottom-color: var(--accent); }
-  .course-tab.active.dev-course { border-bottom-color: #ff9966; }
-  .course-tab .tab-icon { font-size: 16px; }
-  .course-tab .tab-progress {
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 10px;
-    background: rgba(79,255,176,0.1);
-    color: var(--accent);
-    font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .course-tab.dev-course .tab-progress {
-    background: rgba(255,153,102,0.12);
-    color: #ff9966;
-  }
+
+  /* Nav right — progress mini */
   .nav-right {
     margin-left: auto;
     display: flex;
@@ -127,7 +103,7 @@
     color: var(--text2);
   }
   .progress-bar {
-    width: 120px;
+    width: 100px;
     height: 3px;
     background: var(--border);
     border-radius: 2px;
@@ -140,6 +116,174 @@
     transition: width 0.5s ease;
   }
   .progress-fill.dev { background: linear-gradient(90deg, #ff6b6b, #ff9966); }
+
+  /* Hamburger / menu button */
+  .nav-menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 6px 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text2);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Instrument Sans', sans-serif;
+    transition: all 0.15s;
+    margin-left: 16px;
+    white-space: nowrap;
+  }
+  .nav-menu-btn:hover { color: var(--text); border-color: var(--accent2); background: rgba(123,111,255,0.08); }
+  .nav-menu-btn .hmb { font-size: 16px; }
+
+  /* Hide old course tabs entirely */
+  .course-tabs { display: none !important; }
+  .course-tab { display: none !important; }
+
+  /* ══════════════════════════════════════════
+     COURSE DRAWER (left side panel)
+  ══════════════════════════════════════════ */
+  .course-drawer {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 300px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    z-index: 500;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .course-drawer.open {
+    transform: translateX(0);
+    box-shadow: 8px 0 48px rgba(0,0,0,0.5);
+  }
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 56px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .drawer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .drawer-close {
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text3);
+    font-size: 15px;
+    transition: all 0.15s;
+  }
+  .drawer-close:hover { color: var(--text); border-color: var(--accent3); }
+
+  .drawer-body { flex: 1; overflow-y: auto; padding: 16px 12px 20px; }
+
+  .drawer-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 0 8px;
+    margin: 16px 0 8px;
+  }
+  .drawer-section-label:first-child { margin-top: 4px; }
+
+  .drawer-course-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 4px;
+    border: 1px solid transparent;
+    position: relative;
+  }
+  .drawer-course-item:hover { background: var(--bg3); }
+  .drawer-course-item.active {
+    background: rgba(79,255,176,0.06);
+    border-color: rgba(79,255,176,0.15);
+  }
+  .drawer-course-item.active.c-dev { background: rgba(255,153,102,0.06); border-color: rgba(255,153,102,0.15); }
+  .drawer-course-item.active.c-pm  { background: rgba(168,85,247,0.06);  border-color: rgba(168,85,247,0.15); }
+
+  .dci-icon { font-size: 22px; flex-shrink: 0; }
+  .dci-body { flex: 1; min-width: 0; }
+  .dci-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dci-sub {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+  .dci-progress {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .dci-pct {
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .dci-bar {
+    width: 40px; height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .dci-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+
+  /* Drawer coming-soon item */
+  .drawer-soon {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    opacity: 0.45;
+    cursor: default;
+    margin-bottom: 4px;
+    border: 1px dashed var(--border);
+  }
+  .drawer-soon .dci-name { color: var(--text3); }
+
+  .drawer-footer {
+    border-top: 1px solid var(--border);
+    padding: 14px 20px;
+    font-size: 11px;
+    color: var(--text3);
+    flex-shrink: 0;
+  }
+  .drawer-footer strong { color: var(--text2); }
 
   /* HOME SCREEN */
   .home-screen {
@@ -938,34 +1082,25 @@
 
     /* ── TOP NAV ── */
     .top-nav-inner {
-      padding: 0 14px;
-      height: 52px;
+      padding: 0 12px;
+      height: 50px;
     }
-    .platform-logo {
-      font-size: 15px;
-      margin-right: 0;
-    }
-    /* Hide desktop course tabs — replaced by bottom nav */
-    .course-tabs { display: none; }
-    /* Hide progress bars in header on mobile */
+    .platform-logo { font-size: 14px; }
     .nav-right { display: none; }
-    /* Show hamburger */
-    .sidebar-toggle { display: flex; }
+    .nav-breadcrumb { display: none !important; }
+    /* Hide old sidebar toggle */
+    .sidebar-toggle { display: none !important; }
 
     /* ── COURSE AREA ── */
-    .course-area {
-      height: calc(100vh - 52px);
-    }
+    .course-area { height: calc(100vh - 50px); }
 
     /* ── LAYOUT ── */
-    .layout {
-      position: relative;
-    }
+    .layout { position: relative; }
 
-    /* ── SIDEBAR — slides in from left ── */
+    /* ── LESSON SIDEBAR — slides in from left ── */
     .sidebar {
       position: fixed;
-      top: 52px; left: 0; bottom: 0;
+      top: 50px; left: 0; bottom: 0;
       width: 280px;
       z-index: 95;
       transform: translateX(-100%);
@@ -978,90 +1113,42 @@
     }
 
     /* ── MAIN CONTENT ── */
-    .main {
-      padding: 24px 16px 100px; /* bottom pad for nav bar */
-      max-width: 100%;
-      width: 100%;
-    }
+    .main { padding: 24px 16px 100px; max-width: 100%; width: 100%; }
 
     /* ── HOME SCREEN ── */
-    .home-screen {
-      padding: 28px 16px 100px;
-    }
+    .home-screen { padding: 28px 16px 100px; }
     .home-screen h1 { font-size: 28px; }
     .home-subtitle { font-size: 14px; margin-bottom: 28px; }
     .courses-grid { grid-template-columns: 1fr; gap: 14px; }
     .course-card { padding: 20px; }
     .course-card h2 { font-size: 18px; }
 
-    /* ── LESSON HEADINGS ── */
     h1 { font-size: 24px; }
     h2 { font-size: 17px; }
 
-    /* ── TABLES — horizontal scroll ── */
-    .db-table-wrap {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      margin: 16px 0;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-    .db-table {
-      margin: 0;
-      border: none;
-      min-width: 480px;
-    }
-
-    /* ── COMPARE GRID — stack vertically ── */
+    .db-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 16px 0; border-radius: 8px; border: 1px solid var(--border); }
+    .db-table { margin: 0; border: none; min-width: 480px; }
     .compare-grid { grid-template-columns: 1fr; }
-
-    /* ── METRIC GRID — 2 columns ── */
     .metric-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
     .metric-card { padding: 12px 14px; }
     .metric-card-value { font-size: 18px; }
-
-    /* ── SCHEMA VIZ — scroll ── */
-    .schema-viz {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 8px;
-    }
-
-    /* ── SQL PLAYGROUND ── */
+    .schema-viz { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 8px; }
     .sql-editor { font-size: 13px; min-height: 80px; }
     .run-btn { width: 100%; margin-top: 8px; }
     .playground-header { flex-wrap: wrap; gap: 8px; }
-
-    /* ── LESSON NAV ── */
-    .lesson-nav {
-      flex-wrap: wrap;
-      gap: 10px;
-      padding-bottom: 24px;
-    }
-    .btn-nav, .btn-complete {
-      flex: 1;
-      min-width: 120px;
-      text-align: center;
-      justify-content: center;
-    }
-
-    /* ── WELCOME / MODULE CARDS ── */
+    .lesson-nav { flex-wrap: wrap; gap: 10px; padding-bottom: 24px; }
+    .btn-nav, .btn-complete { flex: 1; min-width: 120px; text-align: center; justify-content: center; }
     .course-stats { gap: 12px; }
     .module-list { gap: 10px; }
     .module-card { padding: 14px 16px; }
-
-    /* ── CHEAT GRID ── */
     .cheat-grid { grid-template-columns: 1fr; }
-
-    /* ── STEP LIST ── */
     .step-item { gap: 12px; }
     .step-num { font-size: 20px; min-width: 26px; }
-
-    /* ── MOBILE BOTTOM NAV ── */
     .mobile-nav-bar { display: block; }
-
-    /* ── CALLOUT ── */
     .callout { padding: 12px 14px; font-size: 13px; }
+
+    /* Drawer full width on mobile */
+    .course-drawer { width: 88vw; max-width: 320px; }
   }
 
   @media (max-width: 380px) {
@@ -1075,33 +1162,94 @@
 
 <nav class="top-nav">
   <div class="top-nav-inner">
-    <div class="platform-logo"><div class="logo-dot"></div>PM Academy</div>
-    <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()" aria-label="Меню">☰</button>
-    <div class="course-tabs">
-      <button class="course-tab active" id="tab-home" onclick="showCourse('home')">
-        <span class="tab-icon">🏠</span> Главная
-      </button>
-      <button class="course-tab" id="tab-sql" onclick="showCourse('sql')">
-        <span class="tab-icon">🗄️</span> SQL для PM
-        <span class="tab-progress" id="sql-tab-progress">0/13</span>
-      </button>
-      <button class="course-tab dev-course" id="tab-dev" onclick="showCourse('dev')">
-        <span class="tab-icon">💻</span> Разработка ПО
-        <span class="tab-progress dev-course" id="dev-tab-progress">0/12</span>
-      </button>
+    <button class="nav-menu-btn" onclick="openDrawer()" aria-label="Открыть меню курсов">
+      <span class="hmb">☰</span> Курсы
+    </button>
+    <div class="platform-logo" style="margin-left:16px"><div class="logo-dot"></div>PM Academy</div>
+    <div class="nav-breadcrumb" id="nav-breadcrumb" style="display:none">
+      <span class="bc-sep">/</span>
+      <span class="bc-course" id="bc-course-name"></span>
     </div>
     <div class="nav-right">
       <div class="progress-bar-wrap" id="progress-wrap-sql" style="display:none">
-        <span id="progress-text">0 / 13 уроков</span>
+        <span id="progress-text">0 / 13</span>
         <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
       </div>
       <div class="progress-bar-wrap" id="progress-wrap-dev" style="display:none">
-        <span id="dev-progress-text">0 / 12 уроков</span>
+        <span id="dev-progress-text">0 / 12</span>
         <div class="progress-bar"><div class="progress-fill dev" id="dev-progress-fill"></div></div>
+      </div>
+      <div class="progress-bar-wrap" id="progress-wrap-pm" style="display:none">
+        <span id="pm-progress-text">0 / 14</span>
+        <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,#a855f7,#7c3aed)" id="pm-progress-fill"></div></div>
       </div>
     </div>
   </div>
 </nav>
+
+<!-- COURSE DRAWER -->
+<div class="course-drawer" id="course-drawer">
+  <div class="drawer-header">
+    <div class="drawer-logo"><div class="logo-dot"></div>PM Academy</div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-section-label">Навигация</div>
+    <div class="drawer-course-item active" id="drawer-home" onclick="showCourse('home');closeDrawer()">
+      <span class="dci-icon">🏠</span>
+      <div class="dci-body">
+        <div class="dci-name">Главная</div>
+        <div class="dci-sub">Все курсы платформы</div>
+      </div>
+    </div>
+
+    <div class="drawer-section-label">Курсы</div>
+
+    <div class="drawer-course-item" id="drawer-sql" onclick="showCourse('sql');closeDrawer()">
+      <span class="dci-icon">🗄️</span>
+      <div class="dci-body">
+        <div class="dci-name">SQL для PM</div>
+        <div class="dci-sub">14 уроков · 5 модулей</div>
+      </div>
+      <div class="dci-progress">
+        <span class="dci-pct" id="drawer-sql-pct" style="color:var(--accent)">0/14</span>
+        <div class="dci-bar"><div class="dci-bar-fill" id="drawer-sql-fill" style="background:var(--accent);width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="drawer-course-item c-dev" id="drawer-dev" onclick="showCourse('dev');closeDrawer()">
+      <span class="dci-icon">💻</span>
+      <div class="dci-body">
+        <div class="dci-name">Разработка ПО</div>
+        <div class="dci-sub">13 уроков · 5 модулей</div>
+      </div>
+      <div class="dci-progress">
+        <span class="dci-pct" id="drawer-dev-pct" style="color:#ff9966">0/13</span>
+        <div class="dci-bar"><div class="dci-bar-fill" id="drawer-dev-fill" style="background:#ff9966;width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="drawer-course-item c-pm" id="drawer-pm" onclick="showCourse('pm');closeDrawer()">
+      <span class="dci-icon">📋</span>
+      <div class="dci-body">
+        <div class="dci-name">Управление проектами</div>
+        <div class="dci-sub">14 уроков · 6 модулей</div>
+      </div>
+      <div class="dci-progress">
+        <span class="dci-pct" id="drawer-pm-pct" style="color:#a855f7">0/14</span>
+        <div class="dci-bar"><div class="dci-bar-fill" id="drawer-pm-fill" style="background:#a855f7;width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="drawer-section-label">Скоро</div>
+    <div class="drawer-soon"><span class="dci-icon">📊</span><div class="dci-body"><div class="dci-name">Аналитика данных</div><div class="dci-sub">В разработке</div></div></div>
+    <div class="drawer-soon"><span class="dci-icon">🎨</span><div class="dci-body"><div class="dci-name">UX для PM</div><div class="dci-sub">В разработке</div></div></div>
+    <div class="drawer-soon"><span class="dci-icon">📈</span><div class="dci-body"><div class="dci-name">Продуктовые метрики</div><div class="dci-sub">В разработке</div></div></div>
+  </div>
+  <div class="drawer-footer">
+    <strong>PM Academy</strong> · База знаний для Product Manager
+  </div>
+</div>
 
 <!-- HOME SCREEN -->
 <div id="course-home" style="flex:1;overflow-y:auto;display:flex">
@@ -1131,9 +1279,20 @@
         </div>
         <div class="course-card-arrow">→</div>
       </div>
+      <div class="course-card" style="border-top:3px solid #a855f7;cursor:pointer" onclick="showCourse('pm')">
+        <div class="course-card-icon">📋</div>
+        <h2 style="color:var(--text)">Управление проектами</h2>
+        <p>PMBOK 7, Agile, Scrum, Kanban, модели управления, soft skills, рынок труда PM в России — полный курс.</p>
+        <div class="course-card-meta">
+          <span class="c-badge" style="background:rgba(168,85,247,0.1);color:#a855f7">14 уроков</span>
+          <span class="c-badge purple">6 модулей</span>
+          <span class="c-badge" style="background:rgba(168,85,247,0.1);color:#a855f7">Новый курс</span>
+        </div>
+        <div class="course-card-arrow">→</div>
+      </div>
       <div class="coming-soon-banner">
         <span style="font-size:22px">🚀</span>
-        <div><strong style="color:var(--text2)">Скоро:</strong> Основы аналитики данных · Продуктовые метрики и фреймворки · Основы UX для PM · Работа с командой разработки</div>
+        <div><strong style="color:var(--text2)">Скоро:</strong> Основы аналитики данных · Продуктовые метрики и фреймворки · Основы UX для PM</div>
       </div>
     </div>
   </div>
@@ -1295,6 +1454,73 @@
   </div>
 </div>
 
+<!-- PM MANAGEMENT COURSE -->
+<div class="course-area" id="course-pm">
+  <div class="layout">
+    <nav class="sidebar" id="pm-sidebar" style="border-right-color:rgba(168,85,247,0.2)">
+      <div class="sidebar-section">Курс</div>
+      <div class="sidebar-item active" onclick="showPmLesson(0)" id="pm-nav-0">
+        <span class="item-num">00</span><span class="item-icon">🏠</span><span>Введение</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 1 — Профессия PM</div>
+      <div class="sidebar-item" onclick="showPmLesson(1)" id="pm-nav-1">
+        <span class="item-num">01</span><span class="item-icon">🎯</span><span>Кто такой PM и что он делает</span>
+      </div>
+      <div class="sidebar-item" onclick="showPmLesson(2)" id="pm-nav-2">
+        <span class="item-num">02</span><span class="item-icon">💼</span><span>Рынок труда PM в России</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 2 — PMBOK & Стандарты</div>
+      <div class="sidebar-item" onclick="showPmLesson(3)" id="pm-nav-3">
+        <span class="item-num">03</span><span class="item-icon">📚</span><span>PMBOK 7: принципы и домены</span>
+      </div>
+      <div class="sidebar-item" onclick="showPmLesson(4)" id="pm-nav-4">
+        <span class="item-num">04</span><span class="item-icon">🔄</span><span>Жизненный цикл проекта</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 3 — Модели управления</div>
+      <div class="sidebar-item" onclick="showPmLesson(5)" id="pm-nav-5">
+        <span class="item-num">05</span><span class="item-icon">🏗️</span><span>Waterfall и классические модели</span>
+      </div>
+      <div class="sidebar-item" onclick="showPmLesson(6)" id="pm-nav-6">
+        <span class="item-num">06</span><span class="item-icon">⚡</span><span>Agile: манифест и ценности</span>
+      </div>
+      <div class="sidebar-item" onclick="showPmLesson(7)" id="pm-nav-7">
+        <span class="item-num">07</span><span class="item-icon">🔁</span><span>Scrum: роли, артефакты, события</span>
+      </div>
+      <div class="sidebar-item" onclick="showPmLesson(8)" id="pm-nav-8">
+        <span class="item-num">08</span><span class="item-icon">📌</span><span>Kanban и гибридные модели</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 4 — Инструменты PM</div>
+      <div class="sidebar-item" onclick="showPmLesson(9)" id="pm-nav-9">
+        <span class="item-num">09</span><span class="item-icon">⚠️</span><span>Управление рисками</span>
+      </div>
+      <div class="sidebar-item" onclick="showPmLesson(10)" id="pm-nav-10">
+        <span class="item-num">10</span><span class="item-icon">👥</span><span>Стейкхолдеры и коммуникации</span>
+      </div>
+      <div class="sidebar-item" onclick="showPmLesson(11)" id="pm-nav-11">
+        <span class="item-num">11</span><span class="item-icon">📊</span><span>Метрики и отчётность</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 5 — Soft Skills</div>
+      <div class="sidebar-item" onclick="showPmLesson(12)" id="pm-nav-12">
+        <span class="item-num">12</span><span class="item-icon">🧠</span><span>Лидерство и принятие решений</span>
+      </div>
+      <div class="sidebar-item" onclick="showPmLesson(13)" id="pm-nav-13">
+        <span class="item-num">13</span><span class="item-icon">💬</span><span>Переговоры и конфликты</span>
+      </div>
+
+      <div class="sidebar-section">Финал</div>
+      <div class="sidebar-item" onclick="showPmLesson(14)" id="pm-nav-14">
+        <span class="item-num">14</span><span class="item-icon">📋</span><span>Шпаргалка PM</span>
+      </div>
+    </nav>
+    <main class="main" id="pm-main-content"></main>
+  </div>
+</div>
+
 <!-- SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
@@ -1304,11 +1530,11 @@
     <button class="mobile-nav-btn active" id="mnb-home" onclick="showCourse('home'); setMobileNav('home')">
       <span class="mnb-icon">🏠</span>Главная
     </button>
-    <button class="mobile-nav-btn" id="mnb-sql" onclick="showCourse('sql'); setMobileNav('sql')">
-      <span class="mnb-icon">🗄️</span>SQL
+    <button class="mobile-nav-btn" id="mnb-courses" onclick="openDrawer()">
+      <span class="mnb-icon">📚</span>Курсы
     </button>
-    <button class="mobile-nav-btn dev" id="mnb-dev" onclick="showCourse('dev'); setMobileNav('dev')">
-      <span class="mnb-icon">💻</span>Dev
+    <button class="mobile-nav-btn" id="mnb-lessons" onclick="toggleSidebar()" style="display:none">
+      <span class="mnb-icon">☰</span>Уроки
     </button>
   </div>
 </nav>
@@ -2867,26 +3093,105 @@ let activeCourse = 'home';
 
 function showCourse(course) {
   activeCourse = course;
-  ['home','sql','dev'].forEach(c => {
+  ['home','sql','dev','pm'].forEach(c => {
     const el = document.getElementById('course-' + c);
     if (el) el.style.display = c === course ? 'flex' : 'none';
   });
-  document.querySelectorAll('.course-tab').forEach(t => t.classList.remove('active'));
-  const tab = document.getElementById('tab-' + course);
-  if (tab) tab.classList.add('active');
 
-  document.getElementById('progress-wrap-sql').style.display = course === 'sql' ? 'flex' : 'none';
-  document.getElementById('progress-wrap-dev').style.display = course === 'dev' ? 'flex' : 'none';
+  // Update drawer active state
+  ['home','sql','dev','pm'].forEach(c => {
+    const d = document.getElementById('drawer-' + c);
+    if (d) d.classList.toggle('active', c === course);
+  });
 
-  // Mobile: sidebar toggle visibility
-  const toggle = document.getElementById('sidebar-toggle');
-  if (toggle) toggle.style.display = (course === 'sql' || course === 'dev') ? 'flex' : 'none';
+  // Breadcrumb
+  const bcWrap = document.getElementById('nav-breadcrumb');
+  const bcName = document.getElementById('bc-course-name');
+  const names = {sql:'SQL для PM', dev:'Разработка ПО', pm:'Управление проектами'};
+  if (course !== 'home' && bcWrap && bcName) {
+    bcWrap.style.display = 'flex';
+    bcName.textContent = names[course] || '';
+  } else if (bcWrap) { bcWrap.style.display = 'none'; }
+
+  // Progress bar in nav
+  ['sql','dev','pm'].forEach(c => {
+    const el = document.getElementById('progress-wrap-' + c);
+    if (el) el.style.display = c === course ? 'flex' : 'none';
+  });
+
+  // Mobile: show/hide lessons button
+  const mnbLessons = document.getElementById('mnb-lessons');
+  if (mnbLessons) mnbLessons.style.display = (course !== 'home') ? 'flex' : 'none';
+  const mnbHome = document.getElementById('mnb-home');
+  if (mnbHome) mnbHome.classList.toggle('active', course === 'home');
 
   closeSidebar();
 
-  if (course === 'sql' && currentLesson === 0) showLesson(0);
+  if (course === 'sql' && currentLesson    === 0) showLesson(0);
   if (course === 'dev' && currentDevLesson === 0) showDevLesson(0);
+  if (course === 'pm'  && currentPmLesson  === 0) showPmLesson(0);
 }
+
+// ── COURSE DRAWER ──────────────────────────────
+function openDrawer() {
+  document.getElementById('course-drawer').classList.add('open');
+  document.getElementById('sidebar-overlay').classList.add('open');
+}
+function closeDrawer() {
+  document.getElementById('course-drawer').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+// ── LESSON SIDEBAR ─────────────────────────────
+function toggleSidebar() {
+  const sidebar = activeCourse === 'sql' ? document.querySelector('#course-sql .sidebar')
+    : activeCourse === 'dev' ? document.querySelector('#course-dev .sidebar')
+    : activeCourse === 'pm'  ? document.querySelector('#course-pm .sidebar')
+    : null;
+  const overlay = document.getElementById('sidebar-overlay');
+  if (!sidebar) return;
+  if (sidebar.classList.contains('open')) { closeSidebar(); }
+  else { sidebar.classList.add('open'); overlay.classList.add('open'); }
+}
+
+function closeSidebar() {
+  document.querySelectorAll('.sidebar').forEach(s => s.classList.remove('open'));
+  const overlay = document.getElementById('sidebar-overlay');
+  if (overlay) overlay.classList.remove('open');
+}
+
+function setMobileNav(course) {
+  // handled inside showCourse now
+}
+
+// Drawer overlay also closes course drawer
+document.getElementById('sidebar-overlay').addEventListener('click', () => {
+  closeDrawer();
+  closeSidebar();
+});
+
+// Update drawer progress bars
+function updateDrawerProgress() {
+  // SQL
+  const sqlDone = [...completed].filter(x=>x>0).length;
+  const sqlEl = document.getElementById('drawer-sql-pct');
+  const sqlFill = document.getElementById('drawer-sql-fill');
+  if (sqlEl) sqlEl.textContent = sqlDone + '/14';
+  if (sqlFill) sqlFill.style.width = Math.round(sqlDone/14*100) + '%';
+  // Dev
+  const devDone = devCompleted.size;
+  const devEl = document.getElementById('drawer-dev-pct');
+  const devFill = document.getElementById('drawer-dev-fill');
+  if (devEl) devEl.textContent = devDone + '/13';
+  if (devFill) devFill.style.width = Math.round(devDone/13*100) + '%';
+  // PM
+  const pmDone = pmCompleted.size;
+  const pmEl = document.getElementById('drawer-pm-pct');
+  const pmFill = document.getElementById('drawer-pm-fill');
+  if (pmEl) pmEl.textContent = pmDone + '/14';
+  if (pmFill) pmFill.style.width = Math.round(pmDone/14*100) + '%';
+}
+
 
 // Init home
 document.getElementById('course-home').style.display = 'flex';
@@ -3568,45 +3873,809 @@ function updateDevProgress() {
   const done = [...devCompleted].length;
   const pct = Math.round((done / total) * 100);
   const el = document.getElementById('dev-progress-text');
-  if (el) el.textContent = `${done} / ${total} уроков`;
+  if (el) el.textContent = `${done} / ${total}`;
   const fill = document.getElementById('dev-progress-fill');
   if (fill) fill.style.width = pct + '%';
-  const tabProg = document.getElementById('dev-tab-progress');
-  if (tabProg) tabProg.textContent = `${done}/${total}`;
+  updateDrawerProgress();
 }
 
 // ─────────────────────────────────────────────
-// MOBILE HELPERS
+// PM MANAGEMENT COURSE
 // ─────────────────────────────────────────────
-function toggleSidebar() {
-  const isSqlActive  = activeCourse === 'sql';
-  const isDevActive  = activeCourse === 'dev';
-  if (!isSqlActive && !isDevActive) return;
-  const sidebar = isSqlActive
-    ? document.querySelector('#course-sql .sidebar')
-    : document.querySelector('#course-dev .sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
-  if (!sidebar) return;
-  const isOpen = sidebar.classList.contains('open');
-  if (isOpen) { closeSidebar(); } else {
-    sidebar.classList.add('open');
-    overlay.classList.add('open');
+const pmCompleted = new Set();
+let currentPmLesson = 0;
+const PM_TOTAL = 14;
+
+// Helpers (reuse dev-style pattern)
+const pBlock  = (html) => `<div class="content-block">${html}</div>`;
+const pCall   = (t,i,h) => `<div class="callout ${t}"><span class="callout-icon">${i}</span><div>${h}</div></div>`;
+const pTable  = (cols,rows) => `<div class="db-table-wrap"><table class="db-table"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(d=>`<td>${d}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const pNav    = (prev,next,isLast=false) => `<div class="lesson-nav" style="display:flex;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid var(--border)">
+  ${prev!==undefined?`<button class="btn-nav btn-prev" onclick="pmCompleteAndNav(${prev})">← Назад</button>`:''}
+  ${!isLast&&next!==undefined?`<button class="btn-nav btn-next" style="background:linear-gradient(135deg,#a855f7,#7c3aed);margin-left:auto" onclick="pmCompleteAndNav(${next})">Далее →</button>`:''}
+  ${isLast?`<button class="btn-complete" style="background:linear-gradient(135deg,#a855f7,#7c3aed);margin-left:auto" onclick="pmCompleteFinal()">✓ Завершить курс</button>`:''}
+</div>`;
+
+const pmLessons = [
+// 0 — Введение
+()=>`
+  <div class="lesson-tag">PM Academy · Управление проектами</div>
+  <h1>Добро пожаловать в курс</h1>
+  <div class="lesson-meta"><span class="meta-badge">6 модулей</span><span class="meta-badge">14 уроков</span><span class="meta-badge">~4 часа</span></div>
+  ${pBlock(`<p>Этот курс — практическое руководство по управлению проектами для PM. Мы пройдём от основ профессии до продвинутых инструментов: PMBOK 7, Agile, Scrum, риски, метрики, soft skills и реальный рынок труда в России.</p>`)}
+  ${pCall('tip','🎯',`<strong>Что вы получите:</strong> понимание всех ключевых методологий, умение выбирать подходящую модель для проекта, знание требований рынка труда и инструментов для роста карьеры.`)}
+  ${pBlock(`<h2>Структура курса</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>Профессия PM</h4><p>Роль, обязанности, карьерный путь, рынок труда в России 2025</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>PMBOK & Стандарты</h4><p>7-е издание: 12 принципов, 8 доменов, жизненный цикл проекта</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Модели управления</h4><p>Waterfall, Agile, Scrum, Kanban, гибридные подходы</p></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>Инструменты PM</h4><p>Риски, стейкхолдеры, метрики и отчётность</p></div></div>
+      <div class="step-item"><div class="step-num">5</div><div class="step-content"><h4>Soft Skills</h4><p>Лидерство, принятие решений, переговоры, управление конфликтами</p></div></div>
+      <div class="step-item"><div class="step-num">6</div><div class="step-content"><h4>Шпаргалка PM</h4><p>Все ключевые термины, фреймворки и метрики в одном месте</p></div></div>
+    </div>`)}
+  ${pNav(undefined,1)}
+`,
+
+// 1 — Кто такой PM
+()=>`
+  <div class="lesson-tag">Модуль 1 · Урок 1</div>
+  <h1>Кто такой PM и что он делает</h1>
+  <div class="lesson-meta"><span class="meta-badge">Основы</span><span class="meta-badge">~20 мин</span></div>
+  ${pBlock(`<p><strong>Project Manager (PM)</strong> — это человек, ответственный за то, чтобы проект был выполнен в срок, в рамках бюджета и с нужным результатом. PM не делает работу сам — он создаёт условия, чтобы команда могла делать её хорошо.</p>`)}
+  ${pCall('info','💡','PM часто путают с Product Manager (PdM). Разница: <strong>Project Manager</strong> отвечает за процесс и доставку, <strong>Product Manager</strong> — за стратегию продукта и его ценность. В небольших компаниях эти роли часто совмещаются.')}
+  ${pBlock(`<h2>Ключевые обязанности PM</h2>
+    ${pTable(['Зона','Что делает PM'],
+      [['📋 Планирование','Декомпозиция задач, WBS, Gantt-диаграммы, роадмапы'],
+       ['👥 Команда','Распределение ролей, мотивация, разрешение конфликтов'],
+       ['⏱️ Время','Контроль дедлайнов, управление зависимостями задач'],
+       ['💰 Бюджет','Оценка, отслеживание расходов, управление резервами'],
+       ['⚠️ Риски','Идентификация, оценка, реагирование на риски'],
+       ['🗣️ Коммуникации','Статус-репорты, митинги, работа со стейкхолдерами'],
+       ['✅ Качество','Контроль соответствия требованиям и стандартам']])}
+  `)}
+  ${pBlock(`<h2>PM vs другие роли</h2>
+    ${pTable(['Роль','Фокус','Типичный вопрос'],
+      [['Project Manager','Процесс и доставка','Когда будет готово?'],
+       ['Product Manager','Продукт и ценность','Зачем это делать?'],
+       ['Team Lead','Техническое качество','Как это сделать правильно?'],
+       ['Scrum Master','Agile-процессы','Что мешает команде работать?'],
+       ['Program Manager','Несколько проектов','Как всё связано между собой?']])}
+  `)}
+  ${pCall('tip','🚀','<strong>Ключевой навык PM</strong> — умение работать без прямых полномочий. PM редко является «начальником» команды, но должен добиваться результата через влияние, авторитет и коммуникацию.')}
+  ${pBlock(`<h2>Типичный день PM</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num" style="color:#a855f7">9:00</div><div class="step-content"><h4>Daily standup</h4><p>15 минут. Что сделано? Что планируется? Есть ли блокеры?</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">10:00</div><div class="step-content"><h4>Обновление статуса проекта</h4><p>Трекер задач, дашборд рисков, проверка дедлайнов</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">11:00</div><div class="step-content"><h4>Работа со стейкхолдерами</h4><p>Письма, звонки, согласование требований, эскалации</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">14:00</div><div class="step-content"><h4>Планирование и декомпозиция</h4><p>Разбивка задач, обновление роадмапа, приоритизация</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">16:00</div><div class="step-content"><h4>Ретроспектива / отчётность</h4><p>Статус-репорт руководству, разбор проблем с командой</p></div></div>
+    </div>`)}
+  ${pNav(0,2)}
+`,
+
+// 2 — Рынок труда
+()=>`
+  <div class="lesson-tag">Модуль 1 · Урок 2</div>
+  <h1>Рынок труда PM в России 2025</h1>
+  <div class="lesson-meta"><span class="meta-badge">Карьера</span><span class="meta-badge">~20 мин</span></div>
+  ${pBlock(`<p>Рынок управления проектами в России активно растёт. По данным hh.ru и Glassdoor, количество вакансий PM в IT выросло на 15% за 2024 год. Разберём зарплаты, требования и карьерный путь.</p>`)}
+  ${pBlock(`<h2>Зарплатные вилки (2025)</h2>
+    ${pTable(['Уровень','Опыт','Зарплата (Москва)','Зарплата (регионы)'],
+      [['Junior PM','0–1 год','80 000 – 120 000 ₽','50 000 – 80 000 ₽'],
+       ['Middle PM','1–3 года','120 000 – 200 000 ₽','80 000 – 130 000 ₽'],
+       ['Senior PM','3–6 лет','200 000 – 320 000 ₽','130 000 – 200 000 ₽'],
+       ['Lead / Head of PM','6+ лет','320 000 – 600 000 ₽','200 000 – 350 000 ₽'],
+       ['Director of PMO','10+ лет','от 500 000 ₽','от 300 000 ₽']])}
+    <small style="color:var(--text3)">* Данные на основе Glassdoor, hh.ru, levels.fyi — актуально на нач. 2025</small>
+  `)}
+  ${pCall('info','📊','Топ работодатели по зарплатам PM в России: <strong>Сбербанк, Яндекс, VK, X5 Tech, МТС, Тинькофф, Ozon, Авито, 1С</strong>. В IT-продуктах зарплаты традиционно выше, чем в консалтинге и госсекторе.')}
+  ${pBlock(`<h2>Что требуют в вакансиях</h2>
+    ${pTable(['Категория','Требования (топ-5 по частоте)'],
+      [['Hard skills','MS Project / Jira / Confluence, Agile/Scrum, бюджетирование, риск-менеджмент, Waterfall'],
+       ['Методологии','Scrum (82% вакансий), Kanban (61%), Prince2 (24%), PMBOK (31%)'],
+       ['Сертификаты','PMP, PSM I, PRINCE2, PME, AgilePM — повышают зарплату на 15-25%'],
+       ['Soft skills','Коммуникация, лидерство, аналитическое мышление, стрессоустойчивость'],
+       ['Инструменты','Jira, Confluence, Miro, MS Project, Notion, YouTrack, Trello']])}
+  `)}
+  ${pBlock(`<h2>Карьерный путь PM</h2>
+    <div style="display:flex;flex-direction:column;gap:12px;margin:16px 0">
+      <div style="display:flex;align-items:center;gap:16px;padding:14px;background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.15);border-radius:10px">
+        <div style="font-size:28px;font-weight:800;color:#a855f7;min-width:40px;font-family:'Syne',sans-serif">1</div>
+        <div><strong style="color:var(--text)">Coordinator / Assistant PM</strong><br><span style="color:var(--text3);font-size:13px">Ведение документации, координация задач, поддержка PM-а</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);border-radius:10px">
+        <div style="font-size:28px;font-weight:800;color:#a855f7;min-width:40px;font-family:'Syne',sans-serif">2</div>
+        <div><strong style="color:var(--text)">Junior / Middle PM</strong><br><span style="color:var(--text3);font-size:13px">Самостоятельное ведение проектов, работа со стейкхолдерами</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.25);border-radius:10px">
+        <div style="font-size:28px;font-weight:800;color:#a855f7;min-width:40px;font-family:'Syne',sans-serif">3</div>
+        <div><strong style="color:var(--text)">Senior PM</strong><br><span style="color:var(--text3);font-size:13px">Крупные проекты, менторство, стратегическое планирование</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px;background:rgba(168,85,247,0.13);border:1px solid rgba(168,85,247,0.3);border-radius:10px">
+        <div style="font-size:28px;font-weight:800;color:#7c3aed;min-width:40px;font-family:'Syne',sans-serif">4</div>
+        <div><strong style="color:var(--text)">Head of PM / PMO Director</strong><br><span style="color:var(--text3);font-size:13px">Управление портфелем, стандарты компании, развитие PMO</span></div>
+      </div>
+    </div>`)}
+  ${pCall('tip','💡','<strong>Самые востребованные отрасли</strong> для PM в России: финтех (Сбер, Тинькофф), e-commerce (Ozon, Wildberries), IT-аутсорс, телеком (МТС, Билайн), геймдев и edtech. IT-PM зарабатывает в среднем на 40% больше PM в традиционных отраслях.')}
+  ${pNav(1,3)}
+`,
+
+// 3 — PMBOK 7
+()=>`
+  <div class="lesson-tag">Модуль 2 · Урок 3</div>
+  <h1>PMBOK 7: принципы и домены</h1>
+  <div class="lesson-meta"><span class="meta-badge">Стандарты</span><span class="meta-badge">~25 мин</span></div>
+  ${pBlock(`<p><strong>PMBOK (Project Management Body of Knowledge)</strong> — главный стандарт управления проектами от PMI. 7-е издание (2021) совершило революцию: вместо жёстких процессов — <strong>12 принципов</strong> и <strong>8 доменов</strong>. Акцент сместился с процессов на результаты и ценность.</p>`)}
+  ${pCall('info','📖','PMI выпустило <strong>8-е издание PMBOK (2025)</strong>. Оно сохраняет принципы 7-й версии, но возвращает процессное руководство в гибком, ненормативном формате. Добавлены главы про AI, PMO и procurement.')}
+  ${pBlock(`<h2>12 принципов PMBOK 7</h2>
+    ${pTable(['#','Принцип','Суть'],
+      [['1','🤝 Управление','Быть ответственным стюардом — действовать добросовестно и этично'],
+       ['2','👥 Команда','Создавать среду, где команда работает эффективно и с вовлечённостью'],
+       ['3','🎯 Стейкхолдеры','Активно вовлекать заинтересованных лиц на всём протяжении проекта'],
+       ['4','💎 Ценность','Фокусироваться на создании ценности, а не на выполнении плана'],
+       ['5','🔗 Системное мышление','Видеть проект как систему взаимосвязанных элементов'],
+       ['6','🧭 Лидерство','Демонстрировать лидерское поведение — мотивировать и направлять'],
+       ['7','📋 Адаптация','Подбирать подход под специфику каждого проекта, не шаблонно'],
+       ['8','✅ Качество','Встраивать качество в процессы, а не проверять в конце'],
+       ['9','⚡ Сложность','Распознавать и управлять неопределённостью и сложностью'],
+       ['10','⚠️ Риски','Постоянно оценивать и оптимизировать реакцию на риски'],
+       ['11','🔄 Адаптивность','Быть гибким и готовым к изменениям в течение проекта'],
+       ['12','🌱 Изменения','Обеспечивать готовность организации к внедрению результатов']])}
+  `)}
+  ${pBlock(`<h2>8 доменов эффективности (Performance Domains)</h2>
+    <p>Домены — это области фокуса, в которых PM должен демонстрировать результаты:</p>
+    <div class="metric-grid" style="margin-top:16px">
+      ${[['🤝','Стейкхолдеры','Управление ожиданиями и вовлечённостью'],['👥','Команда','Формирование и развитие высокоэффективной команды'],['🔄','Подход к разработке','Выбор методологии: предиктивный, адаптивный или гибридный'],['📅','Планирование','Организация работы для получения результатов'],['⚙️','Работа проекта','Управление процессами для создания ценности'],['📦','Поставка','Обеспечение выполнения требований, качества, скоупа'],['📊','Измерения','Оценка производительности и реагирование на изменения'],['❓','Неопределённость','Управление рисками, волатильностью, неоднозначностью']].map(([i,n,d])=>`<div class="metric-card"><div class="metric-card-label">${i} ${n}</div><div class="metric-card-desc">${d}</div></div>`).join('')}
+    </div>`)}
+  ${pCall('warning','⚠️','<strong>Важно понять:</strong> PMBOK — это не методология, а стандарт знаний. Он не говорит «делайте именно так», а описывает что нужно знать и учитывать. Конкретную методологию (Agile, Waterfall) вы выбираете сами.')}
+  ${pNav(2,4)}
+`,
+
+// 4 — Жизненный цикл
+()=>`
+  <div class="lesson-tag">Модуль 2 · Урок 4</div>
+  <h1>Жизненный цикл проекта</h1>
+  <div class="lesson-meta"><span class="meta-badge">Стандарты</span><span class="meta-badge">~20 мин</span></div>
+  ${pBlock(`<p><strong>Жизненный цикл проекта</strong> — это совокупность фаз, через которые проходит проект от старта до закрытия. В PMBOK выделяют 5 групп процессов (Process Groups), которые применяются вне зависимости от выбранной методологии.</p>`)}
+  ${pBlock(`<h2>5 групп процессов PMBOK</h2>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num" style="color:#a855f7;font-size:20px">I</div>
+        <div class="step-content">
+          <h4>🚀 Инициация (Initiating)</h4>
+          <p>Определяем цели, создаём Устав проекта, назначаем PM. Ответ на вопрос: <em>«Нужен ли этот проект?»</em></p>
+          <p style="margin-top:8px;font-size:12px;color:var(--text3)">Артефакты: Project Charter, Stakeholder Register</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="color:#a855f7;font-size:20px">II</div>
+        <div class="step-content">
+          <h4>📋 Планирование (Planning)</h4>
+          <p>Детализируем скоуп, строим расписание, оцениваем бюджет и риски. <em>«Как мы достигнем цели?»</em></p>
+          <p style="margin-top:8px;font-size:12px;color:var(--text3)">Артефакты: WBS, Schedule, Risk Register, Communication Plan</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="color:#a855f7;font-size:20px">III</div>
+        <div class="step-content">
+          <h4>⚙️ Исполнение (Executing)</h4>
+          <p>Команда выполняет работу. PM координирует, устраняет блокеры, работает со стейкхолдерами.</p>
+          <p style="margin-top:8px;font-size:12px;color:var(--text3)">Артефакты: Deliverables, Change Requests, Issue Log</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="color:#a855f7;font-size:20px">IV</div>
+        <div class="step-content">
+          <h4>📊 Мониторинг и контроль (M&C)</h4>
+          <p>Отслеживаем прогресс, сравниваем план с фактом, управляем изменениями. Идёт параллельно с исполнением.</p>
+          <p style="margin-top:8px;font-size:12px;color:var(--text3)">Артефакты: Status Reports, Variance Analysis, EVM</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="color:#a855f7;font-size:20px">V</div>
+        <div class="step-content">
+          <h4>🏁 Закрытие (Closing)</h4>
+          <p>Сдаём результаты, фиксируем уроки, закрываем контракты. <em>«Чему научились?»</em></p>
+          <p style="margin-top:8px;font-size:12px;color:var(--text3)">Артефакты: Lessons Learned, Final Report, Project Closure Document</p>
+        </div>
+      </div>
+    </div>`)}
+  ${pBlock(`<h2>Треугольник ограничений PM</h2>
+    ${pCall('info','⚖️','Классическая модель — <strong>«Тройное ограничение»</strong>: Скоуп (что делаем) + Время (когда) + Бюджет (сколько стоит). Изменение одного влияет на остальные. Современный PMBOK добавляет 4-й элемент — <strong>Качество</strong>.')}
+    ${pTable(['Ограничение','Вопрос','Если изменить — что происходит'],
+      [['📦 Скоуп','Что именно делаем?','Увеличение → нужно больше времени и бюджета'],
+       ['⏱️ Время','Когда сдаём?','Сжатие → нужно больше бюджета или меньше скоупа'],
+       ['💰 Бюджет','Сколько стоит?','Урезание → нужно меньше скоупа или больше времени'],
+       ['✅ Качество','Насколько хорошо?','Снижение — быстрый способ, но опасный для репутации']])}
+  `)}
+  ${pNav(3,5)}
+`,
+
+// 5 — Waterfall
+()=>`
+  <div class="lesson-tag">Модуль 3 · Урок 5</div>
+  <h1>Waterfall и классические модели</h1>
+  <div class="lesson-meta"><span class="meta-badge">Методологии</span><span class="meta-badge">~25 мин</span></div>
+  ${pBlock(`<p><strong>Waterfall (Каскадная модель)</strong> — классический линейный подход к управлению проектом. Каждая фаза начинается только после завершения предыдущей, как вода падает вниз по каскаду.</p>`)}
+  ${pBlock(`<h2>Фазы Waterfall</h2>
+    <div style="display:flex;flex-direction:column;gap:4px;margin:16px 0">
+      ${[['📋','Требования (Requirements)','Полный сбор и фиксация всех требований до начала работ','rgba(168,85,247,0.15)'],
+         ['🎨','Проектирование (Design)','Архитектура решения, технический дизайн, прототипы','rgba(168,85,247,0.2)'],
+         ['⚙️','Разработка (Implementation)','Написание кода / создание продукта по утверждённому дизайну','rgba(168,85,247,0.25)'],
+         ['🧪','Тестирование (Verification)','QA-проверка на соответствие требованиям','rgba(168,85,247,0.3)'],
+         ['🚀','Поставка (Maintenance)','Внедрение, поддержка, сопровождение','rgba(168,85,247,0.35)']].map(([i,n,d,bg])=>`
+        <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:${bg};border-radius:8px">
+          <span style="font-size:22px">${i}</span>
+          <div><strong style="color:var(--text)">${n}</strong><br><span style="color:var(--text3);font-size:13px">${d}</span></div>
+        </div>`).join('')}
+    </div>`)}
+  ${pBlock(`<h2>Когда использовать Waterfall</h2>
+    <div class="compare-grid">
+      <div class="compare-bad">
+        <div class="compare-header">❌ Плохо подходит</div>
+        <div class="compare-body" style="font-family:inherit;font-size:13px;line-height:1.8">
+          • Требования неизвестны или меняются<br>
+          • Нужна быстрая обратная связь от пользователей<br>
+          • Инновационный продукт с высокой неопределённостью<br>
+          • Стартапы и MVP-разработка
+        </div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-header">✅ Хорошо подходит</div>
+        <div class="compare-body" style="font-family:inherit;font-size:13px;line-height:1.8">
+          • Строительство, производство, госконтракты<br>
+          • Чёткие и неизменные требования<br>
+          • Регуляторные проекты с жёсткой документацией<br>
+          • Большие инфраструктурные проекты
+        </div>
+      </div>
+    </div>`)}
+  ${pBlock(`<h2>Другие классические модели</h2>
+    ${pTable(['Модель','Суть','Когда применять'],
+      [['V-Model','Каждой фазе разработки соответствует фаза тестирования','Критические системы: авиация, медицина'],
+       ['Spiral','Циклы с анализом рисков на каждом витке','Крупные рискованные проекты'],
+       ['Incremental','Продукт строится частями (инкрементами), но без итераций','Большие системы с известными требованиями'],
+       ['RAD','Быстрая разработка с прототипированием и активным участием клиента','Небольшие проекты с гибкими требованиями'],
+       ['PRINCE2','Детально структурированный стандарт, популярен в Европе','Корпоративный и госсектор']])}
+  `)}
+  ${pCall('warning','💡','<strong>Главная проблема Waterfall:</strong> ошибки в требованиях обнаруживаются слишком поздно. Исправление бага, найденного на этапе тестирования, стоит в 10-100 раз дороже, чем на этапе проектирования.')}
+  ${pNav(4,6)}
+`,
+
+// 6 — Agile
+()=>`
+  <div class="lesson-tag">Модуль 3 · Урок 6</div>
+  <h1>Agile: манифест и ценности</h1>
+  <div class="lesson-meta"><span class="meta-badge">Методологии</span><span class="meta-badge">~25 мин</span></div>
+  ${pBlock(`<p>В 2001 году 17 разработчиков собрались на горнолыжном курорте в Юте и написали <strong>Agile-манифест</strong> — документ из 68 слов, который перевернул индустрию разработки ПО. Agile — это не методология, а <em>философия</em> и набор ценностей.</p>`)}
+  ${pBlock(`<h2>4 ценности Agile-манифеста</h2>
+    <div style="display:flex;flex-direction:column;gap:12px;margin:16px 0">
+      ${[['Люди и взаимодействие','важнее процессов и инструментов','👥'],
+         ['Работающий продукт','важнее исчерпывающей документации','✅'],
+         ['Сотрудничество с клиентом','важнее согласования условий контракта','🤝'],
+         ['Готовность к изменениям','важнее следования первоначальному плану','🔄']].map(([a,b,i])=>`
+      <div style="display:flex;align-items:center;gap:16px;padding:16px;background:rgba(168,85,247,0.07);border:1px solid rgba(168,85,247,0.18);border-radius:10px">
+        <span style="font-size:24px">${i}</span>
+        <div style="flex:1"><strong style="color:var(--accent2);font-size:15px">${a}</strong></div>
+        <div style="color:var(--text3);font-size:13px;padding:0 16px">${b}</div>
+      </div>`).join('')}
+    </div>
+    ${pCall('info','📌','Важно: Agile не отрицает процессы, документацию, контракты и планы. Он говорит, что <em>первое в каждой паре ценится <strong>больше</strong></em>, чем второе. Баланс нужен всегда.')}
+  `)}
+  ${pBlock(`<h2>12 принципов Agile</h2>
+    <div class="metric-grid">
+      ${[['Ранняя и непрерывная поставка ценности клиенту'],
+         ['Принимать изменения требований, даже поздно'],
+         ['Частая поставка работающего ПО (недели, не месяцы)'],
+         ['Бизнес и разработчики работают вместе ежедневно'],
+         ['Строить проекты вокруг мотивированных людей'],
+         ['Лицом к лицу — самый эффективный способ коммуникации'],
+         ['Работающий продукт — главная мера прогресса'],
+         ['Agile продвигает устойчивый темп разработки'],
+         ['Постоянное внимание к техническому качеству'],
+         ['Простота — искусство максимизировать неделаемое'],
+         ['Самоорганизующиеся команды дают лучшую архитектуру'],
+         ['Регулярная рефлексия и адаптация поведения']].map(([t],i)=>`<div class="metric-card"><div class="metric-card-label">Принцип ${i+1}</div><div class="metric-card-desc">${t}</div></div>`).join('')}
+    </div>
+  `)}
+  ${pBlock(`<h2>Agile-фреймворки</h2>
+    ${pTable(['Фреймворк','Подходит для','Популярность в РФ'],
+      [['Scrum','Продуктовая разработка, команды 5-9 чел.','⭐⭐⭐⭐⭐ Самый популярный'],
+       ['Kanban','Поддержка, операционная работа, сервисы','⭐⭐⭐⭐'],
+       ['SAFe','Крупные организации, масштабирование Agile','⭐⭐⭐'],
+       ['LeSS','Крупные продуктовые команды (альтернатива SAFe)','⭐⭐'],
+       ['XP (Extreme Programming)','Высококачественная разработка ПО','⭐⭐'],
+       ['Crystal','Гибкий, адаптируется под размер команды','⭐']])}
+  `)}
+  ${pNav(5,7)}
+`,
+
+// 7 — Scrum
+()=>`
+  <div class="lesson-tag">Модуль 3 · Урок 7</div>
+  <h1>Scrum: роли, артефакты, события</h1>
+  <div class="lesson-meta"><span class="meta-badge">Методологии</span><span class="meta-badge">~30 мин</span></div>
+  ${pBlock(`<p><strong>Scrum</strong> — самый популярный Agile-фреймворк. Это структура для разработки продукта с использованием коротких итераций (<strong>спринтов</strong>). По данным State of Agile Report, Scrum используют более 66% Agile-команд в мире.</p>`)}
+  ${pBlock(`<h2>3 роли в Scrum</h2>
+    <div class="metric-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">
+      <div class="metric-card" style="border-color:rgba(168,85,247,0.3)">
+        <div class="metric-card-label">👑 Product Owner (PO)</div>
+        <div class="metric-card-value" style="font-size:16px;color:#a855f7">«Что делаем»</div>
+        <div class="metric-card-desc">Ведёт Product Backlog, расставляет приоритеты, представляет интересы бизнеса и пользователей. Отвечает за ценность продукта.</div>
+      </div>
+      <div class="metric-card" style="border-color:rgba(168,85,247,0.3)">
+        <div class="metric-card-label">🔁 Scrum Master (SM)</div>
+        <div class="metric-card-value" style="font-size:16px;color:#a855f7">«Как работаем»</div>
+        <div class="metric-card-desc">Защищает команду от внешних помех, устраняет блокеры, следит за соблюдением Scrum. Коуч, а не менеджер.</div>
+      </div>
+      <div class="metric-card" style="border-color:rgba(168,85,247,0.3)">
+        <div class="metric-card-label">⚙️ Dev Team</div>
+        <div class="metric-card-value" style="font-size:16px;color:#a855f7">«Делаем работу»</div>
+        <div class="metric-card-desc">Кросс-функциональная, самоорганизующаяся команда 3-9 человек. Сама решает как выполнять задачи.</div>
+      </div>
+    </div>
+  `)}
+  ${pBlock(`<h2>3 артефакта Scrum</h2>
+    ${pTable(['Артефакт','Что это','Кто отвечает'],
+      [['📦 Product Backlog','Упорядоченный список всего что может войти в продукт','Product Owner'],
+       ['🏃 Sprint Backlog','Задачи выбранные командой для текущего спринта','Dev Team'],
+       ['✅ Increment','Готовый к поставке результат спринта (Done Definition)','Dev Team']])}
+  `)}
+  ${pBlock(`<h2>5 событий Scrum</h2>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num" style="color:#a855f7">1</div>
+        <div class="step-content">
+          <h4>Sprint — итерация (1-4 недели)</h4>
+          <p>Контейнер для всех остальных событий. Фиксированная длина, не изменяется в середине.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="color:#a855f7">2</div>
+        <div class="step-content">
+          <h4>Sprint Planning — планирование (≤8 ч)</h4>
+          <p>Команда выбирает задачи из бэклога и планирует Sprint Goal. Вопросы: что сделаем? как сделаем?</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="color:#a855f7">3</div>
+        <div class="step-content">
+          <h4>Daily Scrum — ежедневный стендап (15 мин)</h4>
+          <p>Каждый: что сделал вчера? что делаю сегодня? есть ли блокеры? Не статус-митинг для менеджера!</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="color:#a855f7">4</div>
+        <div class="step-content">
+          <h4>Sprint Review — демо (≤4 ч)</h4>
+          <p>Команда показывает результат стейкхолдерам. Собирается обратная связь. Обновляется бэклог.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="color:#a855f7">5</div>
+        <div class="step-content">
+          <h4>Sprint Retrospective — ретро (≤3 ч)</h4>
+          <p>Команда анализирует процесс: что хорошо? что плохо? что улучшить в следующем спринте?</p>
+        </div>
+      </div>
+    </div>`)}
+  ${pCall('warning','⚠️','<strong>Частые ошибки при внедрении Scrum:</strong> PM пытается управлять командой как в Waterfall; Daily превращается в совещание на час; Sprint Goal отсутствует; ретроспективы игнорируются; бэклог не ведётся.')}
+  ${pNav(6,8)}
+`,
+
+// 8 — Kanban
+()=>`
+  <div class="lesson-tag">Модуль 3 · Урок 8</div>
+  <h1>Kanban и гибридные модели</h1>
+  <div class="lesson-meta"><span class="meta-badge">Методологии</span><span class="meta-badge">~20 мин</span></div>
+  ${pBlock(`<p><strong>Kanban</strong> — метод управления потоком работ, родом из производственной системы Toyota. Главный принцип: <em>«Останови начинать — начни заканчивать»</em>. В отличие от Scrum, нет спринтов и фиксированных итераций.</p>`)}
+  ${pBlock(`<h2>6 ключевых практик Kanban</h2>
+    ${pTable(['Практика','Описание'],
+      [['👁️ Визуализация','Все задачи на доске: To Do → In Progress → Done'],
+       ['🔢 Лимит WIP','Work In Progress: ограничение числа параллельных задач'],
+       ['🌊 Управление потоком','Оптимизация скорости и плавности прохождения задач'],
+       ['📜 Явные политики','Чёткие правила: когда задача переходит в следующий столбец'],
+       ['🔄 Петли обратной связи','Регулярные встречи для анализа и улучшения'],
+       ['📈 Совместное улучшение','Команда эволюционирует на основе данных (Cycle Time, Throughput)']])}
+  `)}
+  ${pBlock(`<h2>Scrum vs Kanban — когда что выбрать</h2>
+    ${pTable(['Критерий','Scrum','Kanban'],
+      [['Итерации','Фиксированные спринты (1-4 нед.)','Непрерывный поток, нет спринтов'],
+       ['Роли','PO, SM, Dev Team обязательны','Нет обязательных ролей'],
+       ['Изменения','Нельзя вносить в середине спринта','Можно в любой момент'],
+       ['Метрики','Velocity, Burndown','Cycle Time, Lead Time, Throughput'],
+       ['Лучше для','Разработка новых фич и продуктов','Поддержка, баги, операционная работа'],
+       ['Планирование','Sprint Planning каждую итерацию','По мере появления задач']])}
+  `)}
+  ${pBlock(`<h2>Гибридные модели</h2>
+    ${pCall('info','🔀','Большинство реальных команд используют <strong>гибридный подход</strong> — комбинируя элементы разных методологий под свои нужды. Это нормально и поощряется PMBOK 7.')}
+    ${pTable(['Гибрид','Что берут','Когда применять'],
+      [['Scrumban','Спринты из Scrum + WIP-лимиты из Kanban','Переход от Scrum к непрерывной поставке'],
+       ['Water-Scrum-Fall','Waterfall для требований + Scrum для разработки + Waterfall для поставки','Enterprise с жёсткими процессами согласования'],
+       ['SAFe','Scrum на уровне команд + Kanban на уровне программы','100+ человек, несколько команд'],
+       ['Disciplined Agile','Выбор инструментов под контекст, без догматизма','Зрелые Agile-организации']])}
+  `)}
+  ${pNav(7,9)}
+`,
+
+// 9 — Риски
+()=>`
+  <div class="lesson-tag">Модуль 4 · Урок 9</div>
+  <h1>Управление рисками</h1>
+  <div class="lesson-meta"><span class="meta-badge">Инструменты</span><span class="meta-badge">~25 мин</span></div>
+  ${pBlock(`<p><strong>Риск</strong> — это неопределённое событие, которое если произойдёт, окажет влияние на цели проекта. Риски бывают <strong>угрозами</strong> (негативные) и <strong>возможностями</strong> (позитивные). PMBOK 7 акцентирует: управление рисками — непрерывный процесс, а не разовое упражнение.</p>`)}
+  ${pBlock(`<h2>Процесс управления рисками</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num" style="color:#a855f7">1</div><div class="step-content"><h4>Идентификация рисков</h4><p>Мозговой штурм, чеклисты, интервью, SWOT-анализ. Всё попадает в Risk Register.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">2</div><div class="step-content"><h4>Качественная оценка</h4><p>Матрица Вероятность × Воздействие (5×5). Приоритизация рисков по уровню.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">3</div><div class="step-content"><h4>Количественная оценка</h4><p>EMV (Expected Monetary Value), моделирование Монте-Карло. Для крупных рисков.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">4</div><div class="step-content"><h4>Планирование ответных мер</h4><p>Выбор стратегии реагирования для каждого риска.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">5</div><div class="step-content"><h4>Мониторинг и контроль</h4><p>Регулярный пересмотр Risk Register, реагирование на новые риски.</p></div></div>
+    </div>`)}
+  ${pBlock(`<h2>Стратегии реагирования на угрозы</h2>
+    ${pTable(['Стратегия','Суть','Пример'],
+      [['🚫 Избегание (Avoid)','Изменяем план чтобы риск не мог реализоваться','Отказываемся от рискованной технологии'],
+       ['📤 Передача (Transfer)','Перекладываем ответственность на третью сторону','Страховка, аутсорсинг рискованной части'],
+       ['⬇️ Снижение (Mitigate)','Снижаем вероятность или воздействие','Прототипирование, дополнительное тестирование'],
+       ['✋ Принятие (Accept)','Осознанно принимаем риск и готовим резервы','Резервный бюджет, план Б'],
+       ['📋 Эскалация (Escalate)','Передаём управление на уровень выше','Риск выходит за рамки полномочий PM']])}
+  `)}
+  ${pBlock(`<h2>Матрица рисков</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin:16px 0">
+      <div style="display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:4px;font-size:12px;font-family:'JetBrains Mono',monospace">
+        <div style="padding:8px;color:var(--text3)">Вероятность ↑ / Влияние →</div>
+        <div style="padding:8px;text-align:center;color:var(--text2)">Низкое</div>
+        <div style="padding:8px;text-align:center;color:var(--text2)">Среднее</div>
+        <div style="padding:8px;text-align:center;color:var(--text2)">Высокое</div>
+        ${[['Высокая','#ffb347','#ff6b6b','#ff0000'],['Средняя','#4fffb0','#ffb347','#ff6b6b'],['Низкая','#4fffb0','#4fffb0','#ffb347']].map(([l,...cs])=>`
+          <div style="padding:8px;color:var(--text3)">${l}</div>
+          ${cs.map(c=>`<div style="background:${c}22;border:1px solid ${c}44;border-radius:6px;padding:8px;text-align:center;color:${c}">${c==='#4fffb0'?'Низкий':c==='#ffb347'?'Средний':c==='#ff6b6b'?'Высокий':'Критичный'}</div>`).join('')}
+        `).join('')}
+      </div>
+    </div>`)}
+  ${pNav(8,10)}
+`,
+
+// 10 — Стейкхолдеры
+()=>`
+  <div class="lesson-tag">Модуль 4 · Урок 10</div>
+  <h1>Стейкхолдеры и коммуникации</h1>
+  <div class="lesson-meta"><span class="meta-badge">Инструменты</span><span class="meta-badge">~20 мин</span></div>
+  ${pBlock(`<p><strong>Стейкхолдер (заинтересованная сторона)</strong> — любое лицо или группа, которые влияют на проект или на которых влияет проект. По PMBOK 7, работа со стейкхолдерами — один из 8 ключевых доменов. 68% провалов проектов связаны с плохой работой со стейкхолдерами.</p>`)}
+  ${pBlock(`<h2>Матрица анализа стейкхолдеров</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px;margin:16px 0">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+        <div style="padding:16px;background:rgba(79,255,176,0.08);border:1px solid rgba(79,255,176,0.2);border-radius:8px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px">👑 Управляй тесно</div>
+          <div style="color:var(--text2)">Высокое влияние + Высокий интерес<br><small style="color:var(--text3)">Спонсор, ключевой клиент, регулятор</small></div>
+        </div>
+        <div style="padding:16px;background:rgba(123,111,255,0.08);border:1px solid rgba(123,111,255,0.2);border-radius:8px">
+          <div style="font-weight:700;color:var(--accent2);margin-bottom:8px">😊 Удовлетворяй</div>
+          <div style="color:var(--text2)">Высокое влияние + Низкий интерес<br><small style="color:var(--text3)">Топ-менеджмент, акционеры</small></div>
+        </div>
+        <div style="padding:16px;background:rgba(255,153,102,0.08);border:1px solid rgba(255,153,102,0.2);border-radius:8px">
+          <div style="font-weight:700;color:#ff9966;margin-bottom:8px">📢 Информируй</div>
+          <div style="color:var(--text2)">Низкое влияние + Высокий интерес<br><small style="color:var(--text3)">Конечные пользователи, операторы</small></div>
+        </div>
+        <div style="padding:16px;background:rgba(37,42,56,0.5);border:1px solid var(--border);border-radius:8px">
+          <div style="font-weight:700;color:var(--text3);margin-bottom:8px">👀 Мониторь</div>
+          <div style="color:var(--text2)">Низкое влияние + Низкий интерес<br><small style="color:var(--text3)">Смежные команды, общественность</small></div>
+        </div>
+      </div>
+    </div>`)}
+  ${pBlock(`<h2>Коммуникационный план</h2>
+    ${pCall('info','📡','<strong>Формула коммуникаций:</strong> N*(N-1)/2, где N — количество участников. 10 человек = 45 потенциальных каналов. PM управляет этой сложностью через структурированный план.')}
+    ${pTable(['Кому','Что','Как','Как часто','Кто'],
+      [['Спонсор','Статус, риски, решения','Встреча 1:1, Email','Еженедельно','PM'],
+       ['Команда','Задачи, блокеры, цели','Daily, Slack','Ежедневно','SM / PM'],
+       ['Стейкхолдеры','Прогресс, демо, результаты','Демо, отчёт','Раз в спринт','PO + PM'],
+       ['Топ-менеджмент','KPI, бюджет, сроки','Презентация','Ежемесячно','PM'],
+       ['Пользователи','Новые фичи, инструкции','Email, документация','По релизу','PM + Маркетинг']])}
+  `)}
+  ${pCall('tip','💡','<strong>Золотое правило PM:</strong> Не существует слишком много коммуникаций. Большинство проблем проектов — это либо недостаточная коммуникация, либо неправильный выбор канала и аудитории.')}
+  ${pNav(9,11)}
+`,
+
+// 11 — Метрики
+()=>`
+  <div class="lesson-tag">Модуль 4 · Урок 11</div>
+  <h1>Метрики и отчётность PM</h1>
+  <div class="lesson-meta"><span class="meta-badge">Инструменты</span><span class="meta-badge">~25 мин</span></div>
+  ${pBlock(`<p>PM без метрик — как пилот без приборной панели. Метрики позволяют объективно оценивать прогресс, предсказывать проблемы и принимать решения на основе данных, а не ощущений.</p>`)}
+  ${pBlock(`<h2>Earned Value Management (EVM)</h2>
+    ${pCall('info','📊','EVM — золотой стандарт измерения эффективности проектов в PMBOK. Позволяет одновременно оценить прогресс по объёму, срокам и бюджету.')}
+    ${pTable(['Показатель','Формула','Что означает'],
+      [['PV (Planned Value)','Бюджет × % плановой готовности','Сколько должны были сделать'],
+       ['EV (Earned Value)','Бюджет × % фактической готовности','Сколько реально сделали'],
+       ['AC (Actual Cost)','Фактические затраты','Сколько реально потратили'],
+       ['CV (Cost Variance)','EV − AC','Перерасход (<0) или экономия (>0)'],
+       ['SV (Schedule Variance)','EV − PV','Отставание (<0) или опережение (>0)'],
+       ['CPI (Cost Performance Index)','EV / AC','<1 перерасход, >1 экономия'],
+       ['SPI (Schedule Performance Index)','EV / PV','<1 отстаём, >1 опережаем']])}
+  `)}
+  ${pBlock(`<h2>Agile-метрики</h2>
+    <div class="metric-grid">
+      ${[['Velocity','Story Points завершённые за спринт. Базис для прогнозирования.'],
+         ['Burndown Chart','Визуализация сгорания задач в спринте. Показывает отставание.'],
+         ['Burnup Chart','Рост выполненного объёма. Лучше burndown при изменениях скоупа.'],
+         ['Cycle Time','Время от начала задачи до её завершения. Ключ к скорости.'],
+         ['Lead Time','Время от запроса до поставки. Важно для клиентов.'],
+         ['Throughput','Количество задач за период. Стабильность потока.'],
+         ['WIP','Количество задач в работе. Контроль перегруза.'],
+         ['Defect Rate','Количество багов на единицу функциональности. Качество.']].map(([n,d])=>`<div class="metric-card"><div class="metric-card-label">${n}</div><div class="metric-card-desc">${d}</div></div>`).join('')}
+    </div>`)}
+  ${pBlock(`<h2>Структура статус-репорта</h2>
+    ${pTable(['Раздел','Содержание'],
+      [['🟢🟡🔴 RAG-статус','Общий статус проекта: зелёный / жёлтый / красный + обоснование'],
+       ['📈 Прогресс','Что выполнено за период. % завершения. Основные вехи.'],
+       ['⚠️ Риски и проблемы','Топ-3 активных риска. Проблемы требующие решения.'],
+       ['📅 Следующие шаги','Что планируется на следующий период. Ключевые дедлайны.'],
+       ['💡 Решения','Решения которые нужны от руководства / стейкхолдеров.']])}
+  `)}
+  ${pNav(10,12)}
+`,
+
+// 12 — Лидерство
+()=>`
+  <div class="lesson-tag">Модуль 5 · Урок 12</div>
+  <h1>Лидерство и принятие решений</h1>
+  <div class="lesson-meta"><span class="meta-badge">Soft Skills</span><span class="meta-badge">~25 мин</span></div>
+  ${pBlock(`<p>По данным hh.ru, <strong>лидерство</strong> — самый востребованный soft skill в вакансиях PM в России. При этом PM редко имеет прямые полномочия над командой. Это называется <em>лидерство без авторитета</em> — самый сложный и ценный навык.</p>`)}
+  ${pBlock(`<h2>Модели лидерства для PM</h2>
+    ${pTable(['Стиль','Суть','Когда применять'],
+      [['🧭 Директивный','Чёткие инструкции, контроль','Кризис, новичок в команде, жёсткий дедлайн'],
+       ['🤝 Наставнический','Объясняю почему, развиваю навыки','Мотивированный, но неопытный сотрудник'],
+       ['🫂 Поддерживающий','Слушаю, поддерживаю, мотивирую','Опытный, но потерявший мотивацию'],
+       ['🚀 Делегирующий','Ставлю цель, даю автономию','Опытный и мотивированный эксперт'],
+       ['🌊 Servant Leadership','Устраняю препятствия для команды','Agile-среда, зрелые команды']])}
+  `)}
+  ${pBlock(`<h2>Фреймворки принятия решений</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num" style="color:#a855f7">DACI</div><div class="step-content"><h4>Матрица ответственности</h4><p><strong>D</strong>river (кто ведёт), <strong>A</strong>pprover (кто утверждает), <strong>C</strong>ontributed (кто участвует), <strong>I</strong>nformed (кого информируем). Снимает неопределённость «кто решает».</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">RACI</div><div class="step-content"><h4>Матрица ролей</h4><p><strong>R</strong>esponsible (выполняет), <strong>A</strong>ccountable (отвечает), <strong>C</strong>onsulted (консультирует), <strong>I</strong>nformed (информируется). Классика для распределения задач.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">RAPID</div><div class="step-content"><h4>McKinsey-модель</h4><p><strong>R</strong>ecommend, <strong>A</strong>gree, <strong>P</strong>erform, <strong>I</strong>nput, <strong>D</strong>ecide. Популярна в крупных корпорациях для важных стратегических решений.</p></div></div>
+    </div>`)}
+  ${pBlock(`<h2>Признаки сильного PM</h2>
+    <div class="compare-grid">
+      <div class="compare-bad">
+        <div class="compare-header">❌ Слабый PM</div>
+        <div class="compare-body" style="font-family:inherit;font-size:13px;line-height:2">
+          • Ждёт идеального плана перед стартом<br>
+          • Прячет проблемы от руководства<br>
+          • Управляет микроменеджментом<br>
+          • Обвиняет команду в провалах<br>
+          • Боится принимать решения без консенсуса<br>
+          • Путает занятость с продуктивностью
+        </div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-header">✅ Сильный PM</div>
+        <div class="compare-body" style="font-family:inherit;font-size:13px;line-height:2">
+          • Стартует с 80% информации, адаптирует по ходу<br>
+          • Проактивно эскалирует риски и проблемы<br>
+          • Создаёт условия и убирает препятствия<br>
+          • Принимает ответственность за результат команды<br>
+          • Решает и движется вперёд, даже при неопределённости<br>
+          • Фокусируется на outcomes, а не на активности
+        </div>
+      </div>
+    </div>`)}
+  ${pNav(11,13)}
+`,
+
+// 13 — Переговоры
+()=>`
+  <div class="lesson-tag">Модуль 5 · Урок 13</div>
+  <h1>Переговоры и управление конфликтами</h1>
+  <div class="lesson-meta"><span class="meta-badge">Soft Skills</span><span class="meta-badge">~25 мин</span></div>
+  ${pBlock(`<p>PM ведёт переговоры постоянно: со стейкхолдерами о требованиях, с командой об оценках, с руководством о ресурсах. Конфликты неизбежны — но управляемы. 80% конфликтов в командах связаны с нечёткими ожиданиями и коммуникацией.</p>`)}
+  ${pBlock(`<h2>Переговорные стратегии</h2>
+    ${pTable(['Стратегия','Суть','Когда применять'],
+      [['🤝 Win-Win','Ищем решение выгодное обеим сторонам. Идеал.','Долгосрочные отношения, партнёрство'],
+       ['💪 Жёсткие переговоры','Настаиваем на своей позиции. Рискованно для отношений.','Разовые сделки, критичные интересы'],
+       ['🔄 Принципиальные (Гарвард)','Отделяем людей от проблем. Фокус на интересах, а не позициях.','Большинство рабочих ситуаций'],
+       ['➡️ Уступка','Сознательно принимаем условия другой стороны.','Когда отношения важнее предмета спора'],
+       ['⏸️ Пауза','Откладываем решение, берём время на анализ.','Высокие ставки, нет достаточной информации']])}
+  `)}
+  ${pBlock(`<h2>5 стратегий управления конфликтами (PMBOK)</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num" style="color:#a855f7">1</div><div class="step-content"><h4>🤝 Сотрудничество (Collaborate)</h4><p>Совместный поиск решения с учётом интересов всех сторон. Лучший результат, требует времени.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">2</div><div class="step-content"><h4>🔄 Компромисс (Compromise)</h4><p>Обе стороны чем-то жертвуют. Быстро, но никто полностью не доволен.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">3</div><div class="step-content"><h4>➡️ Сглаживание (Smooth)</h4><p>Акцент на общем, игнорирование различий. Временно снимает напряжение, не решает проблему.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">4</div><div class="step-content"><h4>💪 Принуждение (Force)</h4><p>Использование власти для навязывания решения. Быстро, но разрушает отношения.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#a855f7">5</div><div class="step-content"><h4>⏸️ Уклонение (Withdraw)</h4><p>Откладывание конфликта. Иногда нужно, но нельзя злоупотреблять.</p></div></div>
+    </div>`)}
+  ${pBlock(`<h2>Ключевые soft skills PM по версии рынка РФ</h2>
+    <div class="metric-grid">
+      ${[['🗣️ Коммуникация','Ясно и убедительно выражать мысли устно и письменно. #1 навык в вакансиях.'],
+         ['🧠 Критическое мышление','Анализировать информацию, находить первопричины, а не симптомы.'],
+         ['⏱️ Тайм-менеджмент','Матрица Эйзенхауэра, техника Pomodoro, делегирование.'],
+         ['🎯 Приоритизация','MoSCoW, ICE, RICE — расставлять задачи по важности под давлением.'],
+         ['🧘 Стрессоустойчивость','Сохранять ясность мышления в условиях неопределённости и сжатых сроков.'],
+         ['👂 Активное слушание','Слышать что говорят — и что не говорят. Задавать правильные вопросы.'],
+         ['💡 Фасилитация','Проводить продуктивные встречи, управлять групповой динамикой.'],
+         ['📊 Data-driven мышление','Принимать решения на основе данных, а не интуиции и мнений.']].map(([n,d])=>`<div class="metric-card"><div class="metric-card-label">${n}</div><div class="metric-card-desc">${d}</div></div>`).join('')}
+    </div>`)}
+  ${pNav(12,14)}
+`,
+
+// 14 — Шпаргалка
+()=>`
+  <div class="lesson-tag">Финал</div>
+  <h1>📋 Шпаргалка PM</h1>
+  <div class="lesson-meta"><span class="meta-badge">Справочник</span><span class="meta-badge">Всегда под рукой</span></div>
+  ${pBlock(`<h2>🔑 Ключевые термины</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.2);color:#a855f7">📚 PMBOK & Стандарты</div>
+        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.8">PMI — Project Management Institute
+PMBOK — Body of Knowledge (стандарт)
+PMP — Project Management Professional
+PMO — Project Management Office
+Charter — Устав проекта
+WBS — Work Breakdown Structure
+Scope — Скоуп / Содержание проекта
+Baseline — Утверждённый план (база)
+Milestone — Ключевая веха
+Deliverable — Результат / поставка
+Lessons Learned — Уроки проекта</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.2);color:#a855f7">⚡ Agile & Scrum</div>
+        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.8">Sprint — итерация (1-4 нед.)
+Backlog — список всех задач
+User Story — история пользователя
+Story Points — оценка сложности
+Velocity — скорость команды
+DoD — Definition of Done
+Sprint Goal — цель спринта
+Epic — крупная фича (группа историй)
+Spike — исследовательская задача
+Impediment — блокер для команды
+Increment — готовый результат спринта</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.2);color:#a855f7">📊 Метрики EVM</div>
+        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.8">PV = Плановый объём
+EV = Освоенный объём
+AC = Фактические затраты
+CV = EV − AC (стоимость)
+SV = EV − PV (расписание)
+CPI = EV / AC (эффективность $)
+SPI = EV / PV (эффективность t)
+CPI > 1 → экономия бюджета
+SPI > 1 → опережение графика
+BAC = Budget At Completion
+EAC = AC + (BAC-EV)/CPI</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.2);color:#a855f7">⚠️ Риски</div>
+        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.8">Risk Register — реестр рисков
+EMV = Вероятность × Воздействие
+Avoid — избегаем риска
+Transfer — страхуем / отдаём
+Mitigate — снижаем вероятность
+Accept — принимаем риск
+Contingency Reserve — резерв
+Management Reserve — резерв рук-ва
+Trigger — признак наступления риска
+Residual Risk — остаточный риск
+Secondary Risk — риск от реагирования</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.2);color:#a855f7">👥 Команда & Лидерство</div>
+        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.8">Forming → Storming → Norming
+→ Performing → Adjourning
+(Модель Такмана)
+
+RACI: Responsible, Accountable,
+      Consulted, Informed
+DACI: Driver, Approver,
+      Contributor, Informed
+Servant Leadership — лидерство-служение
+Emotional Intelligence (EQ)
+Growth Mindset — установка на рост</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.2);color:#a855f7">🛠️ Инструменты PM</div>
+        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.8">Jira — Agile трекер задач
+Confluence — база знаний
+MS Project — классическое планирование
+Miro / Mural — онлайн-доски
+Notion — гибкая база знаний
+YouTrack — трекер JetBrains
+Trello — Kanban-доска
+Monday.com — управление проектами
+Asana — управление задачами
+ClickUp — всё-в-одном</pre>
+      </div>
+    </div>`)}
+  ${pBlock(`<h2>🎯 Методологии в одном взгляде</h2>
+    ${pTable(['Что','Waterfall','Agile / Scrum','Kanban'],
+      [['Итерации','Нет, линейно','Спринты 1-4 нед.','Непрерывно'],
+       ['Планирование','Полное в начале','Sprint by Sprint','По потоку'],
+       ['Изменения','Дорого и болезненно','Приветствуются','В любой момент'],
+       ['Документация','Много и вперёд','Необходимый минимум','Минимальная'],
+       ['Клиент','В начале и конце','Каждый спринт','Постоянно'],
+       ['Подходит','Строительство, госпроекты','IT-продукты, стартапы','Поддержка, сервис'],
+       ['Метрика успеха','Выполнение плана','Ценность для клиента','Скорость потока']])}
+  `)}
+  ${pCall('tip','🏆','<strong>Совет напоследок:</strong> Лучший PM — тот, кто умеет адаптировать инструменты под контекст, а не применяет одну методологию ко всем проектам. Изучайте, практикуйте, рефлексируйте.')}
+  ${pNav(13, undefined, true)}
+`
+];
+
+function showPmLesson(idx) {
+  currentPmLesson = idx;
+  document.querySelectorAll('#pm-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('pm-nav-' + idx);
+  if (navEl) {
+    navEl.classList.add('active');
+    if (pmCompleted.has(idx) && !navEl.querySelector('.check-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'check-badge';
+      badge.style.background = '#a855f7';
+      badge.textContent = '✓';
+      navEl.appendChild(badge);
+    }
   }
+  const main = document.getElementById('pm-main-content');
+  main.innerHTML = pmLessons[idx]();
+  main.scrollTo(0, 0);
+  updatePmProgress();
+  setTimeout(wrapTables, 50);
+  closeSidebar();
 }
 
-function closeSidebar() {
-  document.querySelectorAll('.sidebar').forEach(s => s.classList.remove('open'));
-  document.getElementById('sidebar-overlay').classList.remove('open');
+function pmCompleteAndNav(targetIdx) {
+  pmCompleted.add(currentPmLesson);
+  const navEl = document.getElementById('pm-nav-' + currentPmLesson);
+  if (navEl && !navEl.querySelector('.check-badge')) {
+    const badge = document.createElement('span');
+    badge.className = 'check-badge';
+    badge.style.background = '#a855f7';
+    badge.textContent = '✓';
+    navEl.appendChild(badge);
+    navEl.classList.add('completed');
+  }
+  showPmLesson(targetIdx);
 }
 
-function setMobileNav(course) {
-  document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
-  const btn = document.getElementById('mnb-' + course);
-  if (btn) btn.classList.add('active');
-  // Show hamburger only on course views
-  const toggle = document.getElementById('sidebar-toggle');
-  if (toggle) toggle.style.display = (course === 'sql' || course === 'dev') ? 'flex' : 'none';
+function pmCompleteFinal() {
+  pmCompleted.add(currentPmLesson);
+  updatePmProgress();
+  const navEl = document.getElementById('pm-nav-' + currentPmLesson);
+  if (navEl && !navEl.querySelector('.check-badge')) {
+    const badge = document.createElement('span');
+    badge.className = 'check-badge';
+    badge.style.background = '#a855f7';
+    badge.textContent = '✓';
+    navEl.appendChild(badge);
+    navEl.classList.add('completed');
+  }
+  document.getElementById('pm-main-content').insertAdjacentHTML('beforeend', `
+    <div class="callout tip" style="margin-top:24px;animation:fadeUp 0.5s ease">
+      <span class="callout-icon">🎉</span>
+      <div><strong>Курс «Управление проектами» завершён!</strong> Вы изучили PMBOK 7, Agile, Scrum, Kanban, управление рисками и soft skills. Применяйте это в работе!</div>
+    </div>
+  `);
 }
+
+function updatePmProgress() {
+  const done = pmCompleted.size;
+  const pct = Math.round((done / PM_TOTAL) * 100);
+  const el = document.getElementById('pm-progress-text');
+  if (el) el.textContent = `${done} / ${PM_TOTAL}`;
+  const fill = document.getElementById('pm-progress-fill');
+  if (fill) fill.style.width = pct + '%';
+  updateDrawerProgress();
+}
+
+// Update showLesson/showDevLesson wrappers
+const _origShowLesson = showLesson;
+showLesson = function(idx) { _origShowLesson(idx); setTimeout(wrapTables, 50); closeSidebar(); updateDrawerProgress(); };
+const _origShowDevLesson = showDevLesson;
+showDevLesson = function(idx) { _origShowDevLesson(idx); setTimeout(wrapTables, 50); closeSidebar(); updateDrawerProgress(); };
 
 // Wrap all .db-table in scrollable container if not already wrapped
 function wrapTables() {
@@ -3620,20 +4689,10 @@ function wrapTables() {
   });
 }
 
-// Re-wrap tables after each lesson render
-const _origShowLesson = showLesson;
-showLesson = function(idx) { _origShowLesson(idx); setTimeout(wrapTables, 50); closeSidebar(); };
-const _origShowDevLesson = showDevLesson;
-showDevLesson = function(idx) { _origShowDevLesson(idx); setTimeout(wrapTables, 50); closeSidebar(); };
-
-// Init sidebar toggle visibility
-document.getElementById('sidebar-toggle').style.display = 'none';
 
 function updateProgress() {
   _origUpdateProgress();
-  const done = [...completed].filter(x => x > 0).length;
-  const tabProg = document.getElementById('sql-tab-progress');
-  if (tabProg) tabProg.textContent = `${done}/13`;
+  updateDrawerProgress();
 }
 </script>
 </body>
