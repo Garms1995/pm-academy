@@ -873,6 +873,202 @@
 
   /* NEW BADGE */
   .new-badge { font-size: 9px; background: linear-gradient(135deg, var(--accent2), var(--accent)); color: #000; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+
+  /* ══════════════════════════════════════════
+     MOBILE OVERLAY SIDEBAR
+  ══════════════════════════════════════════ */
+  .sidebar-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 90;
+    backdrop-filter: blur(4px);
+  }
+  .sidebar-overlay.open { display: block; }
+
+  /* Mobile bottom nav bar */
+  .mobile-nav-bar {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    z-index: 80;
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+  }
+  .mobile-nav-inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .mobile-nav-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 6px 12px;
+    border: none; background: none;
+    color: var(--text3); cursor: pointer;
+    font-family: 'Instrument Sans', sans-serif;
+    transition: color 0.15s;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .mobile-nav-btn .mnb-icon { font-size: 20px; }
+  .mobile-nav-btn.active { color: var(--accent); }
+  .mobile-nav-btn.active.dev { color: #ff9966; }
+
+  /* Hamburger button for sidebar */
+  .sidebar-toggle {
+    display: none;
+    align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text2);
+    font-size: 16px;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE BREAKPOINTS
+  ══════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* ── TOP NAV ── */
+    .top-nav-inner {
+      padding: 0 14px;
+      height: 52px;
+    }
+    .platform-logo {
+      font-size: 15px;
+      margin-right: 0;
+    }
+    /* Hide desktop course tabs — replaced by bottom nav */
+    .course-tabs { display: none; }
+    /* Hide progress bars in header on mobile */
+    .nav-right { display: none; }
+    /* Show hamburger */
+    .sidebar-toggle { display: flex; }
+
+    /* ── COURSE AREA ── */
+    .course-area {
+      height: calc(100vh - 52px);
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      position: relative;
+    }
+
+    /* ── SIDEBAR — slides in from left ── */
+    .sidebar {
+      position: fixed;
+      top: 52px; left: 0; bottom: 0;
+      width: 280px;
+      z-index: 95;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      padding-bottom: 80px;
+    }
+    .sidebar.open {
+      transform: translateX(0);
+      box-shadow: 4px 0 32px rgba(0,0,0,0.4);
+    }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      padding: 24px 16px 100px; /* bottom pad for nav bar */
+      max-width: 100%;
+      width: 100%;
+    }
+
+    /* ── HOME SCREEN ── */
+    .home-screen {
+      padding: 28px 16px 100px;
+    }
+    .home-screen h1 { font-size: 28px; }
+    .home-subtitle { font-size: 14px; margin-bottom: 28px; }
+    .courses-grid { grid-template-columns: 1fr; gap: 14px; }
+    .course-card { padding: 20px; }
+    .course-card h2 { font-size: 18px; }
+
+    /* ── LESSON HEADINGS ── */
+    h1 { font-size: 24px; }
+    h2 { font-size: 17px; }
+
+    /* ── TABLES — horizontal scroll ── */
+    .db-table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 16px 0;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .db-table {
+      margin: 0;
+      border: none;
+      min-width: 480px;
+    }
+
+    /* ── COMPARE GRID — stack vertically ── */
+    .compare-grid { grid-template-columns: 1fr; }
+
+    /* ── METRIC GRID — 2 columns ── */
+    .metric-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .metric-card { padding: 12px 14px; }
+    .metric-card-value { font-size: 18px; }
+
+    /* ── SCHEMA VIZ — scroll ── */
+    .schema-viz {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+    }
+
+    /* ── SQL PLAYGROUND ── */
+    .sql-editor { font-size: 13px; min-height: 80px; }
+    .run-btn { width: 100%; margin-top: 8px; }
+    .playground-header { flex-wrap: wrap; gap: 8px; }
+
+    /* ── LESSON NAV ── */
+    .lesson-nav {
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 24px;
+    }
+    .btn-nav, .btn-complete {
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+      justify-content: center;
+    }
+
+    /* ── WELCOME / MODULE CARDS ── */
+    .course-stats { gap: 12px; }
+    .module-list { gap: 10px; }
+    .module-card { padding: 14px 16px; }
+
+    /* ── CHEAT GRID ── */
+    .cheat-grid { grid-template-columns: 1fr; }
+
+    /* ── STEP LIST ── */
+    .step-item { gap: 12px; }
+    .step-num { font-size: 20px; min-width: 26px; }
+
+    /* ── MOBILE BOTTOM NAV ── */
+    .mobile-nav-bar { display: block; }
+
+    /* ── CALLOUT ── */
+    .callout { padding: 12px 14px; font-size: 13px; }
+  }
+
+  @media (max-width: 380px) {
+    .home-screen h1 { font-size: 22px; }
+    .metric-grid { grid-template-columns: 1fr; }
+    .course-stats { flex-direction: column; align-items: flex-start; }
+  }
 </style>
 </head>
 <body>
@@ -880,6 +1076,7 @@
 <nav class="top-nav">
   <div class="top-nav-inner">
     <div class="platform-logo"><div class="logo-dot"></div>PM Academy</div>
+    <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()" aria-label="Меню">☰</button>
     <div class="course-tabs">
       <button class="course-tab active" id="tab-home" onclick="showCourse('home')">
         <span class="tab-icon">🏠</span> Главная
@@ -1097,6 +1294,24 @@
     <main class="main" id="dev-main-content"></main>
   </div>
 </div>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav-bar">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-btn active" id="mnb-home" onclick="showCourse('home'); setMobileNav('home')">
+      <span class="mnb-icon">🏠</span>Главная
+    </button>
+    <button class="mobile-nav-btn" id="mnb-sql" onclick="showCourse('sql'); setMobileNav('sql')">
+      <span class="mnb-icon">🗄️</span>SQL
+    </button>
+    <button class="mobile-nav-btn dev" id="mnb-dev" onclick="showCourse('dev'); setMobileNav('dev')">
+      <span class="mnb-icon">💻</span>Dev
+    </button>
+  </div>
+</nav>
 
 <script>
 // ─────────────────────────────────────────────
@@ -2663,6 +2878,12 @@ function showCourse(course) {
   document.getElementById('progress-wrap-sql').style.display = course === 'sql' ? 'flex' : 'none';
   document.getElementById('progress-wrap-dev').style.display = course === 'dev' ? 'flex' : 'none';
 
+  // Mobile: sidebar toggle visibility
+  const toggle = document.getElementById('sidebar-toggle');
+  if (toggle) toggle.style.display = (course === 'sql' || course === 'dev') ? 'flex' : 'none';
+
+  closeSidebar();
+
   if (course === 'sql' && currentLesson === 0) showLesson(0);
   if (course === 'dev' && currentDevLesson === 0) showDevLesson(0);
 }
@@ -3354,8 +3575,60 @@ function updateDevProgress() {
   if (tabProg) tabProg.textContent = `${done}/${total}`;
 }
 
-// Also update SQL tab progress on SQL progress update
-const _origUpdateProgress = updateProgress;
+// ─────────────────────────────────────────────
+// MOBILE HELPERS
+// ─────────────────────────────────────────────
+function toggleSidebar() {
+  const isSqlActive  = activeCourse === 'sql';
+  const isDevActive  = activeCourse === 'dev';
+  if (!isSqlActive && !isDevActive) return;
+  const sidebar = isSqlActive
+    ? document.querySelector('#course-sql .sidebar')
+    : document.querySelector('#course-dev .sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (!sidebar) return;
+  const isOpen = sidebar.classList.contains('open');
+  if (isOpen) { closeSidebar(); } else {
+    sidebar.classList.add('open');
+    overlay.classList.add('open');
+  }
+}
+
+function closeSidebar() {
+  document.querySelectorAll('.sidebar').forEach(s => s.classList.remove('open'));
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+function setMobileNav(course) {
+  document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('mnb-' + course);
+  if (btn) btn.classList.add('active');
+  // Show hamburger only on course views
+  const toggle = document.getElementById('sidebar-toggle');
+  if (toggle) toggle.style.display = (course === 'sql' || course === 'dev') ? 'flex' : 'none';
+}
+
+// Wrap all .db-table in scrollable container if not already wrapped
+function wrapTables() {
+  document.querySelectorAll('.db-table').forEach(t => {
+    if (!t.parentElement.classList.contains('db-table-wrap')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'db-table-wrap';
+      t.parentNode.insertBefore(wrap, t);
+      wrap.appendChild(t);
+    }
+  });
+}
+
+// Re-wrap tables after each lesson render
+const _origShowLesson = showLesson;
+showLesson = function(idx) { _origShowLesson(idx); setTimeout(wrapTables, 50); closeSidebar(); };
+const _origShowDevLesson = showDevLesson;
+showDevLesson = function(idx) { _origShowDevLesson(idx); setTimeout(wrapTables, 50); closeSidebar(); };
+
+// Init sidebar toggle visibility
+document.getElementById('sidebar-toggle').style.display = 'none';
+
 function updateProgress() {
   _origUpdateProgress();
   const done = [...completed].filter(x => x > 0).length;
