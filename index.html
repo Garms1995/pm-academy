@@ -1178,10 +1178,12 @@
       <div class="progress-bar-wrap" id="progress-wrap-dev" style="display:none">
         <span id="dev-progress-text">0 / 12</span>
         <div class="progress-bar"><div class="progress-fill dev" id="dev-progress-fill"></div></div>
-      </div>
-      <div class="progress-bar-wrap" id="progress-wrap-pm" style="display:none">
+      </div>      <div class="progress-bar-wrap" id="progress-wrap-pm" style="display:none">
         <span id="pm-progress-text">0 / 14</span>
         <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,#a855f7,#7c3aed)" id="pm-progress-fill"></div></div>
+      </div>
+        <span id="py-progress-text">0 / 16</span>
+        <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,#f59e0b,#ea580c)" id="py-progress-fill"></div></div>
       </div>
     </div>
   </div>
@@ -1209,10 +1211,10 @@
       <span class="dci-icon">🗄️</span>
       <div class="dci-body">
         <div class="dci-name">SQL для PM</div>
-        <div class="dci-sub">14 уроков · 5 модулей</div>
+        <div class="dci-sub">13 уроков · 5 модулей</div>
       </div>
       <div class="dci-progress">
-        <span class="dci-pct" id="drawer-sql-pct" style="color:var(--accent)">0/14</span>
+        <span class="dci-pct" id="drawer-sql-pct" style="color:var(--accent)">0/13</span>
         <div class="dci-bar"><div class="dci-bar-fill" id="drawer-sql-fill" style="background:var(--accent);width:0%"></div></div>
       </div>
     </div>
@@ -1221,10 +1223,10 @@
       <span class="dci-icon">💻</span>
       <div class="dci-body">
         <div class="dci-name">Разработка ПО</div>
-        <div class="dci-sub">13 уроков · 5 модулей</div>
+        <div class="dci-sub">12 уроков · 5 модулей</div>
       </div>
       <div class="dci-progress">
-        <span class="dci-pct" id="drawer-dev-pct" style="color:#ff9966">0/13</span>
+        <span class="dci-pct" id="drawer-dev-pct" style="color:#ff9966">0/12</span>
         <div class="dci-bar"><div class="dci-bar-fill" id="drawer-dev-fill" style="background:#ff9966;width:0%"></div></div>
       </div>
     </div>
@@ -1241,10 +1243,21 @@
       </div>
     </div>
 
+    <div class="drawer-course-item" id="drawer-py" onclick="showCourse('py');closeDrawer()" style="border-color:transparent">
+      <span class="dci-icon">🐍</span>
+      <div class="dci-body">
+        <div class="dci-name">Python для PM</div>
+        <div class="dci-sub">16 уроков · 7 модулей</div>
+      </div>
+      <div class="dci-progress">
+        <span class="dci-pct" id="drawer-py-pct" style="color:#f59e0b">0/16</span>
+        <div class="dci-bar"><div class="dci-bar-fill" id="drawer-py-fill" style="background:#f59e0b;width:0%"></div></div>
+      </div>
+    </div>
+
     <div class="drawer-section-label">Скоро</div>
     <div class="drawer-soon"><span class="dci-icon">📊</span><div class="dci-body"><div class="dci-name">Аналитика данных</div><div class="dci-sub">В разработке</div></div></div>
     <div class="drawer-soon"><span class="dci-icon">🎨</span><div class="dci-body"><div class="dci-name">UX для PM</div><div class="dci-sub">В разработке</div></div></div>
-    <div class="drawer-soon"><span class="dci-icon">📈</span><div class="dci-body"><div class="dci-name">Продуктовые метрики</div><div class="dci-sub">В разработке</div></div></div>
   </div>
   <div class="drawer-footer">
     <strong>PM Academy</strong> · База знаний для Product Manager
@@ -1262,7 +1275,7 @@
         <h2>SQL для PM</h2>
         <p>Реляционные БД, язык запросов, продуктовые метрики. Пишите запросы прямо в браузере на живых данных.</p>
         <div class="course-card-meta">
-          <span class="c-badge green">14 уроков</span>
+          <span class="c-badge green">13 уроков</span>
           <span class="c-badge purple">5 модулей</span>
           <span class="c-badge green">Интерактивный SQL</span>
         </div>
@@ -1273,7 +1286,7 @@
         <h2>Основы разработки ПО</h2>
         <p>Как работает интернет, что такое API, Git, CI/CD, архитектура — всё что PM должен знать о технологиях.</p>
         <div class="course-card-meta">
-          <span class="c-badge orange">13 уроков</span>
+          <span class="c-badge orange">12 уроков</span>
           <span class="c-badge purple">5 модулей</span>
           <span class="c-badge orange">Для PM</span>
         </div>
@@ -1287,6 +1300,17 @@
           <span class="c-badge" style="background:rgba(168,85,247,0.1);color:#a855f7">14 уроков</span>
           <span class="c-badge purple">6 модулей</span>
           <span class="c-badge" style="background:rgba(168,85,247,0.1);color:#a855f7">Новый курс</span>
+        </div>
+        <div class="course-card-arrow">→</div>
+      </div>
+      <div class="course-card" style="border-top:3px solid #f59e0b;cursor:pointer" onclick="showCourse('py')">
+        <div class="course-card-icon">🐍</div>
+        <h2 style="color:var(--text)">Python для PM</h2>
+        <p>Lайфкодинг с Claude: установка, основы языка, автоматизация, Telegram-боты, дашборды на Streamlit. Для нетехнарей.</p>
+        <div class="course-card-meta">
+          <span class="c-badge" style="background:rgba(245,158,11,0.1);color:#f59e0b">16 уроков</span>
+          <span class="c-badge purple">7 модулей</span>
+          <span class="c-badge" style="background:rgba(245,158,11,0.1);color:#f59e0b">Новый!</span>
         </div>
         <div class="course-card-arrow">→</div>
       </div>
@@ -1521,6 +1545,83 @@
   </div>
 </div>
 
+<!-- PYTHON COURSE -->
+<div class="course-area" id="course-py">
+  <div class="layout">
+    <nav class="sidebar" id="py-sidebar" style="border-right-color:rgba(245,158,11,0.2)">
+      <div class="sidebar-section">Курс</div>
+      <div class="sidebar-item active" onclick="showPyLesson(0)" id="py-nav-0">
+        <span class="item-num">00</span><span class="item-icon">🏠</span><span>Введение</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 1 — Среда разработки</div>
+      <div class="sidebar-item" onclick="showPyLesson(1)" id="py-nav-1">
+        <span class="item-num">01</span><span class="item-icon">🔧</span><span>Установка Python + VS Code</span>
+      </div>
+      <div class="sidebar-item" onclick="showPyLesson(2)" id="py-nav-2">
+        <span class="item-num">02</span><span class="item-icon">🤖</span><span>Рабочий процесс с Claude</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 2 — Основы языка</div>
+      <div class="sidebar-item" onclick="showPyLesson(3)" id="py-nav-3">
+        <span class="item-num">03</span><span class="item-icon">📦</span><span>Переменные и типы</span>
+      </div>
+      <div class="sidebar-item" onclick="showPyLesson(4)" id="py-nav-4">
+        <span class="item-num">04</span><span class="item-icon">🔀</span><span>Условия и циклы</span>
+      </div>
+      <div class="sidebar-item" onclick="showPyLesson(5)" id="py-nav-5">
+        <span class="item-num">05</span><span class="item-icon">⚙️</span><span>Функции</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 3 — Структуры данных</div>
+      <div class="sidebar-item" onclick="showPyLesson(6)" id="py-nav-6">
+        <span class="item-num">06</span><span class="item-icon">📋</span><span>Списки и словари</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 4 — Работа с данными</div>
+      <div class="sidebar-item" onclick="showPyLesson(7)" id="py-nav-7">
+        <span class="item-num">07</span><span class="item-icon">📄</span><span>Файлы и CSV</span>
+      </div>
+      <div class="sidebar-item" onclick="showPyLesson(8)" id="py-nav-8">
+        <span class="item-num">08</span><span class="item-icon">🌐</span><span>JSON и API</span>
+      </div>
+      <div class="sidebar-item" onclick="showPyLesson(9)" id="py-nav-9">
+        <span class="item-num">09</span><span class="item-icon">📊</span><span>Excel и pandas</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 5 — Практика</div>
+      <div class="sidebar-item" onclick="showPyLesson(10)" id="py-nav-10">
+        <span class="item-num">10</span><span class="item-icon">🤖</span><span>Telegram-бот для PM</span>
+      </div>
+      <div class="sidebar-item" onclick="showPyLesson(11)" id="py-nav-11">
+        <span class="item-num">11</span><span class="item-icon">⏰</span><span>Автоматизация и расписание</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 6 — AI-разработка</div>
+      <div class="sidebar-item" onclick="showPyLesson(12)" id="py-nav-12">
+        <span class="item-num">12</span><span class="item-icon">✨</span><span>Vibe Coding с Claude</span>
+      </div>
+      <div class="sidebar-item" onclick="showPyLesson(13)" id="py-nav-13">
+        <span class="item-num">13</span><span class="item-icon">📦</span><span>Окружения и пакеты</span>
+      </div>
+
+      <div class="sidebar-section">Модуль 7 — Веб и проекты</div>
+      <div class="sidebar-item" onclick="showPyLesson(14)" id="py-nav-14">
+        <span class="item-num">14</span><span class="item-icon">📈</span><span>Streamlit — дашборды</span>
+      </div>
+      <div class="sidebar-item" onclick="showPyLesson(15)" id="py-nav-15">
+        <span class="item-num">15</span><span class="item-icon">🚀</span><span>Реальные проекты</span>
+      </div>
+
+      <div class="sidebar-section">Финал</div>
+      <div class="sidebar-item" onclick="showPyLesson(16)" id="py-nav-16">
+        <span class="item-num">16</span><span class="item-icon">🐍</span><span>Шпаргалка Python</span>
+      </div>
+    </nav>
+    <main class="main" id="py-main-content"></main>
+  </div>
+</div>
+
 <!-- SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
@@ -1581,7 +1682,16 @@ const DB = {
 // ─────────────────────────────────────────────
 function runSQL(query) {
   try {
-    const q = query.trim().replace(/\s+/g, ' ').replace(/;$/, '');
+    // Strip single-line SQL comments (-- ...) and clean whitespace
+    const stripped = query
+      .split('\n')
+      .map(line => line.replace(/--.*$/, ''))   // remove -- comments
+      .join(' ')
+      .trim()
+      .replace(/\s+/g, ' ')
+      .replace(/;$/, '');
+
+    const q = stripped;
     const upper = q.toUpperCase();
 
     // SHOW TABLES
@@ -1882,7 +1992,7 @@ const lessons = [
         Этот курс создан специально для PM. Здесь нет лишней теории — только то, что вам нужно, чтобы <strong>самостоятельно анализировать данные продукта</strong>.
       </p>
       <div class="course-stats">
-        <div class="stat-card"><div class="stat-num">14</div><div class="stat-label">уроков</div></div>
+        <div class="stat-card"><div class="stat-num">13</div><div class="stat-label">уроков</div></div>
         <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">модулей</div></div>
         <div class="stat-card"><div class="stat-num">∞</div><div class="stat-label">практики</div></div>
       </div>
@@ -2600,7 +2710,7 @@ JOIN repeat_buyers r
     </div>
     <div class="content-block">
       <h2>MAU — активные за месяц</h2>
-      ${sqlBlock("SELECT COUNT(DISTINCT user_id) AS mau\nFROM events\nWHERE created_at >= '2024-01-01'\nAND created_at < '2024-12-01'", 'MAU за 2024 год')}
+      ${sqlBlock("SELECT COUNT(DISTINCT user_id) AS mau\nFROM events\nWHERE created_at >= '2024-01-01'\nAND created_at < '2025-01-01'", 'MAU за весь 2024 год (январь–декабрь включительно)')}
     </div>
     <div class="content-block">
       <h2>Sticky Factor = DAU / MAU</h2>
@@ -2782,7 +2892,7 @@ AS rate
       'Нельзя сказать — нужен COUNT(DISTINCT user_id)',
       'Меньше 10, потому что COUNT игнорирует NULL'
     ], 2, "COUNT(*) считает строки, а не уникальные значения. Один пользователь мог сделать 5 событий — тогда строк 10, но уникальных юзеров 6. Всегда используйте COUNT(DISTINCT user_id) когда нужны уникальные пользователи.")}
-  `, nav: { prev: 11, next: 7 }
+  `, nav: { prev: 11, next: 13 }
 },
 
 // 13 — CHEATSHEET
@@ -3093,13 +3203,13 @@ let activeCourse = 'home';
 
 function showCourse(course) {
   activeCourse = course;
-  ['home','sql','dev','pm'].forEach(c => {
+  ['home','sql','dev','pm','py'].forEach(c => {
     const el = document.getElementById('course-' + c);
     if (el) el.style.display = c === course ? 'flex' : 'none';
   });
 
   // Update drawer active state
-  ['home','sql','dev','pm'].forEach(c => {
+  ['home','sql','dev','pm','py'].forEach(c => {
     const d = document.getElementById('drawer-' + c);
     if (d) d.classList.toggle('active', c === course);
   });
@@ -3107,14 +3217,14 @@ function showCourse(course) {
   // Breadcrumb
   const bcWrap = document.getElementById('nav-breadcrumb');
   const bcName = document.getElementById('bc-course-name');
-  const names = {sql:'SQL для PM', dev:'Разработка ПО', pm:'Управление проектами'};
+  const names = {sql:'SQL для PM', dev:'Разработка ПО', pm:'Управление проектами', py:'Python для PM'};
   if (course !== 'home' && bcWrap && bcName) {
     bcWrap.style.display = 'flex';
     bcName.textContent = names[course] || '';
   } else if (bcWrap) { bcWrap.style.display = 'none'; }
 
   // Progress bar in nav
-  ['sql','dev','pm'].forEach(c => {
+  ['sql','dev','pm','py'].forEach(c => {
     const el = document.getElementById('progress-wrap-' + c);
     if (el) el.style.display = c === course ? 'flex' : 'none';
   });
@@ -3130,6 +3240,7 @@ function showCourse(course) {
   if (course === 'sql' && currentLesson    === 0) showLesson(0);
   if (course === 'dev' && currentDevLesson === 0) showDevLesson(0);
   if (course === 'pm'  && currentPmLesson  === 0) showPmLesson(0);
+  if (course === 'py'  && currentPyLesson  === 0) showPyLesson(0);
 }
 
 // ── COURSE DRAWER ──────────────────────────────
@@ -3176,20 +3287,28 @@ function updateDrawerProgress() {
   const sqlDone = [...completed].filter(x=>x>0).length;
   const sqlEl = document.getElementById('drawer-sql-pct');
   const sqlFill = document.getElementById('drawer-sql-fill');
-  if (sqlEl) sqlEl.textContent = sqlDone + '/14';
-  if (sqlFill) sqlFill.style.width = Math.round(sqlDone/14*100) + '%';
+  if (sqlEl) sqlEl.textContent = sqlDone + '/13';
+  if (sqlFill) sqlFill.style.width = Math.round(sqlDone/13*100) + '%';
   // Dev
-  const devDone = devCompleted.size;
+  const devDone = [...devCompleted].filter(x => x > 0).length;
   const devEl = document.getElementById('drawer-dev-pct');
   const devFill = document.getElementById('drawer-dev-fill');
-  if (devEl) devEl.textContent = devDone + '/13';
-  if (devFill) devFill.style.width = Math.round(devDone/13*100) + '%';
+  if (devEl) devEl.textContent = devDone + '/12';
+  if (devFill) devFill.style.width = Math.round(devDone/12*100) + '%';
   // PM
-  const pmDone = pmCompleted.size;
+  const pmDone = [...pmCompleted].filter(x => x > 0).length;
   const pmEl = document.getElementById('drawer-pm-pct');
   const pmFill = document.getElementById('drawer-pm-fill');
   if (pmEl) pmEl.textContent = pmDone + '/14';
   if (pmFill) pmFill.style.width = Math.round(pmDone/14*100) + '%';
+  // Python
+  if (typeof pyCompleted !== 'undefined') {
+    const pyDone = pyCompleted.size;
+    const pyEl = document.getElementById('drawer-py-pct');
+    const pyFill = document.getElementById('drawer-py-fill');
+    if (pyEl) pyEl.textContent = pyDone + '/16';
+    if (pyFill) pyFill.style.width = Math.round(pyDone/16*100) + '%';
+  }
 }
 
 
@@ -3253,7 +3372,7 @@ const devLessons = [
       Вам не нужно уметь программировать. Но вы <strong>должны понимать</strong> как устроены системы — чтобы правильно ставить задачи, оценивать трудоёмкость и говорить с командой на одном языке.
     </p>
     <div class="course-stats">
-      <div class="stat-card"><div class="stat-num" style="color:#ff9966">13</div><div class="stat-label">уроков</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:#ff9966">12</div><div class="stat-label">уроков</div></div>
       <div class="stat-card"><div class="stat-num" style="color:#ff9966">5</div><div class="stat-label">модулей</div></div>
       <div class="stat-card"><div class="stat-num" style="color:#ff9966">0</div><div class="stat-label">кода</div></div>
     </div>
@@ -3388,7 +3507,7 @@ Authorization: Bearer eyJhbGc...
     <div class="step-list">
       <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>Логин</h4><p>Пользователь вводит email + пароль, сервер проверяет их</p></div></div>
       <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>Токен</h4><p>Сервер создаёт JWT-токен: зашифрованная строка с данными пользователя и сроком действия</p></div></div>
-      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Хранение</h4><p>Браузер сохраняет токен (localStorage или httpOnly cookie)</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Хранение</h4><p>Браузер сохраняет токен в <strong>httpOnly cookie</strong> (безопасно) или in-memory. <span style="color:#ff6b6b">⚠️ Никогда не храните access token в localStorage — это уязвимость к XSS-атакам.</span></p></div></div>
       <div class="step-item"><div class="step-num">4</div><div class="step-content"><h4>Запросы</h4><p>При каждом API-запросе браузер отправляет токен в заголовке. Сервер проверяет его без обращения к БД</p></div></div>
       <div class="step-item"><div class="step-num">5</div><div class="step-content"><h4>Refresh</h4><p>Access token живёт 15-60 минут, refresh token — дни/недели. При истечении — автоматически обновляется</p></div></div>
     </div>`)}
@@ -3869,8 +3988,8 @@ function devCompleteFinal() {
 }
 
 function updateDevProgress() {
-  const total = 13;
-  const done = [...devCompleted].length;
+  const total = 12; // lessons 1-12, excluding intro 0
+  const done = [...devCompleted].filter(x => x > 0).length;
   const pct = Math.round((done / total) * 100);
   const el = document.getElementById('dev-progress-text');
   if (el) el.textContent = `${done} / ${total}`;
@@ -3884,7 +4003,7 @@ function updateDevProgress() {
 // ─────────────────────────────────────────────
 const pmCompleted = new Set();
 let currentPmLesson = 0;
-const PM_TOTAL = 14;
+const PM_TOTAL = 15;
 
 // Helpers (reuse dev-style pattern)
 const pBlock  = (html) => `<div class="content-block">${html}</div>`;
@@ -3958,7 +4077,7 @@ const pmLessons = [
   <div class="lesson-tag">Модуль 1 · Урок 2</div>
   <h1>Рынок труда PM в России 2025</h1>
   <div class="lesson-meta"><span class="meta-badge">Карьера</span><span class="meta-badge">~20 мин</span></div>
-  ${pBlock(`<p>Рынок управления проектами в России активно растёт. По данным hh.ru и Glassdoor, количество вакансий PM в IT выросло на 15% за 2024 год. Разберём зарплаты, требования и карьерный путь.</p>`)}
+  ${pBlock(`<p>Рынок управления проектами в России активно растёт. По данным hh.ru и SuperJob, количество вакансий PM в IT стабильно растёт последние годы. Разберём зарплаты, требования и карьерный путь.</p>`)}
   ${pBlock(`<h2>Зарплатные вилки (2025)</h2>
     ${pTable(['Уровень','Опыт','Зарплата (Москва)','Зарплата (регионы)'],
       [['Junior PM','0–1 год','80 000 – 120 000 ₽','50 000 – 80 000 ₽'],
@@ -3966,7 +4085,7 @@ const pmLessons = [
        ['Senior PM','3–6 лет','200 000 – 320 000 ₽','130 000 – 200 000 ₽'],
        ['Lead / Head of PM','6+ лет','320 000 – 600 000 ₽','200 000 – 350 000 ₽'],
        ['Director of PMO','10+ лет','от 500 000 ₽','от 300 000 ₽']])}
-    <small style="color:var(--text3)">* Данные на основе Glassdoor, hh.ru, levels.fyi — актуально на нач. 2025</small>
+    <small style="color:var(--text3)">* Данные на основе hh.ru, SuperJob, Habr Career — актуально на нач. 2025</small>
   `)}
   ${pCall('info','📊','Топ работодатели по зарплатам PM в России: <strong>Сбербанк, Яндекс, VK, X5 Tech, МТС, Тинькофф, Ozon, Авито, 1С</strong>. В IT-продуктах зарплаты традиционно выше, чем в консалтинге и госсекторе.')}
   ${pBlock(`<h2>Что требуют в вакансиях</h2>
@@ -4006,7 +4125,7 @@ const pmLessons = [
   <h1>PMBOK 7: принципы и домены</h1>
   <div class="lesson-meta"><span class="meta-badge">Стандарты</span><span class="meta-badge">~25 мин</span></div>
   ${pBlock(`<p><strong>PMBOK (Project Management Body of Knowledge)</strong> — главный стандарт управления проектами от PMI. 7-е издание (2021) совершило революцию: вместо жёстких процессов — <strong>12 принципов</strong> и <strong>8 доменов</strong>. Акцент сместился с процессов на результаты и ценность.</p>`)}
-  ${pCall('info','📖','PMI выпустило <strong>8-е издание PMBOK (2025)</strong>. Оно сохраняет принципы 7-й версии, но возвращает процессное руководство в гибком, ненормативном формате. Добавлены главы про AI, PMO и procurement.')}
+  ${pCall('info','📖','PMI выпустило <strong>PMBOK 8-е издание (ноябрь 2025)</strong>. Оно сохраняет принципы 7-й версии, но возвращает процессное руководство в гибком, ненормативном формате. Вводит 6 базовых принципов, 7 доменов эффективности и расширенное покрытие AI, PMO и закупок. Для сдачи PMP-экзамена пока актуален PMBOK 7 — переход на 8-е издание ожидается в 2026–2027 гг.')}
   ${pBlock(`<h2>12 принципов PMBOK 7</h2>
     ${pTable(['#','Принцип','Суть'],
       [['1','🤝 Управление','Быть ответственным стюардом — действовать добросовестно и этично'],
@@ -4036,7 +4155,7 @@ const pmLessons = [
   <div class="lesson-tag">Модуль 2 · Урок 4</div>
   <h1>Жизненный цикл проекта</h1>
   <div class="lesson-meta"><span class="meta-badge">Стандарты</span><span class="meta-badge">~20 мин</span></div>
-  ${pBlock(`<p><strong>Жизненный цикл проекта</strong> — это совокупность фаз, через которые проходит проект от старта до закрытия. В PMBOK выделяют 5 групп процессов (Process Groups), которые применяются вне зависимости от выбранной методологии.</p>`)}
+  ${pBlock(`<p><strong>Жизненный цикл проекта</strong> — это совокупность фаз, через которые проходит проект от старта до закрытия. В классическом PM выделяют 5 групп процессов, которые применяются вне зависимости от выбранной методологии. В PMBOK 7 они вынесены в отдельное дополнение <em>«Process Groups: A Practice Guide»</em>, но остаются фундаментом профессии.</p>`)}
   ${pBlock(`<h2>5 групп процессов PMBOK</h2>
     <div class="step-list">
       <div class="step-item">
@@ -4147,7 +4266,7 @@ const pmLessons = [
   <div class="lesson-tag">Модуль 3 · Урок 6</div>
   <h1>Agile: манифест и ценности</h1>
   <div class="lesson-meta"><span class="meta-badge">Методологии</span><span class="meta-badge">~25 мин</span></div>
-  ${pBlock(`<p>В 2001 году 17 разработчиков собрались на горнолыжном курорте в Юте и написали <strong>Agile-манифест</strong> — документ из 68 слов, который перевернул индустрию разработки ПО. Agile — это не методология, а <em>философия</em> и набор ценностей.</p>`)}
+  ${pBlock(`<p>В 2001 году 17 разработчиков собрались на горнолыжном курорте Snowbird в Юте и написали <strong>Agile-манифест</strong> — лаконичный документ с 4 ценностями и 12 принципами, который перевернул индустрию разработки ПО. Agile — это не методология, а <em>философия</em> и набор ценностей.</p>`)}
   ${pBlock(`<h2>4 ценности Agile-манифеста</h2>
     <div style="display:flex;flex-direction:column;gap:12px;margin:16px 0">
       ${[['Люди и взаимодействие','важнее процессов и инструментов','👥'],
@@ -4209,9 +4328,9 @@ const pmLessons = [
         <div class="metric-card-desc">Защищает команду от внешних помех, устраняет блокеры, следит за соблюдением Scrum. Коуч, а не менеджер.</div>
       </div>
       <div class="metric-card" style="border-color:rgba(168,85,247,0.3)">
-        <div class="metric-card-label">⚙️ Dev Team</div>
+        <div class="metric-card-label">⚙️ Developers (Dev Team)</div>
         <div class="metric-card-value" style="font-size:16px;color:#a855f7">«Делаем работу»</div>
-        <div class="metric-card-desc">Кросс-функциональная, самоорганизующаяся команда 3-9 человек. Сама решает как выполнять задачи.</div>
+        <div class="metric-card-desc">Кросс-функциональная, самоорганизующаяся команда. По Scrum Guide 2020 — вся Scrum-команда обычно <strong>10 или менее человек</strong> (включая PO и SM). Сама решает как выполнять задачи.</div>
       </div>
     </div>
   `)}
@@ -4233,7 +4352,7 @@ const pmLessons = [
       <div class="step-item">
         <div class="step-num" style="color:#a855f7">2</div>
         <div class="step-content">
-          <h4>Sprint Planning — планирование (≤8 ч)</h4>
+          <h4>Sprint Planning — планирование (≤8 ч для 4-нед. / ≤4 ч для 2-нед.)</h4>
           <p>Команда выбирает задачи из бэклога и планирует Sprint Goal. Вопросы: что сделаем? как сделаем?</p>
         </div>
       </div>
@@ -4247,14 +4366,14 @@ const pmLessons = [
       <div class="step-item">
         <div class="step-num" style="color:#a855f7">4</div>
         <div class="step-content">
-          <h4>Sprint Review — демо (≤4 ч)</h4>
+          <h4>Sprint Review — демо (≤4 ч для 4-нед. / ≤2 ч для 2-нед.)</h4>
           <p>Команда показывает результат стейкхолдерам. Собирается обратная связь. Обновляется бэклог.</p>
         </div>
       </div>
       <div class="step-item">
         <div class="step-num" style="color:#a855f7">5</div>
         <div class="step-content">
-          <h4>Sprint Retrospective — ретро (≤3 ч)</h4>
+          <h4>Sprint Retrospective — ретро (≤3 ч для 4-нед. / ≤1.5 ч для 2-нед.)</h4>
           <p>Команда анализирует процесс: что хорошо? что плохо? что улучшить в следующем спринте?</p>
         </div>
       </div>
@@ -4341,7 +4460,7 @@ const pmLessons = [
   <div class="lesson-tag">Модуль 4 · Урок 10</div>
   <h1>Стейкхолдеры и коммуникации</h1>
   <div class="lesson-meta"><span class="meta-badge">Инструменты</span><span class="meta-badge">~20 мин</span></div>
-  ${pBlock(`<p><strong>Стейкхолдер (заинтересованная сторона)</strong> — любое лицо или группа, которые влияют на проект или на которых влияет проект. По PMBOK 7, работа со стейкхолдерами — один из 8 ключевых доменов. 68% провалов проектов связаны с плохой работой со стейкхолдерами.</p>`)}
+  ${pBlock(`<p><strong>Стейкхолдер (заинтересованная сторона)</strong> — любое лицо или группа, которые влияют на проект или на которых влияет проект. По PMBOK 7, работа со стейкхолдерами — один из 8 ключевых доменов. По данным PMI Pulse of the Profession, недостаточная вовлечённость стейкхолдеров входит в топ причин провала проектов.</p>`)}
   ${pBlock(`<h2>Матрица анализа стейкхолдеров</h2>
     <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px;margin:16px 0">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
@@ -4662,10 +4781,11 @@ function pmCompleteFinal() {
 }
 
 function updatePmProgress() {
-  const done = pmCompleted.size;
-  const pct = Math.round((done / PM_TOTAL) * 100);
+  const done = [...pmCompleted].filter(x => x > 0).length;
+  const total = PM_TOTAL - 1; // exclude intro lesson 0
+  const pct = Math.round((done / total) * 100);
   const el = document.getElementById('pm-progress-text');
-  if (el) el.textContent = `${done} / ${PM_TOTAL}`;
+  if (el) el.textContent = `${done} / ${total}`;
   const fill = document.getElementById('pm-progress-fill');
   if (fill) fill.style.width = pct + '%';
   updateDrawerProgress();
@@ -4694,6 +4814,1793 @@ function updateProgress() {
   _origUpdateProgress();
   updateDrawerProgress();
 }
+// ─────────────────────────────────────────────
+// PYTHON FOR PM COURSE
+// ─────────────────────────────────────────────
+const pyCompleted = new Set();
+let currentPyLesson = 0;
+const PY_TOTAL = 16;
+
+const pyBlock = (html) => `<div class="content-block">${html}</div>`;
+const pyCall  = (t,i,h) => `<div class="callout ${t}"><span class="callout-icon">${i}</span><div>${h}</div></div>`;
+const pyTable = (cols,rows) => `<div class="db-table-wrap"><table class="db-table"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(d=>`<td>${d}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const pyCode  = (lang,code) => `<div class="code-wrap"><div class="code-header"><span>${lang}</span><span class="code-lang">${lang.toUpperCase()}</span></div><pre>${code}</pre></div>`;
+const pyNav   = (prev,next,isLast=false) => `<div class="lesson-nav" style="display:flex;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid var(--border)">
+  ${prev!==undefined?`<button class="btn-nav btn-prev" onclick="pyCompleteAndNav(${prev})">← Назад</button>`:''}
+  ${!isLast&&next!==undefined?`<button class="btn-nav btn-next" style="background:linear-gradient(135deg,#f59e0b,#ea580c);margin-left:auto" onclick="pyCompleteAndNav(${next})">Далее →</button>`:''}
+  ${isLast?`<button class="btn-complete" style="background:linear-gradient(135deg,#f59e0b,#ea580c);margin-left:auto" onclick="pyCompleteFinal()">✓ Завершить курс</button>`:''}
+</div>`;
+
+const pyLessons = [
+
+// ── 0. Введение ──────────────────────────────
+()=>`
+  <div class="lesson-tag">PM Academy · Python для PM</div>
+  <h1>Python + Claude = Суперсила PM</h1>
+  <div class="lesson-meta"><span class="meta-badge">7 модулей</span><span class="meta-badge">16 уроков</span><span class="meta-badge">~5 часов</span></div>
+  ${pyBlock(`<p>Этот курс создан для Project Manager, который хочет писать реальные приложения вместе с ИИ. Не нужно становиться программистом — нужно понимать Python достаточно, чтобы объяснить Claude что нужно, прочитать и запустить результат, и исправить когда что-то идёт не так.</p>`)}
+  ${pyCall('tip','🤖',`<strong>Философия курса:</strong> Claude пишет 80% кода. Ваша задача — понимать что происходит, грамотно ставить задачи и уметь отлаживать результат. Это называется <em>vibe coding</em> или <em>AI-assisted development</em>.`)}
+  ${pyBlock(`<h2>Что вы сможете делать после курса</h2>
+    <div class="metric-grid">
+      ${[['🤖 Автоматизация','Скрипты для рутины: отчёты, переименование файлов, обработка Excel'],
+         ['🌐 Telegram-боты','Бот для уведомлений команды, статусы проекта, напоминания'],
+         ['📊 Работа с данными','Обработка CSV, Excel, JSON — анализ без Excel-формул'],
+         ['🔌 API-интеграции','Подключение к Jira, Notion, Google Sheets, Slack'],
+         ['🖥️ Простые веб-приложения','Дашборды на Streamlit за 30 минут'],
+         ['🧠 Работа с ИИ','Скрипты с OpenAI/Claude API для автоматизации задач']].map(([n,d])=>`<div class="metric-card"><div class="metric-card-label">${n}</div><div class="metric-card-desc">${d}</div></div>`).join('')}
+    </div>`)}
+  ${pyBlock(`<h2>Структура курса</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">1</div><div class="step-content"><h4>Установка и среда</h4><p>Python, VS Code, Terminal — полный боевой стек с нуля</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">2</div><div class="step-content"><h4>Основы языка</h4><p>Переменные, типы, условия, циклы, функции — только необходимое</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">3</div><div class="step-content"><h4>Структуры данных</h4><p>Списки, словари, файлы — то, с чем работают реальные скрипты</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">4</div><div class="step-content"><h4>Работа с данными</h4><p>CSV, Excel, JSON — читаем, обрабатываем, сохраняем</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">5</div><div class="step-content"><h4>API и запросы</h4><p>HTTP-запросы, работа с внешними сервисами, Telegram-бот</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">6</div><div class="step-content"><h4>Vibe Coding с Claude</h4><p>Как правильно ставить задачи ИИ, отлаживать, расширять код</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">7</div><div class="step-content"><h4>Реальные проекты</h4><p>Готовые шаблоны: бот, дашборд, автоматизация отчётов</p></div></div>
+    </div>`)}
+  ${pyCall('info','⏱️','Рекомендуемый темп: <strong>1 урок в день</strong>. Каждый урок — это теория + код который нужно запустить самому. Не пропускайте практику — именно руки запоминают, а не глаза.')}
+  ${pyNav(undefined,1)}
+`,
+
+// ── 1. Установка: macOS ──────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 1 · Урок 1</div>
+  <h1>Установка окружения</h1>
+  <div class="lesson-meta"><span class="meta-badge">Настройка</span><span class="meta-badge">~30 мин</span><span class="meta-badge">macOS + Windows</span></div>
+  ${pyCall('info','💻','Покрываем оба варианта: <strong>macOS</strong> и <strong>Windows</strong>. Выберите свой раздел.')}
+
+  ${pyBlock(`<h2>🍎 macOS — пошагово</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">1</div><div class="step-content">
+        <h4>Установите Homebrew (менеджер пакетов)</h4>
+        <p>Откройте Terminal (Spotlight → Terminal) и выполните:</p>
+        ${pyCode('bash',`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`)}
+        <p style="color:var(--text3);font-size:13px">Homebrew — как App Store, только для разработчиков. Установит почти всё что нужно.</p>
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">2</div><div class="step-content">
+        <h4>Установите Python 3</h4>
+        ${pyCode('bash',`brew install python`)}
+        <p>Проверьте:</p>
+        ${pyCode('bash',`python3 --version
+# Должно вывести: Python 3.12.x или новее`)}
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">3</div><div class="step-content">
+        <h4>Установите VS Code</h4>
+        <p>Скачайте с <strong>code.visualstudio.com</strong> → перетащите в Applications.<br>Или через Homebrew:</p>
+        ${pyCode('bash',`brew install --cask visual-studio-code`)}
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">4</div><div class="step-content">
+        <h4>Установите расширение Python в VS Code</h4>
+        <p>VS Code → Extensions (⌘⇧X) → найдите «Python» от Microsoft → Install</p>
+      </div></div>
+    </div>`)}
+
+  ${pyBlock(`<h2>🪟 Windows — пошагово</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">1</div><div class="step-content">
+        <h4>Установите Python с официального сайта</h4>
+        <p>Зайдите на <strong>python.org/downloads</strong> → скачайте последнюю версию Python 3.x.<br>
+        <strong style="color:#ff6b6b">⚠️ Важно:</strong> при установке обязательно поставьте галочку <strong>«Add Python to PATH»</strong></p>
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">2</div><div class="step-content">
+        <h4>Проверьте установку</h4>
+        <p>Откройте PowerShell (Win+X → Windows PowerShell):</p>
+        ${pyCode('powershell',`python --version
+# Должно вывести: Python 3.12.x`)}
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">3</div><div class="step-content">
+        <h4>Установите VS Code</h4>
+        <p>Скачайте с <strong>code.visualstudio.com/download</strong> → запустите установщик.<br>
+        При установке отметьте <strong>«Add to PATH»</strong> и <strong>«Open with Code»</strong>.</p>
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">4</div><div class="step-content">
+        <h4>Расширение Python в VS Code</h4>
+        <p>VS Code → Extensions (Ctrl+Shift+X) → «Python» от Microsoft → Install</p>
+      </div></div>
+    </div>`)}
+
+  ${pyBlock(`<h2>Проверка: первый скрипт</h2>
+    <p>Создайте папку <code>my-projects</code> на рабочем столе. Откройте её в VS Code: <strong>File → Open Folder</strong>.<br>
+    Создайте файл <code>hello.py</code> (кнопка «New File» в боковой панели):</p>
+    ${pyCode('python',`print("Привет, мир!")
+print("Я пишу на Python!")
+name = "Саша"
+print(f"Меня зовут {name}")`)}
+    <p>Запустите: кнопка ▶ в правом верхнем углу VS Code, или в терминале:</p>
+    ${pyCode('bash',`python3 hello.py   # macOS
+python hello.py    # Windows`)}
+  `)}
+
+  ${pyBlock(`<h2>Важные горячие клавиши VS Code</h2>
+    ${pyTable(['Действие','macOS','Windows'],
+      [['Открыть терминал','⌃\`','Ctrl+\`'],
+       ['Запустить файл','⌃F5','Ctrl+F5'],
+       ['Сохранить файл','⌘S','Ctrl+S'],
+       ['Поиск файлов','⌘P','Ctrl+P'],
+       ['Командная палитра','⌘⇧P','Ctrl+Shift+P'],
+       ['Форматировать код','⇧⌥F','Shift+Alt+F']])}
+  `)}
+  ${pyCall('tip','✅','После установки вы готовы. В следующем уроке — как общаться с Claude чтобы получать рабочий код с первого раза.')}
+  ${pyNav(0,2)}
+`,
+
+// ── 2. VS Code + Claude workflow ─────────────
+()=>`
+  <div class="lesson-tag">Модуль 1 · Урок 2</div>
+  <h1>Рабочий процесс: VS Code + Claude</h1>
+  <div class="lesson-meta"><span class="meta-badge">Workflow</span><span class="meta-badge">~25 мин</span></div>
+  ${pyBlock(`<p>Прежде чем писать код — научимся работать правильно. Хороший воркфлоу экономит часы. Плохой — превращает простую задачу в хаос.</p>`)}
+
+  ${pyBlock(`<h2>Анатомия VS Code для PM</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">📁</div><div class="step-content"><h4>Explorer (левая панель)</h4><p>Файлы проекта. Всегда работайте в папке проекта, не открывайте отдельные файлы.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">✏️</div><div class="step-content"><h4>Editor (центр)</h4><p>Редактор кода. Подсветка синтаксиса, автодополнение, подсказки об ошибках.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">⌨️</div><div class="step-content"><h4>Terminal (низ)</h4><p>Консоль прямо в VS Code. Открыть: View → Terminal или ⌃\`. Здесь запускаем скрипты.</p></div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">🔴</div><div class="step-content"><h4>Problems (внизу)</h4><p>Список ошибок. Красный кружок слева от строки = ошибка. Hover на него — объяснение.</p></div></div>
+    </div>`)}
+
+  ${pyBlock(`<h2>Правила работы с Claude для кода</h2>
+    ${pyCall('warning','❌','<strong>Плохой промпт:</strong> «Напиши мне скрипт на Python»<br>Результат: общий шаблон который скорее всего не подойдёт.')}
+    ${pyCall('tip','✅','<strong>Хороший промпт:</strong> структурированный запрос с контекстом, входными данными, ожидаемым результатом и ограничениями.')}
+    <h2>Шаблон промпта для кода</h2>
+    <div style="background:var(--bg3);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:20px;margin:16px 0">
+      <p style="color:#f59e0b;font-weight:700;margin-bottom:12px">📋 Структура запроса:</p>
+      <p style="color:var(--text2);line-height:1.9;font-size:14px">
+        <strong style="color:var(--text)">Задача:</strong> [что конкретно нужно сделать]<br>
+        <strong style="color:var(--text)">Входные данные:</strong> [что есть на входе — файл CSV, список, API]<br>
+        <strong style="color:var(--text)">Результат:</strong> [что должно получиться на выходе]<br>
+        <strong style="color:var(--text)">Ограничения:</strong> [Python 3, без сторонних библиотек / только pandas / и т.д.]<br>
+        <strong style="color:var(--text)">Дополнительно:</strong> [добавить комментарии в коде / сохранить в файл / etc]
+      </p>
+    </div>
+    <h3>Пример хорошего промпта:</h3>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px;color:var(--text2);line-height:1.8">
+      Задача: прочитать CSV файл с колонками [дата, задача, статус, ответственный] и сгенерировать текстовый отчёт<br>
+      Входные данные: файл tasks.csv в той же папке<br>
+      Результат: вывести в консоль и сохранить в report.txt — количество задач по статусам и список просроченных<br>
+      Ограничения: только стандартные библиотеки Python (csv, datetime)<br>
+      Добавить: подробные комментарии к каждому блоку кода
+    </div>`)}
+
+  ${pyBlock(`<h2>Три команды которые нужно знать всегда</h2>
+    ${pyCode('bash',`# 1. Запустить скрипт
+python3 script.py
+
+# 2. Установить библиотеку
+pip3 install requests     # macOS
+pip install requests      # Windows
+
+# 3. Посмотреть что установлено
+pip3 list`)}
+  `)}
+
+  ${pyBlock(`<h2>Когда код не работает — чеклист</h2>
+    ${pyTable(['#','Проверь','Как'],
+      [['1','Сохранён ли файл?','⌘S / Ctrl+S перед запуском'],
+       ['2','Правильная папка?','В терминале: pwd (показывает где ты)'],
+       ['3','Читай ошибку полностью','Последняя строка — суть ошибки, выше — где произошла'],
+       ['4','Скопируй ошибку в Claude','«Получаю такую ошибку: [текст]. Код: [код]. Что не так?»'],
+       ['5','Версия Python?','python3 --version — должна быть 3.8+'],
+       ['6','Библиотека установлена?','pip3 list | grep имя_библиотеки']])}
+  `)}
+  ${pyCall('tip','🤝','<strong>Главное правило:</strong> не тратьте больше 10 минут на поиск ошибки самостоятельно. Скопируйте ошибку + код → отправьте Claude. ИИ видит опечатки и логические ошибки мгновенно.')}
+  ${pyNav(1,3)}
+`,
+
+// ── 3. Переменные и типы ────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 2 · Урок 3</div>
+  <h1>Переменные и типы данных</h1>
+  <div class="lesson-meta"><span class="meta-badge">Основы</span><span class="meta-badge">~20 мин</span></div>
+  ${pyBlock(`<p>Переменная — это коробка с подписью, в которой хранится значение. Python не требует объявлять тип — он определяет его сам. Это делает код быстрым для написания, но требует внимания при отладке.</p>`)}
+
+  ${pyBlock(`<h2>Основные типы данных</h2>
+    ${pyCode('python',`# Числа
+age = 28              # int — целое число
+salary = 150000.50    # float — дробное число
+year = 2025
+
+# Строки (текст)
+name = "Иван Петров"
+city = 'Москва'
+role = f"Senior PM at Company"  # f-строка — с подстановкой
+
+# Булевые значения
+is_active = True
+is_blocked = False
+
+# None — отсутствие значения
+manager = None  # ещё не назначен
+
+# Проверить тип переменной:
+print(type(age))      # <class 'int'>
+print(type(name))     # <class 'str'>
+print(type(is_active)) # <class 'bool'>`)}
+  `)}
+
+  ${pyBlock(`<h2>Строки — самый важный тип для PM</h2>
+    ${pyCode('python',`name = "Алексей"
+role = "Product Manager"
+company = "Ozon"
+
+# f-строки — вставляем переменные в текст
+greeting = f"Привет, {name}! Ты {role} в {company}."
+print(greeting)  # Привет, Алексей! Ты Product Manager в Ozon.
+
+# Операции со строками
+text = "  привет мир  "
+print(text.strip())        # убрать пробелы: "привет мир"
+print(text.upper())        # ПРИВЕТ МИР
+print(text.lower())        # привет мир
+print(text.replace("мир", "Python"))  # привет Python
+
+# Разбить строку
+csv_line = "Иван,PM,Москва,150000"
+parts = csv_line.split(",")
+print(parts)  # ['Иван', 'PM', 'Москва', '150000']
+print(parts[0])  # Иван — первый элемент (индекс с 0!)
+
+# Склеить обратно
+result = " | ".join(parts)
+print(result)  # Иван | PM | Москва | 150000`)}
+  `)}
+
+  ${pyBlock(`<h2>Числа и арифметика</h2>
+    ${pyCode('python',`budget = 1_000_000  # нижнее подчёркивание = разделитель тысяч (читаемость)
+spent = 347_500
+remaining = budget - spent
+
+# Арифметика
+print(remaining)           # 652500
+print(spent / budget)      # 0.3475
+print(round(spent / budget * 100, 1))  # 34.8 (процент с 1 знаком)
+
+# Преобразование типов
+price_str = "15000"   # строка из CSV
+price_int = int(price_str)   # → число
+price_float = float("15000.50")  # → дробное
+
+# Полезные функции
+print(abs(-42))    # 42 — модуль
+print(max(10, 25, 7))  # 25
+print(min(10, 25, 7))  # 7
+print(sum([10, 25, 7])) # 42`)}
+  `)}
+
+  ${pyBlock(`<h2>Практика: скрипт для PM</h2>
+    ${pyCode('python',`# Создайте файл budget_calc.py и запустите
+
+project_name = "Редизайн мобильного приложения"
+budget_total = 2_500_000
+spent_development = 890_000
+spent_design = 340_000
+spent_testing = 120_000
+
+spent_total = spent_development + spent_design + spent_testing
+remaining = budget_total - spent_total
+pct_spent = round(spent_total / budget_total * 100, 1)
+
+print(f"Проект: {project_name}")
+print(f"Бюджет: {budget_total:,} ₽")
+print(f"Потрачено: {spent_total:,} ₽ ({pct_spent}%)")
+print(f"Остаток: {remaining:,} ₽")`)}
+    ${pyCall('tip','🎯','Запустите этот код! Поменяйте цифры на реальные данные своего проекта.')}
+  `)}
+  ${pyNav(2,4)}
+`,
+
+// ── 4. Условия и циклы ──────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 2 · Урок 4</div>
+  <h1>Условия и циклы</h1>
+  <div class="lesson-meta"><span class="meta-badge">Основы</span><span class="meta-badge">~25 мин</span></div>
+  ${pyBlock(`<p>Условия и циклы — это логика программы. С ними код умеет принимать решения и выполнять повторяющиеся действия. Это то, что превращает скрипт из «посчитать один раз» в «обработать 1000 строк».</p>`)}
+
+  ${pyBlock(`<h2>Условия — if / elif / else</h2>
+    ${pyCode('python',`# Базовый if
+budget_remaining = 150_000
+
+if budget_remaining > 500_000:
+    print("Бюджет в норме ✅")
+elif budget_remaining > 100_000:
+    print("Бюджет на контроле ⚠️")
+else:
+    print("Бюджет критический 🔴")
+
+# Вывод: Бюджет на контроле ⚠️
+
+# Операторы сравнения
+# >  больше     >=  больше или равно
+# <  меньше     <=  меньше или равно
+# == равно      !=  не равно
+
+# Логические операторы
+age = 28
+experience = 3
+
+if age >= 25 and experience >= 2:
+    print("Подходит на Senior PM")
+
+if experience < 1 or age < 22:
+    print("Нужен Junior уровень")
+
+# Проверка наличия в строке
+task = "Сделать ретроспективу спринта"
+if "спринт" in task.lower():
+    print("Scrum-задача")`)}
+  `)}
+
+  ${pyBlock(`<h2>Циклы — for</h2>
+    ${pyCode('python',`# Пройтись по списку
+team = ["Анна", "Борис", "Виктор", "Галина"]
+
+for member in team:
+    print(f"Привет, {member}!")
+
+# С нумерацией — enumerate
+for i, member in enumerate(team, 1):
+    print(f"{i}. {member}")
+# 1. Анна
+# 2. Борис ...
+
+# Диапазон чисел — range
+for sprint in range(1, 6):  # 1, 2, 3, 4, 5
+    print(f"Спринт {sprint}: планируем задачи")
+
+# Цикл по словарю
+statuses = {"todo": 12, "in_progress": 5, "done": 23, "blocked": 2}
+
+for status, count in statuses.items():
+    print(f"{status}: {count} задач")`)}
+  `)}
+
+  ${pyBlock(`<h2>Цикл while и break/continue</h2>
+    ${pyCode('python',`# while — пока условие истинно
+attempts = 0
+max_attempts = 3
+
+while attempts < max_attempts:
+    print(f"Попытка {attempts + 1}")
+    attempts += 1  # сокращение от attempts = attempts + 1
+
+# break — прервать цикл досрочно
+tasks = ["Дизайн", "Разработка", "БЛОКЕР", "Тестирование"]
+
+for task in tasks:
+    if task == "БЛОКЕР":
+        print(f"Стоп! Найден блокер: {task}")
+        break
+    print(f"Выполняем: {task}")
+
+# continue — пропустить итерацию
+for task in tasks:
+    if task == "БЛОКЕР":
+        print(f"Пропускаем блокер: {task}")
+        continue
+    print(f"Задача: {task}")`)}
+  `)}
+
+  ${pyBlock(`<h2>Практика: статус-репорт</h2>
+    ${pyCode('python',`# Создайте status_report.py
+
+tasks = [
+    {"name": "Дизайн главной", "status": "done", "owner": "Анна"},
+    {"name": "API интеграция", "status": "in_progress", "owner": "Борис"},
+    {"name": "Тесты", "status": "blocked", "owner": "Виктор"},
+    {"name": "Документация", "status": "todo", "owner": "Галина"},
+    {"name": "Деплой", "status": "done", "owner": "Борис"},
+]
+
+print("=== СТАТУС СПРИНТА ===")
+done = 0
+blocked_tasks = []
+
+for task in tasks:
+    emoji = {"done":"✅","in_progress":"🔄","blocked":"🔴","todo":"⬜"}.get(task["status"],"❓")
+    print(f"{emoji} {task['name']} — {task['owner']}")
+    if task["status"] == "done":
+        done += 1
+    if task["status"] == "blocked":
+        blocked_tasks.append(task["name"])
+
+print(f"\\nГотово: {done}/{len(tasks)}")
+if blocked_tasks:
+    print(f"Блокеры: {', '.join(blocked_tasks)}")`)}
+  `)}
+  ${pyNav(3,5)}
+`,
+
+// ── 5. Функции ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 2 · Урок 5</div>
+  <h1>Функции — строительные блоки</h1>
+  <div class="lesson-meta"><span class="meta-badge">Основы</span><span class="meta-badge">~20 мин</span></div>
+  ${pyBlock(`<p>Функция — это именованный блок кода который можно вызвать в любой момент. Вместо того чтобы копировать один и тот же код 10 раз — вы пишете функцию один раз и вызываете её.</p>`)}
+
+  ${pyBlock(`<h2>Создание и вызов функций</h2>
+    ${pyCode('python',`# Простая функция
+def greet(name):
+    message = f"Привет, {name}!"
+    return message
+
+print(greet("Алексей"))  # Привет, Алексей!
+print(greet("Мария"))    # Привет, Мария!
+
+# Функция с несколькими параметрами
+def calc_budget_status(total, spent):
+    remaining = total - spent
+    pct = round(spent / total * 100, 1)
+
+    if pct < 50:
+        status = "🟢 Норма"
+    elif pct < 80:
+        status = "🟡 Внимание"
+    else:
+        status = "🔴 Критично"
+
+    return remaining, pct, status  # можно вернуть несколько значений
+
+# Вызов и распаковка результата
+rem, pct, status = calc_budget_status(1_000_000, 650_000)
+print(f"Остаток: {rem:,} ₽ ({pct}%) — {status}")`)}
+  `)}
+
+  ${pyBlock(`<h2>Параметры по умолчанию</h2>
+    ${pyCode('python',`# Значения по умолчанию — если аргумент не передан
+def create_task(name, status="todo", priority="medium"):
+    return {
+        "name": name,
+        "status": status,
+        "priority": priority
+    }
+
+task1 = create_task("Написать ТЗ")  # использует значения по умолчанию
+task2 = create_task("Деплой", status="in_progress", priority="high")
+
+print(task1)  # {'name': 'Написать ТЗ', 'status': 'todo', 'priority': 'medium'}
+print(task2)  # {'name': 'Деплой', 'status': 'in_progress', 'priority': 'high'}`)}
+  `)}
+
+  ${pyBlock(`<h2>Лямбда-функции (однострочные)</h2>
+    ${pyCode('python',`# lambda — компактная функция в одну строку
+# Часто используется для сортировки
+
+tasks = [
+    {"name": "Деплой", "priority": 3},
+    {"name": "Дизайн", "priority": 1},
+    {"name": "Тесты",  "priority": 2},
+]
+
+# Сортировка по приоритету
+sorted_tasks = sorted(tasks, key=lambda t: t["priority"])
+for t in sorted_tasks:
+    print(f"P{t['priority']}: {t['name']}")`)}
+  `)}
+
+  ${pyBlock(`<h2>Практика: модульный отчёт</h2>
+    ${pyCode('python',`# Создайте report_functions.py
+
+def get_status_emoji(status):
+    emojis = {"done":"✅","in_progress":"🔄","blocked":"🔴","todo":"⬜"}
+    return emojis.get(status, "❓")
+
+def count_by_status(tasks):
+    counts = {}
+    for task in tasks:
+        s = task["status"]
+        counts[s] = counts.get(s, 0) + 1
+    return counts
+
+def print_sprint_report(sprint_name, tasks):
+    print(f"\\n{'='*40}")
+    print(f"  {sprint_name}")
+    print(f"{'='*40}")
+    for task in tasks:
+        emoji = get_status_emoji(task["status"])
+        print(f"  {emoji} {task['name']}")
+    counts = count_by_status(tasks)
+    print(f"\\nИтого: {counts}")
+
+# Использование
+sprint_tasks = [
+    {"name": "Авторизация", "status": "done"},
+    {"name": "Профиль", "status": "in_progress"},
+    {"name": "Уведомления", "status": "blocked"},
+]
+print_sprint_report("Спринт 12", sprint_tasks)`)}
+  `)}
+  ${pyNav(4,6)}
+`,
+
+// ── 6. Списки и словари ─────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 3 · Урок 6</div>
+  <h1>Списки и словари</h1>
+  <div class="lesson-meta"><span class="meta-badge">Структуры данных</span><span class="meta-badge">~25 мин</span></div>
+  ${pyBlock(`<p>Списки и словари — это 90% работы с данными в Python. Список хранит упорядоченный набор элементов, словарь — пары ключ-значение. Вместе они позволяют представить любые данные: команды, задачи, метрики, API-ответы.</p>`)}
+
+  ${pyBlock(`<h2>Списки (list)</h2>
+    ${pyCode('python',`# Создание списка
+team = ["Анна", "Борис", "Виктор"]
+scores = [95, 87, 72, 88, 91]
+
+# Доступ к элементам (индекс с 0)
+print(team[0])    # Анна (первый)
+print(team[-1])   # Виктор (последний)
+print(team[1:])   # ['Борис', 'Виктор'] (срез)
+
+# Изменение
+team.append("Дарья")          # добавить в конец
+team.insert(1, "Елена")       # вставить на позицию 1
+team.remove("Борис")          # удалить по значению
+popped = team.pop()           # удалить и вернуть последний
+
+# Полезные операции
+print(len(team))              # количество элементов
+print(sorted(scores))         # отсортированная копия
+print(sum(scores))            # сумма
+print(sum(scores)/len(scores)) # среднее
+
+# Проверка наличия
+if "Анна" in team:
+    print("Анна в команде")`)}
+  `)}
+
+  ${pyBlock(`<h2>List comprehension — элегантный способ создать список</h2>
+    ${pyCode('python',`tasks = ["  Дизайн  ", "разработка", "ТЕСТЫ", " деплой"]
+
+# Обычный способ
+clean_tasks = []
+for t in tasks:
+    clean_tasks.append(t.strip().capitalize())
+
+# List comprehension — то же самое в одну строку
+clean_tasks = [t.strip().capitalize() for t in tasks]
+print(clean_tasks)  # ['Дизайн', 'Разработка', 'Тесты', 'Деплой']
+
+# С фильтрацией
+scores = [95, 42, 87, 23, 91, 55, 78]
+high_scores = [s for s in scores if s >= 75]
+print(high_scores)  # [95, 87, 91, 78]`)}
+  `)}
+
+  ${pyBlock(`<h2>Словари (dict)</h2>
+    ${pyCode('python',`# Создание словаря
+person = {
+    "name": "Иван Петров",
+    "role": "Senior PM",
+    "salary": 200_000,
+    "skills": ["Scrum", "PMBOK", "Python"]
+}
+
+# Доступ к значениям
+print(person["name"])          # Иван Петров
+print(person.get("age", "Н/Д"))  # Н/Д (безопасно, без ошибки)
+
+# Изменение и добавление
+person["salary"] = 220_000
+person["city"] = "Москва"
+
+# Удаление
+del person["salary"]
+removed = person.pop("city", None)  # безопасное удаление
+
+# Перебор
+for key, value in person.items():
+    print(f"{key}: {value}")
+
+# Проверка ключа
+if "role" in person:
+    print(f"Роль: {person['role']}")`)}
+  `)}
+
+  ${pyBlock(`<h2>Список словарей — основа для работы с данными</h2>
+    ${pyCode('python',`# Это то, что вы будете использовать постоянно
+employees = [
+    {"name": "Анна",    "dept": "Product", "salary": 180_000, "yoe": 4},
+    {"name": "Борис",   "dept": "Dev",     "salary": 250_000, "yoe": 6},
+    {"name": "Виктор",  "dept": "Design",  "salary": 150_000, "yoe": 2},
+    {"name": "Галина",  "dept": "Product", "salary": 200_000, "yoe": 5},
+]
+
+# Все имена
+names = [e["name"] for e in employees]
+
+# Фильтрация — только Product
+product_team = [e for e in employees if e["dept"] == "Product"]
+
+# Сортировка по зарплате (убывание)
+by_salary = sorted(employees, key=lambda e: e["salary"], reverse=True)
+
+# Средняя зарплата
+avg_salary = sum(e["salary"] for e in employees) / len(employees)
+print(f"Средняя зарплата: {avg_salary:,.0f} ₽")`)}
+  `)}
+  ${pyNav(5,7)}
+`,
+
+// ── 7. Файлы и CSV ──────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 4 · Урок 7</div>
+  <h1>Работа с файлами и CSV</h1>
+  <div class="lesson-meta"><span class="meta-badge">Данные</span><span class="meta-badge">~25 мин</span></div>
+  ${pyBlock(`<p>Файлы — это мост между вашим скриптом и реальным миром. Читать логи, писать отчёты, обрабатывать CSV из Jira или Excel — всё начинается с умения работать с файлами.</p>`)}
+
+  ${pyBlock(`<h2>Чтение и запись текстовых файлов</h2>
+    ${pyCode('python',`# Запись в файл (создаёт или перезаписывает)
+with open("report.txt", "w", encoding="utf-8") as f:
+    f.write("Отчёт по спринту 12\\n")
+    f.write("Дата: 2025-03-01\\n")
+    f.write("Статус: завершён\\n")
+
+# Дозапись в конец файла (append)
+with open("report.txt", "a", encoding="utf-8") as f:
+    f.write("\\nДобавленная строка\\n")
+
+# Чтение файла
+with open("report.txt", "r", encoding="utf-8") as f:
+    content = f.read()        # весь текст одной строкой
+    print(content)
+
+# Чтение построчно
+with open("report.txt", "r", encoding="utf-8") as f:
+    for line in f:
+        print(line.strip())   # strip убирает \\n в конце`)}
+    ${pyCall('tip','🔐','<strong>with open(...) as f</strong> — это правильный способ открывать файлы. Файл автоматически закроется после блока, даже если произойдёт ошибка.')}
+  `)}
+
+  ${pyBlock(`<h2>CSV — основной формат данных</h2>
+    ${pyCode('python',`import csv
+
+# Создадим тестовый CSV
+tasks_data = [
+    ["id", "task", "status", "owner", "points"],
+    [1, "Дизайн главной", "done", "Анна", 3],
+    [2, "API авторизации", "in_progress", "Борис", 8],
+    [3, "Unit тесты", "todo", "Виктор", 5],
+    [4, "Деплой на staging", "blocked", "Борис", 2],
+]
+
+# Запись CSV
+with open("tasks.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerows(tasks_data)
+
+# Чтение CSV
+with open("tasks.csv", "r", encoding="utf-8") as f:
+    reader = csv.DictReader(f)  # каждая строка = словарь
+    for row in reader:
+        print(f"{row['id']}. {row['task']} [{row['status']}] — {row['owner']}")`)}
+  `)}
+
+  ${pyBlock(`<h2>Реальный пример: анализ выгрузки из Jira</h2>
+    ${pyCode('python',`import csv
+from collections import defaultdict
+
+# Предположим у нас есть CSV-экспорт из Jira
+def analyze_sprint(filepath):
+    stats = defaultdict(int)   # счётчик по статусам
+    blocked_tasks = []
+    owners = defaultdict(list) # задачи по исполнителям
+
+    with open(filepath, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            status = row["status"]
+            stats[status] += 1
+
+            if status == "blocked":
+                blocked_tasks.append(row["task"])
+
+            owners[row["owner"]].append(row["task"])
+
+    # Вывод отчёта
+    print("\\n📊 СТАТИСТИКА СПРИНТА")
+    print("-" * 30)
+    for status, count in sorted(stats.items()):
+        print(f"  {status}: {count}")
+
+    if blocked_tasks:
+        print(f"\\n🔴 Блокеры ({len(blocked_tasks)}):")
+        for t in blocked_tasks:
+            print(f"  • {t}")
+
+    print("\\n👥 Нагрузка по команде:")
+    for owner, tasks in owners.items():
+        print(f"  {owner}: {len(tasks)} задач")
+
+analyze_sprint("tasks.csv")`)}
+  `)}
+  ${pyNav(6,8)}
+`,
+
+// ── 8. JSON и API ───────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 4 · Урок 8</div>
+  <h1>JSON и работа с API</h1>
+  <div class="lesson-meta"><span class="meta-badge">Данные</span><span class="meta-badge">~25 мин</span></div>
+  ${pyBlock(`<p>JSON — универсальный язык данных в интернете. Любой API возвращает JSON. Любой конфиг хранится в JSON. Понимание JSON = умение работать с любым веб-сервисом.</p>`)}
+
+  ${pyBlock(`<h2>JSON — что это</h2>
+    ${pyCode('python',`import json
+
+# JSON — это словари и списки в текстовом формате
+# Выглядит так:
+json_text = """
+{
+  "project": "PM Academy",
+  "version": "2.0",
+  "team": [
+    {"name": "Иван", "role": "PM"},
+    {"name": "Анна", "role": "Dev"}
+  ],
+  "active": true,
+  "budget": null
+}
+"""
+
+# Парсинг: текст → Python-объект
+data = json.loads(json_text)
+print(data["project"])          # PM Academy
+print(data["team"][0]["name"])  # Иван
+
+# Сериализация: Python-объект → текст/файл
+config = {"api_key": "abc123", "debug": False}
+json_str = json.dumps(config, ensure_ascii=False, indent=2)
+print(json_str)
+
+# Сохранить JSON в файл
+with open("config.json", "w", encoding="utf-8") as f:
+    json.dump(config, f, ensure_ascii=False, indent=2)
+
+# Прочитать JSON из файла
+with open("config.json", "r", encoding="utf-8") as f:
+    loaded = json.load(f)`)}
+  `)}
+
+  ${pyBlock(`<h2>HTTP-запросы — библиотека requests</h2>
+    ${pyCode('bash',`pip3 install requests   # установить один раз`)}
+    ${pyCode('python',`import requests
+
+# GET запрос — получить данные
+response = requests.get("https://api.github.com/users/torvalds")
+
+print(response.status_code)  # 200 = успех, 404 = не найдено
+data = response.json()        # сразу парсит JSON
+
+print(data["name"])           # Linus Torvalds
+print(data["public_repos"])   # количество репозиториев
+
+# Параметры запроса
+params = {"q": "python pm automation", "per_page": 5}
+r = requests.get("https://api.github.com/search/repositories", params=params)
+results = r.json()
+for repo in results["items"]:
+    print(f"⭐ {repo['stargazers_count']} — {repo['full_name']}")`)}
+  `)}
+
+  ${pyBlock(`<h2>Публичные API для практики</h2>
+    ${pyTable(['API','URL','Что можно делать'],
+      [['GitHub','api.github.com','Данные о репозиториях, пользователях'],
+       ['OpenWeather','openweathermap.org/api','Погода (нужен бесплатный ключ)'],
+       ['ExchangeRate','exchangerate-api.com','Курсы валют бесплатно'],
+       ['JSONPlaceholder','jsonplaceholder.typicode.com','Тестовые данные без ключа'],
+       ['HH.ru','api.hh.ru','Вакансии, зарплаты (без ключа!']])}
+  `)}
+
+  ${pyBlock(`<h2>Реальный пример: мониторинг вакансий PM</h2>
+    ${pyCode('python',`import requests
+import json
+
+def get_pm_vacancies(city_id="1"):  # 1 = Москва
+    url = "https://api.hh.ru/vacancies"
+    params = {
+        "text": "product manager",
+        "area": city_id,
+        "per_page": 10,
+        "order_by": "salary_desc"
+    }
+    headers = {"User-Agent": "PMBot/1.0"}
+    r = requests.get(url, params=params, headers=headers)
+    return r.json()
+
+data = get_pm_vacancies()
+print(f"Найдено вакансий: {data['found']}\\n")
+
+for v in data["items"][:5]:
+    salary = v.get("salary")
+    if salary:
+        sal_str = f"{salary.get('from', '?')} — {salary.get('to', '?')} {salary.get('currency','')}"
+    else:
+        sal_str = "не указана"
+    print(f"💼 {v['name']}")
+    print(f"   🏢 {v['employer']['name']}")
+    print(f"   💰 {sal_str}\\n")`)}
+  `)}
+  ${pyNav(7,9)}
+`,
+
+// ── 9. Excel и pandas ────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 4 · Урок 9</div>
+  <h1>Excel и pandas</h1>
+  <div class="lesson-meta"><span class="meta-badge">Данные</span><span class="meta-badge">~30 мин</span></div>
+  ${pyBlock(`<p><strong>pandas</strong> — главная библиотека Python для работы с таблицами. Делает с данными то же что Excel, только быстрее, на больших объёмах и автоматически. PM использует pandas для обработки выгрузок из Jira, CRM, аналитики.</p>`)}
+
+  ${pyBlock(`<h2>Установка</h2>
+    ${pyCode('bash',`pip3 install pandas openpyxl
+# pandas — работа с таблицами
+# openpyxl — чтение/запись .xlsx файлов`)}
+  `)}
+
+  ${pyBlock(`<h2>Основы pandas — DataFrame</h2>
+    ${pyCode('python',`import pandas as pd
+
+# Создать таблицу из списка словарей
+data = [
+    {"task": "Дизайн",    "status": "done",        "points": 3,  "owner": "Анна"},
+    {"task": "API",       "status": "in_progress",  "points": 8,  "owner": "Борис"},
+    {"task": "Тесты",     "status": "done",         "points": 5,  "owner": "Виктор"},
+    {"task": "Деплой",    "status": "blocked",      "points": 2,  "owner": "Борис"},
+    {"task": "Документация","status":"todo",         "points": 3,  "owner": "Анна"},
+]
+
+df = pd.DataFrame(data)
+
+# Базовые операции
+print(df.head())          # первые 5 строк
+print(df.shape)           # (5, 4) — строки, колонки
+print(df.columns)         # список колонок
+print(df.dtypes)          # типы данных
+print(df.describe())      # статистика по числовым колонкам
+
+# Доступ к данным
+print(df["task"])         # колонка
+print(df[df["status"] == "done"])  # фильтрация
+print(df.sort_values("points", ascending=False))  # сортировка`)}
+  `)}
+
+  ${pyBlock(`<h2>Анализ данных</h2>
+    ${pyCode('python',`# Подсчёт по группам
+print(df["status"].value_counts())
+# done          2
+# in_progress   1
+# blocked       1
+# todo          1
+
+# Группировка + агрегация
+owner_stats = df.groupby("owner").agg(
+    tasks=("task", "count"),
+    total_points=("points", "sum"),
+    avg_points=("points", "mean")
+).reset_index()
+print(owner_stats)
+
+# Добавить вычисляемую колонку
+df["is_done"] = df["status"] == "done"
+df["priority"] = df["points"].apply(lambda p: "high" if p >= 5 else "low")
+
+# Итоговые метрики
+total_points = df["points"].sum()
+done_points = df[df["status"]=="done"]["points"].sum()
+velocity = round(done_points / total_points * 100, 1)
+print(f"Выполнено: {velocity}% story points")`)}
+  `)}
+
+  ${pyBlock(`<h2>Читаем и пишем Excel</h2>
+    ${pyCode('python',`import pandas as pd
+
+# Читаем Excel
+df = pd.read_excel("sprint_export.xlsx", sheet_name="Tasks")
+
+# Читаем CSV
+df = pd.read_csv("tasks.csv", encoding="utf-8")
+
+# Базовая обработка
+df.columns = df.columns.str.lower().str.strip()  # нормализуем заголовки
+df = df.dropna(subset=["task", "status"])        # удаляем пустые строки
+df["status"] = df["status"].str.lower().str.strip()
+
+# Создаём сводный отчёт
+summary = df.groupby("status")["points"].sum().reset_index()
+summary.columns = ["Статус", "Story Points"]
+
+# Сохраняем результат в Excel (несколько листов!)
+with pd.ExcelWriter("sprint_report.xlsx", engine="openpyxl") as writer:
+    df.to_excel(writer, sheet_name="Все задачи", index=False)
+    summary.to_excel(writer, sheet_name="Сводка", index=False)
+
+print("✅ Отчёт сохранён в sprint_report.xlsx")`)}
+  `)}
+  ${pyCall('tip','🚀','<strong>Лайфхак:</strong> попросите Claude: «Напиши pandas-скрипт который читает Excel с колонками [список], группирует по [поле] и сохраняет сводку в новый лист». Работает с первого раза в 90% случаев.')}
+  ${pyNav(8,10)}
+`,
+
+// ── 10. Telegram-бот ────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 5 · Урок 10</div>
+  <h1>Telegram-бот для PM</h1>
+  <div class="lesson-meta"><span class="meta-badge">Практика</span><span class="meta-badge">~35 мин</span></div>
+  ${pyBlock(`<p>Telegram-бот — один из самых полезных инструментов PM. Автоматические уведомления команде, статусы спринта, дейли-напоминания, ответы на частые вопросы — всё это реализуется за час кода.</p>`)}
+
+  ${pyBlock(`<h2>Шаг 1: Создать бота в Telegram</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">1</div><div class="step-content">
+        <h4>Найдите @BotFather</h4>
+        <p>Откройте Telegram → поиск → @BotFather → /start</p>
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">2</div><div class="step-content">
+        <h4>Создайте бота</h4>
+        <p>Отправьте /newbot → придумайте имя (например «PM Team Bot») → придумайте username (например pmteam_demo_bot)</p>
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">3</div><div class="step-content">
+        <h4>Сохраните токен</h4>
+        <p>BotFather даст токен вида: <code style="color:#f59e0b">1234567890:AAFxxx...</code><br>
+        <strong style="color:#ff6b6b">Никому не передавайте токен — это пароль вашего бота!</strong></p>
+      </div></div>
+    </div>`)}
+
+  ${pyBlock(`<h2>Шаг 2: Установка и простой бот</h2>
+    ${pyCode('bash',`pip3 install python-telegram-bot`)}
+    ${pyCode('python',`# Создайте файл bot.py
+# ЗАМЕНИТЕ 'YOUR_TOKEN' на ваш токен от BotFather
+
+from telegram import Update
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+
+TOKEN = "YOUR_TOKEN"  # ← вставьте сюда ваш токен
+
+# Обработчик команды /start
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    name = update.effective_user.first_name
+    await update.message.reply_text(
+        f"Привет, {name}! 👋\\n"
+        f"Я PM Bot — помогаю с управлением проектом.\\n\\n"
+        f"Команды:\\n"
+        f"/status — статус спринта\\n"
+        f"/standup — напомнить про стендап\\n"
+        f"/help — помощь"
+    )
+
+# Обработчик команды /status
+async def sprint_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # В реальном боте здесь можно читать из файла или API
+    status_text = (
+        "📊 *Спринт 12 — Статус*\\n\\n"
+        "✅ Дизайн главной — Анна\\n"
+        "🔄 API авторизации — Борис\\n"
+        "🔴 Тесты (блокер!) — Виктор\\n"
+        "⬜ Документация — Галина\\n\\n"
+        f"Готово: 1/4 задач"
+    )
+    await update.message.reply_text(status_text, parse_mode="Markdown")
+
+# Ответ на обычные сообщения
+async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+    await update.message.reply_text(f"Получил: {text}. Используйте /help для списка команд.")
+
+# Запуск бота
+def main():
+    app = Application.builder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("status", sprint_status))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+    print("Бот запущен! Найдите его в Telegram и напишите /start")
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()`)}
+  `)}
+
+  ${pyBlock(`<h2>Шаг 3: Отправка уведомлений (push)</h2>
+    ${pyCode('python',`import requests
+
+# Узнать свой chat_id: напишите боту /start,
+# затем откройте: https://api.telegram.org/bot{TOKEN}/getUpdates
+# Найдите "chat":{"id": XXXXXXXX}
+
+def send_message(token, chat_id, text):
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    payload = {
+        "chat_id": chat_id,
+        "text": text,
+        "parse_mode": "Markdown"
+    }
+    r = requests.post(url, json=payload)
+    return r.json()
+
+# Использование — например, после обработки данных
+TOKEN = "YOUR_TOKEN"
+CHAT_ID = "YOUR_CHAT_ID"  # ваш chat_id
+
+send_message(TOKEN, CHAT_ID,
+    "🔔 *Ежедневный отчёт*\\n"
+    "✅ Завершено задач: 3\\n"
+    "⚠️ Блокеров: 1\\n"
+    "📅 До конца спринта: 2 дня"
+)`)}
+  `)}
+
+  ${pyCall('tip','💡','<strong>Идеи для PM-бота:</strong> утреннее напоминание о стендапе, еженедельный отчёт по спринту из CSV, уведомление о новых задачах с высоким приоритетом, команда /risk — список актуальных рисков.')}
+  ${pyNav(9,11)}
+`,
+
+// ── 11. Автоматизация и планировщик ─────────
+()=>`
+  <div class="lesson-tag">Модуль 5 · Урок 11</div>
+  <h1>Автоматизация и расписание</h1>
+  <div class="lesson-meta"><span class="meta-badge">Практика</span><span class="meta-badge">~25 мин</span></div>
+  ${pyBlock(`<p>Автоматизация — главная суперсила Python для PM. Скрипт который запускается сам в нужное время и делает рутинную работу — это то, что освобождает часы в неделю.</p>`)}
+
+  ${pyBlock(`<h2>os и pathlib — работа с файловой системой</h2>
+    ${pyCode('python',`import os
+from pathlib import Path
+
+# Текущая директория
+print(os.getcwd())  # где сейчас
+
+# Создать папку (если нет)
+Path("reports/2025").mkdir(parents=True, exist_ok=True)
+
+# Список файлов в папке
+for file in Path(".").iterdir():
+    if file.suffix == ".csv":
+        print(f"CSV файл: {file.name} ({file.stat().st_size} байт)")
+
+# Построить путь (работает на Windows и Mac одинаково)
+report_path = Path("reports") / "2025" / "sprint_12.txt"
+print(report_path)  # reports/2025/sprint_12.txt
+
+# Проверить существование
+if report_path.exists():
+    print("Файл уже есть")
+else:
+    report_path.write_text("Отчёт по спринту 12", encoding="utf-8")`)}
+  `)}
+
+  ${pyBlock(`<h2>schedule — запуск по расписанию</h2>
+    ${pyCode('bash',`pip3 install schedule`)}
+    ${pyCode('python',`import schedule
+import time
+from datetime import datetime
+
+def daily_standup_reminder():
+    now = datetime.now().strftime("%H:%M")
+    print(f"[{now}] 🔔 Напоминание: стендап через 15 минут!")
+    # Здесь можно добавить отправку в Telegram
+
+def weekly_report():
+    print("📊 Генерирую еженедельный отчёт...")
+    # Здесь вызов функции создания отчёта
+
+def check_deadlines():
+    print("⏰ Проверяю дедлайны...")
+    # Здесь логика проверки задач
+
+# Расписание
+schedule.every().day.at("09:45").do(daily_standup_reminder)
+schedule.every().monday.at("08:00").do(weekly_report)
+schedule.every(30).minutes.do(check_deadlines)
+
+print("⚡ Планировщик запущен. Ctrl+C для остановки.")
+while True:
+    schedule.run_pending()
+    time.sleep(60)  # проверяем каждую минуту`)}
+  `)}
+
+  ${pyBlock(`<h2>subprocess — запуск системных команд</h2>
+    ${pyCode('python',`import subprocess
+
+# Выполнить команду и получить результат
+result = subprocess.run(
+    ["git", "log", "--oneline", "-5"],  # последние 5 коммитов
+    capture_output=True, text=True
+)
+print(result.stdout)
+
+# Открыть файл в системном приложении
+import os, sys
+if sys.platform == "darwin":      # macOS
+    os.system("open report.xlsx")
+elif sys.platform == "win32":     # Windows
+    os.system("start report.xlsx")`)}
+  `)}
+
+  ${pyBlock(`<h2>Практика: полный автоматизированный отчёт</h2>
+    ${pyCode('python',`import csv
+import json
+from pathlib import Path
+from datetime import datetime
+
+def generate_daily_report(tasks_file, output_dir="reports"):
+    # Создаём папку если нет
+    Path(output_dir).mkdir(exist_ok=True)
+
+    tasks = []
+    with open(tasks_file, encoding="utf-8") as f:
+        tasks = list(csv.DictReader(f))
+
+    # Подсчёт статусов
+    stats = {}
+    for t in tasks:
+        s = t["status"]
+        stats[s] = stats.get(s, 0) + 1
+
+    blocked = [t["task"] for t in tasks if t["status"] == "blocked"]
+
+    # Формируем отчёт
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    report = [
+        f"ЕЖЕДНЕВНЫЙ ОТЧЁТ — {date_str}",
+        "=" * 40,
+        ""
+    ]
+    for status, count in sorted(stats.items()):
+        report.append(f"  {status}: {count} задач")
+    if blocked:
+        report.append(f"\\n🔴 БЛОКЕРЫ:")
+        for b in blocked:
+            report.append(f"  • {b}")
+
+    # Сохраняем
+    output_path = Path(output_dir) / f"report_{date_str}.txt"
+    output_path.write_text("\\n".join(report), encoding="utf-8")
+    print(f"✅ Отчёт сохранён: {output_path}")
+    return "\\n".join(report)
+
+print(generate_daily_report("tasks.csv"))`)}
+  `)}
+  ${pyNav(10,12)}
+`,
+
+// ── 12. Vibe coding с Claude ─────────────────
+()=>`
+  <div class="lesson-tag">Модуль 6 · Урок 12</div>
+  <h1>Vibe Coding: искусство работы с Claude</h1>
+  <div class="lesson-meta"><span class="meta-badge">AI-разработка</span><span class="meta-badge">~30 мин</span></div>
+  ${pyBlock(`<p><strong>Vibe Coding</strong> — это когда вы описываете что хотите, Claude пишет код, вы запускаете, правите запрос, снова запускаете. Цикл занимает минуты, а не часы. Но есть приёмы которые делают этот процесс в 5 раз эффективнее.</p>`)}
+
+  ${pyBlock(`<h2>Уровни детализации промпта</h2>
+    ${pyTable(['Уровень','Промпт','Результат'],
+      [['❌ Плохо','Напиши скрипт для отчётов','Общий шаблон, нужно много правок'],
+       ['⚠️ Средне','Напиши скрипт который читает CSV и считает статистику','Рабочий, но не под ваши нужды'],
+       ['✅ Хорошо','[Полный шаблон с контекстом]','Рабочий код с первой попытки'],
+       ['🚀 Отлично','[Шаблон + пример данных + пример вывода]','Точное попадание']])}
+  `)}
+
+  ${pyBlock(`<h2>Шаблоны промптов для разных задач</h2>
+    <h3>📊 Обработка данных</h3>
+    <div style="background:var(--bg3);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:16px;margin:12px 0;font-size:13px;color:var(--text2);line-height:1.9">
+      Напиши Python-скрипт (Python 3, только стандартные библиотеки + pandas).<br>
+      <strong style="color:var(--text)">Входные данные:</strong> файл tasks.csv с колонками: id, task, status (done/in_progress/blocked/todo), owner, story_points, deadline (формат YYYY-MM-DD)<br>
+      <strong style="color:var(--text)">Что нужно:</strong><br>
+      1. Прочитать файл<br>
+      2. Посчитать задачи и story points по каждому статусу<br>
+      3. Найти просроченные задачи (deadline < сегодня и status != done)<br>
+      4. Сохранить результат в report.xlsx (два листа: Статистика и Просроченные)<br>
+      <strong style="color:var(--text)">Добавить:</strong> print-прогресс по ходу работы, try/except для обработки ошибок
+    </div>
+    <h3>🤖 Telegram-бот</h3>
+    <div style="background:var(--bg3);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:16px;margin:12px 0;font-size:13px;color:var(--text2);line-height:1.9">
+      Напиши Telegram-бота на python-telegram-bot v20+ (async).<br>
+      <strong style="color:var(--text)">Функции:</strong><br>
+      /start — приветствие с именем пользователя<br>
+      /status — читает файл sprint.json и отправляет форматированный статус<br>
+      /add [название задачи] — добавляет задачу в sprint.json со статусом todo<br>
+      /done [номер] — помечает задачу как done<br>
+      <strong style="color:var(--text)">Файл sprint.json:</strong> список задач {"id", "name", "status", "added_by"}<br>
+      Добавить обработку ошибок и понятные сообщения пользователю
+    </div>`)}
+
+  ${pyBlock(`<h2>Итеративное улучшение кода</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">1</div><div class="step-content">
+        <h4>Запросить базовую версию</h4>
+        <p>«Напиши скрипт [описание]. Сначала простая рабочая версия без оптимизаций.»</p>
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">2</div><div class="step-content">
+        <h4>Запустить и проверить</h4>
+        <p>Если ошибка — скопировать весь traceback → «Получаю ошибку: [текст]. Код: [код]»</p>
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">3</div><div class="step-content">
+        <h4>Добавить функции итерациями</h4>
+        <p>«Добавь к этому коду: [новая функция]. Остальное не трогай.»</p>
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">4</div><div class="step-content">
+        <h4>Попросить объяснение</h4>
+        <p>«Объясни эту часть кода построчно. Почему используется именно такой подход?»</p>
+      </div></div>
+      <div class="step-item"><div class="step-num" style="color:#f59e0b">5</div><div class="step-content">
+        <h4>Попросить рефакторинг</h4>
+        <p>«Этот код работает. Сделай его чище: добавь комментарии, вынеси константы в начало.»</p>
+      </div></div>
+    </div>`)}
+
+  ${pyBlock(`<h2>Мощные мета-промпты</h2>
+    ${pyTable(['Задача','Промпт'],
+      [['Понять чужой код','Объясни этот Python-код шаг за шагом, как будто я не программист: [код]'],
+       ['Найти ошибку','Код должен [что делать], но делает [что происходит]. Найди проблему: [код]'],
+       ['Оптимизировать','Этот код работает медленно на больших CSV. Как ускорить без изменения логики?'],
+       ['Добавить функцию','К этому коду добавь функцию которая [описание]. Покажи только изменения.'],
+       ['Написать тест','Напиши простой тест для функции [название] который проверяет [сценарии]'],
+       ['Переписать чище','Этот код работает. Перепиши его чище используя best practices Python.']])}
+  `)}
+  ${pyCall('warning','⚠️','<strong>Главная ошибка новичка:</strong> скопировать код от Claude, не прочитать, запустить. Всегда читайте код перед запуском — даже 2 минуты понимания лучше чем часы дебага слепого кода.')}
+  ${pyNav(11,13)}
+`,
+
+// ── 13. Виртуальные окружения и пакеты ──────
+()=>`
+  <div class="lesson-tag">Модуль 6 · Урок 13</div>
+  <h1>Виртуальные окружения и пакеты</h1>
+  <div class="lesson-meta"><span class="meta-badge">Инфраструктура</span><span class="meta-badge">~20 мин</span></div>
+  ${pyBlock(`<p>Когда у вас больше одного проекта — нужны виртуальные окружения. Они изолируют зависимости: проект А использует pandas 1.x, проект Б — pandas 2.x, и они не конфликтуют.</p>`)}
+
+  ${pyBlock(`<h2>Виртуальное окружение (venv)</h2>
+    ${pyCode('bash',`# 1. Создать окружение в папке проекта
+python3 -m venv venv   # создаст папку venv/
+
+# 2. Активировать
+source venv/bin/activate    # macOS/Linux
+venv\\Scripts\\activate       # Windows
+
+# Теперь видите (venv) в начале строки терминала
+# Все pip install устанавливаются только в это окружение
+
+# 3. Установить зависимости
+pip install requests pandas openpyxl python-telegram-bot
+
+# 4. Сохранить список зависимостей
+pip freeze > requirements.txt
+
+# 5. Деактивировать когда закончили
+deactivate
+
+# Позже: восстановить всё из requirements.txt
+pip install -r requirements.txt`)}
+  `)}
+
+  ${pyBlock(`<h2>requirements.txt — стандарт для всех проектов</h2>
+    ${pyCode('text',`# requirements.txt
+requests==2.31.0
+pandas==2.1.4
+openpyxl==3.1.2
+python-telegram-bot==20.7
+schedule==1.2.1`)}
+    ${pyCall('tip','📦','Всегда создавайте requirements.txt. Когда попросите Claude написать код с зависимостями — он сам укажет что нужно установить. Или спросите: «Напиши requirements.txt для этого скрипта».')}
+  `)}
+
+  ${pyBlock(`<h2>Структура проекта — как организовать код</h2>
+    ${pyCode('text',`pm-bot/                     # папка проекта
+├── venv/                   # виртуальное окружение (не трогать, не коммитить)
+├── data/                   # входные данные
+│   └── tasks.csv
+├── reports/                # выходные отчёты
+├── src/                    # исходный код
+│   ├── bot.py              # Telegram-бот
+│   ├── analyzer.py         # анализ данных
+│   └── reporter.py         # генерация отчётов
+├── config.json             # настройки (без секретов!)
+├── .env                    # секреты: токены, пароли (не коммитить!)
+├── .gitignore              # что не загружать в git
+├── requirements.txt        # зависимости
+└── README.md               # описание проекта`)}
+  `)}
+
+  ${pyBlock(`<h2>.env — безопасное хранение секретов</h2>
+    ${pyCode('bash',`pip3 install python-dotenv`)}
+    ${pyCode('text',`# .env файл (НИКОГДА не добавляйте в git!)
+TELEGRAM_TOKEN=1234567890:AAFxxx
+JIRA_API_KEY=your_jira_key
+NOTION_TOKEN=secret_xxx`)}
+    ${pyCode('python',`# В коде загружаем так:
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # читает .env файл
+
+token = os.getenv("TELEGRAM_TOKEN")
+jira_key = os.getenv("JIRA_API_KEY")`)}
+    ${pyCode('text',`# .gitignore — добавьте эти строки
+venv/
+.env
+__pycache__/
+*.pyc
+reports/
+*.xlsx`)}
+  `)}
+  ${pyNav(12,14)}
+`,
+
+// ── 14. Streamlit — дашборды ─────────────────
+()=>`
+  <div class="lesson-tag">Модуль 6 · Урок 14</div>
+  <h1>Streamlit — дашборды за 30 минут</h1>
+  <div class="lesson-meta"><span class="meta-badge">Веб-приложения</span><span class="meta-badge">~30 мин</span></div>
+  ${pyBlock(`<p><strong>Streamlit</strong> — библиотека которая превращает Python-скрипт в веб-приложение. Никакого HTML, CSS, JS — просто Python. Идеально для PM: дашборд спринта, мониторинг метрик, инструменты для команды.</p>`)}
+
+  ${pyBlock(`<h2>Установка и первый запуск</h2>
+    ${pyCode('bash',`pip3 install streamlit`)}
+    ${pyCode('python',`# Создайте dashboard.py
+import streamlit as st
+
+st.title("📊 PM Dashboard")
+st.write("Добро пожаловать в дашборд спринта!")`)}
+    ${pyCode('bash',`# Запуск (не python3, а streamlit run!)
+streamlit run dashboard.py
+# Откроется браузер на http://localhost:8501`)}
+  `)}
+
+  ${pyBlock(`<h2>Компоненты Streamlit</h2>
+    ${pyCode('python',`import streamlit as st
+import pandas as pd
+
+# Заголовки и текст
+st.title("Дашборд спринта")
+st.header("Общая статистика")
+st.subheader("По исполнителям")
+st.write("Любой текст или объект")
+st.markdown("**Жирный**, *курсив*, 🎯 эмодзи")
+
+# Метрики — красивые карточки
+col1, col2, col3, col4 = st.columns(4)
+col1.metric("Всего задач", 24)
+col2.metric("Выполнено", 16, delta="+3 за неделю")
+col3.metric("Блокеры", 2, delta="-1", delta_color="inverse")
+col4.metric("Velocity", "68%", delta="+12%")
+
+# Таблица
+data = pd.DataFrame({
+    "Задача": ["Дизайн", "API", "Тесты"],
+    "Статус": ["✅ Done", "🔄 Progress", "🔴 Blocked"],
+    "Исполнитель": ["Анна", "Борис", "Виктор"]
+})
+st.dataframe(data, use_container_width=True)
+
+# Графики (встроенные)
+import random
+chart_data = pd.DataFrame({"Задачи": [random.randint(3,10) for _ in range(14)]})
+st.line_chart(chart_data, color="#4fffb0")`)}
+  `)}
+
+  ${pyBlock(`<h2>Полный дашборд спринта</h2>
+    ${pyCode('python',`import streamlit as st
+import pandas as pd
+import json
+from datetime import datetime
+
+st.set_page_config(page_title="Sprint Dashboard", page_icon="📋", layout="wide")
+
+# Загрузка данных с возможностью обновить
+st.title("📋 Sprint Dashboard")
+
+uploaded = st.file_uploader("Загрузите CSV из Jira/Trello", type="csv")
+if uploaded:
+    df = pd.read_csv(uploaded)
+else:
+    # Демо-данные
+    df = pd.DataFrame([
+        {"task":"Дизайн","status":"done","owner":"Анна","points":3},
+        {"task":"API","status":"in_progress","owner":"Борис","points":8},
+        {"task":"Тесты","status":"done","owner":"Виктор","points":5},
+        {"task":"Деплой","status":"blocked","owner":"Борис","points":2},
+        {"task":"Документация","status":"todo","owner":"Анна","points":3},
+    ])
+    st.info("Показаны демо-данные. Загрузите свой CSV выше.")
+
+# Метрики
+total = len(df)
+done = len(df[df["status"]=="done"])
+blocked = len(df[df["status"]=="blocked"])
+points_done = df[df["status"]=="done"]["points"].sum() if "points" in df.columns else 0
+points_total = df["points"].sum() if "points" in df.columns else 0
+
+c1,c2,c3,c4 = st.columns(4)
+c1.metric("Всего задач", total)
+c2.metric("Выполнено", f"{done}/{total}", f"{round(done/total*100)}%")
+c3.metric("Блокеры", blocked, delta_color="inverse")
+c4.metric("Story Points", f"{points_done}/{points_total}")
+
+# Таблица с фильтром
+st.subheader("Задачи")
+status_filter = st.multiselect("Фильтр по статусу",
+    options=df["status"].unique(), default=df["status"].unique())
+filtered = df[df["status"].isin(status_filter)]
+st.dataframe(filtered, use_container_width=True)
+
+# Разбивка по исполнителям
+if "owner" in df.columns:
+    st.subheader("Нагрузка по команде")
+    owner_stats = df.groupby("owner").size().reset_index(name="задач")
+    st.bar_chart(owner_stats.set_index("owner"))`)}
+  `)}
+  ${pyCall('tip','🚀','<strong>Деплой дашборда:</strong> зарегистрируйтесь на share.streamlit.io → подключите GitHub-репозиторий → дашборд получает публичную ссылку. Бесплатно!')}
+  ${pyNav(13,15)}
+`,
+
+// ── 15. Реальные проекты ────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 7 · Урок 15</div>
+  <h1>Реальные проекты для PM</h1>
+  <div class="lesson-meta"><span class="meta-badge">Практика</span><span class="meta-badge">~40 мин</span></div>
+  ${pyBlock(`<p>Три готовых проекта которые можно запустить прямо сейчас. Каждый решает реальную задачу PM. Используйте их как основу — попросите Claude адаптировать под ваш контекст.</p>`)}
+
+  ${pyBlock(`<h2>Проект 1: Weekly Report Bot</h2>
+    <p>Каждый понедельник отправляет в Telegram сводку по задачам из CSV.</p>
+    ${pyCode('python',`# weekly_report_bot.py
+import csv, schedule, time, requests
+from datetime import datetime
+from pathlib import Path
+
+TOKEN = "YOUR_TOKEN"
+CHAT_ID = "YOUR_CHAT_ID"
+TASKS_FILE = "tasks.csv"
+
+def load_tasks():
+    if not Path(TASKS_FILE).exists():
+        return []
+    with open(TASKS_FILE, encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+def generate_weekly_report():
+    tasks = load_tasks()
+    if not tasks:
+        return "📊 Нет данных о задачах"
+
+    stats = {}
+    for t in tasks:
+        s = t.get("status", "unknown")
+        stats[s] = stats.get(s, 0) + 1
+
+    week = datetime.now().strftime("Неделя %W, %Y")
+    lines = [f"📊 *Еженедельный отчёт — {week}*", ""]
+    emoji_map = {"done":"✅","in_progress":"🔄","blocked":"🔴","todo":"⬜"}
+    for status, count in sorted(stats.items()):
+        lines.append(f"{emoji_map.get(status,'❓')} {status}: {count}")
+    lines.append(f"\\n📌 Всего задач: {len(tasks)}")
+
+    blocked = [t.get("task","?") for t in tasks if t.get("status")=="blocked"]
+    if blocked:
+        lines.append(f"\\n🚨 Блокеры ({len(blocked)}):")
+        for b in blocked[:3]:
+            lines.append(f"  • {b}")
+    return "\\n".join(lines)
+
+def send_report():
+    text = generate_weekly_report()
+    requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage",
+        json={"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"})
+    print(f"[{datetime.now():%H:%M}] Отчёт отправлен")
+
+schedule.every().monday.at("09:00").do(send_report)
+# Для теста: schedule.every(1).minutes.do(send_report)
+
+print("🤖 Бот запущен")
+while True:
+    schedule.run_pending()
+    time.sleep(60)`)}
+  `)}
+
+  ${pyBlock(`<h2>Проект 2: Jira / Trello CSV Analyzer</h2>
+    <p>Анализирует экспорт из Jira/Trello и создаёт красивый Excel-отчёт.</p>
+    ${pyCode('python',`# sprint_analyzer.py
+import pandas as pd
+from datetime import datetime, date
+
+def analyze_sprint(input_file, output_file=None):
+    df = pd.read_csv(input_file, encoding="utf-8")
+    df.columns = df.columns.str.lower().str.strip().str.replace(" ","_")
+
+    # Нормализуем статусы
+    status_map = {
+        "done":"done","closed":"done","resolved":"done",
+        "in progress":"in_progress","in_progress":"in_progress",
+        "to do":"todo","todo":"todo","open":"todo",
+        "blocked":"blocked","impediment":"blocked"
+    }
+    df["status"] = df.get("status", pd.Series(["todo"]*len(df))).str.lower().map(
+        lambda x: next((v for k,v in status_map.items() if k in str(x).lower()), "other")
+    )
+
+    # Метрики
+    by_status = df.groupby("status").size().reset_index(name="count")
+    by_owner = df.groupby(df.columns[df.columns.str.contains("owner|assignee|assigned")].tolist()[0] if any(df.columns.str.contains("owner|assignee")) else "status").size().reset_index(name="tasks")
+
+    # Дата
+    today = date.today().strftime("%Y-%m-%d")
+    if output_file is None:
+        output_file = f"sprint_report_{today}.xlsx"
+
+    with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
+        df.to_excel(writer, sheet_name="Все задачи", index=False)
+        by_status.to_excel(writer, sheet_name="По статусам", index=False)
+        by_owner.to_excel(writer, sheet_name="По исполнителям", index=False)
+
+    print(f"✅ Отчёт: {output_file}")
+    print(f"\\n📊 Статистика:")
+    for _, row in by_status.iterrows():
+        print(f"  {row['status']}: {row['count']}")
+
+if __name__ == "__main__":
+    import sys
+    file = sys.argv[1] if len(sys.argv) > 1 else "tasks.csv"
+    analyze_sprint(file)`)}
+  `)}
+
+  ${pyBlock(`<h2>Проект 3: Meeting Notes Processor</h2>
+    <p>Обрабатывает текстовые заметки митинга и извлекает action items.</p>
+    ${pyCode('python',`# meeting_processor.py
+import re
+from datetime import datetime
+from pathlib import Path
+
+def extract_action_items(notes_text):
+    """Ищет строки с маркерами action items"""
+    patterns = [
+        r"(?:action|todo|задача|нужно|сделать)[:\s]+(.+)",
+        r"@(\w+)\s+(.+)",           # @Имя задача
+        r"(?:AP|АП)[\s:]+(.+)",     # AP: задача
+    ]
+    items = []
+    for line in notes_text.split("\\n"):
+        line = line.strip()
+        for pattern in patterns:
+            match = re.search(pattern, line, re.IGNORECASE)
+            if match:
+                items.append({
+                    "text": match.group(match.lastindex),
+                    "line": line,
+                    "pattern": pattern
+                })
+                break
+    return items
+
+def process_meeting_notes(input_file):
+    text = Path(input_file).read_text(encoding="utf-8")
+    items = extract_action_items(text)
+
+    date_str = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    output = Path(f"action_items_{date_str}.txt")
+
+    lines = [f"ACTION ITEMS — {datetime.now():%d.%m.%Y}", "="*40, ""]
+    for i, item in enumerate(items, 1):
+        lines.append(f"{i}. {item['text']}")
+    lines.extend(["", f"Всего: {len(items)} action items"])
+
+    output.write_text("\\n".join(lines), encoding="utf-8")
+    print(f"✅ {len(items)} action items → {output}")
+    for i, item in enumerate(items, 1):
+        print(f"  {i}. {item['text']}")
+
+process_meeting_notes("meeting_notes.txt")`)}
+  `)}
+  ${pyNav(14,16)}
+`,
+
+// ── 16. Шпаргалка Python ────────────────────
+()=>`
+  <div class="lesson-tag">Финал</div>
+  <h1>🐍 Шпаргалка Python для PM</h1>
+  <div class="lesson-meta"><span class="meta-badge">Справочник</span><span class="meta-badge">Всегда под рукой</span></div>
+
+  ${pyBlock(`<h2>⚡ Быстрый старт — что делать в первый день</h2>
+    ${pyCode('bash',`# macOS
+brew install python
+brew install --cask visual-studio-code
+# VS Code → Extensions → Python (Microsoft)
+
+# Windows: python.org → Download → ✅ Add to PATH
+# VS Code: code.visualstudio.com → Extensions → Python
+
+# Создать первый скрипт:
+echo 'print("Hello PM!")' > hello.py
+python3 hello.py  # macOS
+python hello.py   # Windows`)}
+  `)}
+
+  ${pyBlock(`<h2>📦 Ключевые библиотеки</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">📊 Данные</div>
+        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.9">pip install pandas        # таблицы
+pip install openpyxl      # Excel
+pip install xlrd          # .xls
+pip install matplotlib    # графики
+pip install plotly        # графики интерактивные</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">🌐 Сеть и API</div>
+        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.9">pip install requests      # HTTP-запросы
+pip install httpx         # async HTTP
+pip install beautifulsoup4 # парсинг HTML
+pip install python-dotenv # .env файлы</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">🤖 Боты и автоматизация</div>
+        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.9">pip install python-telegram-bot
+pip install schedule      # планировщик
+pip install pyautogui     # автокликер
+pip install selenium      # браузер-автоматизация</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">🖥️ Веб-приложения</div>
+        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.9">pip install streamlit     # дашборды за 30 мин
+pip install flask         # веб-сервер (лёгкий)
+pip install fastapi       # REST API
+pip install gradio        # AI-демо быстро</pre>
+      </div>
+    </div>`)}
+
+  ${pyBlock(`<h2>🔑 Синтаксис в одном взгляде</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">Переменные и типы</div>
+        <pre style="font-size:11px;color:var(--text2);padding:12px 14px;line-height:1.8">x = 42          # int
+y = 3.14        # float
+s = "hello"     # str
+b = True        # bool
+n = None        # NoneType
+lst = [1,2,3]   # list
+dct = {"k":"v"} # dict
+# f-строка:
+f"Привет {name}!"</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">Условия и циклы</div>
+        <pre style="font-size:11px;color:var(--text2);padding:12px 14px;line-height:1.8">if x > 0:
+    print("плюс")
+elif x == 0:
+    print("ноль")
+else:
+    print("минус")
+
+for item in lst:
+    print(item)
+
+while x > 0:
+    x -= 1</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">Функции и классы</div>
+        <pre style="font-size:11px;color:var(--text2);padding:12px 14px;line-height:1.8">def greet(name, age=0):
+    return f"{name}, {age}"
+
+# вызов:
+result = greet("Иван", 28)
+
+# lambda:
+fn = lambda x: x * 2
+
+# try/except:
+try:
+    x = int("abc")
+except ValueError as e:
+    print(f"Ошибка: {e}")</pre>
+      </div>
+      <div class="cheat-card">
+        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">Файлы и JSON</div>
+        <pre style="font-size:11px;color:var(--text2);padding:12px 14px;line-height:1.8">import json, csv
+
+# Читать файл:
+with open("f.txt","r") as f:
+    text = f.read()
+
+# Писать файл:
+with open("f.txt","w") as f:
+    f.write("текст")
+
+# JSON:
+data = json.loads(text)
+text = json.dumps(data)
+
+# CSV:
+reader = csv.DictReader(f)</pre>
+      </div>
+    </div>`)}
+
+  ${pyBlock(`<h2>🤖 Промпты для Claude — копируйте и используйте</h2>
+    ${pyTable(['Задача','Промпт-шаблон'],
+      [['Новый скрипт','Напиши Python-скрипт: [задача]. Вход: [данные]. Результат: [что нужно]. Библиотеки: только [список]. Добавь комментарии.'],
+       ['Разобрать ошибку','Получаю ошибку при запуске Python-скрипта. Ошибка: [traceback]. Код: [код]. Что не так и как исправить?'],
+       ['Добавить функцию','К этому Python-коду добавь: [функция]. Код: [код]. Покажи только изменённые части.'],
+       ['Объяснить код','Объясни этот Python-код построчно, как будто я не программист: [код]'],
+       ['Оптимизировать','Этот код работает, но медленно на файлах >10000 строк. Оптимизируй: [код]'],
+       ['Написать бота','Напиши Telegram-бота (python-telegram-bot v20, async). Команды: /[список]. Данные хранить в [JSON/CSV]. Добавь обработку ошибок.']])}
+  `)}
+
+  ${pyCall('tip','🏆','<strong>Напутствие:</strong> Python + Claude — это мощный тандем. Не бойтесь экспериментировать. Сломанный скрипт — это не провал, это урок. Каждый раз когда вы чините ошибку, вы становитесь лучше. Начните с малого: автоматизируйте одну рутинную задачу этой недели.')}
+  ${pyNav(15, undefined, true)}
+`
+];
+
+function showPyLesson(idx) {
+  currentPyLesson = idx;
+  document.querySelectorAll('#py-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('py-nav-' + idx);
+  if (navEl) {
+    navEl.classList.add('active');
+    if (pyCompleted.has(idx) && !navEl.querySelector('.check-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'check-badge';
+      badge.style.background = '#f59e0b';
+      badge.textContent = '✓';
+      navEl.appendChild(badge);
+    }
+  }
+  const main = document.getElementById('py-main-content');
+  main.innerHTML = pyLessons[idx]();
+  main.scrollTo(0, 0);
+  updatePyProgress();
+  setTimeout(wrapTables, 50);
+  closeSidebar();
+}
+
+function pyCompleteAndNav(targetIdx) {
+  pyCompleted.add(currentPyLesson);
+  const navEl = document.getElementById('py-nav-' + currentPyLesson);
+  if (navEl && !navEl.querySelector('.check-badge')) {
+    const badge = document.createElement('span');
+    badge.className = 'check-badge';
+    badge.style.background = '#f59e0b';
+    badge.textContent = '✓';
+    navEl.appendChild(badge);
+    navEl.classList.add('completed');
+  }
+  showPyLesson(targetIdx);
+}
+
+function pyCompleteFinal() {
+  pyCompleted.add(currentPyLesson);
+  updatePyProgress();
+  const navEl = document.getElementById('py-nav-' + currentPyLesson);
+  if (navEl && !navEl.querySelector('.check-badge')) {
+    const badge = document.createElement('span');
+    badge.className = 'check-badge';
+    badge.style.background = '#f59e0b';
+    badge.textContent = '✓';
+    navEl.appendChild(badge);
+    navEl.classList.add('completed');
+  }
+  document.getElementById('py-main-content').insertAdjacentHTML('beforeend', `
+    <div class="callout tip" style="margin-top:24px;animation:fadeUp 0.5s ease">
+      <span class="callout-icon">🎉</span>
+      <div><strong>Курс Python завершён!</strong> Вы знаете всё необходимое для lайфкодинга с Claude. Создайте свой первый реальный проект на этой неделе!</div>
+    </div>
+  `);
+}
+
+function updatePyProgress() {
+  const done = pyCompleted.size;
+  const pct = Math.round((done / PY_TOTAL) * 100);
+  const el = document.getElementById('py-progress-text');
+  if (el) el.textContent = `${done} / ${PY_TOTAL}`;
+  const fill = document.getElementById('py-progress-fill');
+  if (fill) fill.style.width = pct + '%';
+  updateDrawerProgress();
+}
+
 </script>
 </body>
 </html>
