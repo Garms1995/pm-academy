@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PM Academy — SQL & Разработка ПО</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --bg: #0d0f14;
@@ -1156,6 +1157,233 @@
     .metric-grid { grid-template-columns: 1fr; }
     .course-stats { flex-direction: column; align-items: flex-start; }
   }
+
+  /* ══════════════════════════════════════
+     AUTH MODAL
+  ══════════════════════════════════════ */
+  .auth-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(8, 10, 16, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .auth-overlay.show { opacity: 1; pointer-events: all; }
+
+  .auth-modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 36px 40px;
+    width: 100%; max-width: 420px;
+    position: relative;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    transform: translateY(16px);
+    transition: transform 0.25s;
+  }
+  .auth-overlay.show .auth-modal { transform: translateY(0); }
+
+  .auth-logo {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 28px;
+    font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800;
+  }
+  .auth-logo .logo-dot { width:10px; height:10px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+
+  .auth-title { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--text); margin-bottom:6px; }
+  .auth-sub { font-size:13.5px; color:var(--text2); margin-bottom:28px; line-height:1.5; }
+
+  .auth-tabs {
+    display: flex; gap: 4px;
+    background: var(--bg3); border-radius: 10px; padding: 4px;
+    margin-bottom: 24px;
+  }
+  .auth-tab {
+    flex:1; padding: 8px; border-radius: 7px; border: none;
+    font-family: 'Instrument Sans', sans-serif; font-size: 13.5px; font-weight: 600;
+    cursor: pointer; color: var(--text2); background: transparent;
+    transition: all 0.15s;
+  }
+  .auth-tab.active { background: var(--bg); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+
+  .auth-form { display: flex; flex-direction: column; gap: 14px; }
+  .auth-form.hidden { display: none; }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 12.5px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+  .form-input {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 9px; padding: 11px 14px;
+    font-family: 'Instrument Sans', sans-serif; font-size: 14px; color: var(--text);
+    outline: none; transition: border-color 0.15s;
+    width: 100%;
+  }
+  .form-input:focus { border-color: var(--accent2); }
+  .form-input::placeholder { color: var(--text3); }
+
+  .btn-auth-submit {
+    background: linear-gradient(135deg, var(--accent2), #6d28d9);
+    border: none; border-radius: 9px; padding: 12px;
+    font-family: 'Instrument Sans', sans-serif; font-size: 14.5px; font-weight: 700;
+    color: white; cursor: pointer; transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(123,111,255,0.3);
+    margin-top: 4px;
+  }
+  .btn-auth-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(123,111,255,0.4); }
+  .btn-auth-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .auth-error {
+    font-size: 13px; color: #ff6b6b; background: rgba(255,107,107,0.08);
+    border: 1px solid rgba(255,107,107,0.2); border-radius: 8px;
+    padding: 10px 12px; display: none;
+  }
+  .auth-error.show { display: block; }
+  .auth-success {
+    font-size: 13px; color: var(--accent); background: rgba(79,255,176,0.08);
+    border: 1px solid rgba(79,255,176,0.2); border-radius: 8px;
+    padding: 10px 12px; display: none;
+  }
+  .auth-success.show { display: block; }
+
+  /* ── Top Nav user button ── */
+  .nav-user-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 24px; padding: 5px 12px 5px 6px;
+    cursor: pointer; transition: all 0.15s; margin-left: auto;
+    font-size: 13px; color: var(--text2);
+    font-family: 'Instrument Sans', sans-serif;
+    flex-shrink: 0;
+  }
+  .nav-user-btn:hover { border-color: var(--accent2); color: var(--text); }
+  .nav-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent2), #4fffb0);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white; flex-shrink: 0;
+    overflow: hidden;
+  }
+  .nav-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+  .btn-sign-in {
+    margin-left: auto; background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 16px; color: var(--text2);
+    font-family: 'Instrument Sans', sans-serif; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+  }
+  .btn-sign-in:hover { border-color: var(--accent2); color: var(--text); }
+
+  /* ══════════════════════════════════════
+     PROFILE MODAL
+  ══════════════════════════════════════ */
+  .profile-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(8,10,16,0.85); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .profile-overlay.show { opacity: 1; pointer-events: all; }
+  .profile-modal {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 18px; width: 100%; max-width: 520px;
+    max-height: 90vh; overflow-y: auto;
+    position: relative; box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    transform: translateY(16px); transition: transform 0.25s;
+  }
+  .profile-overlay.show .profile-modal { transform: translateY(0); }
+
+  .profile-header {
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 20px;
+  }
+  .profile-avatar-big {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent2), #4fffb0);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 700; color: white;
+    flex-shrink: 0; overflow: hidden; position: relative; cursor: pointer;
+    border: 2px solid var(--border);
+    transition: border-color 0.15s;
+  }
+  .profile-avatar-big:hover { border-color: var(--accent2); }
+  .profile-avatar-big img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+  .avatar-edit-hint {
+    position: absolute; inset: 0; background: rgba(0,0,0,0.55);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; border-radius: 50%; opacity: 0; transition: opacity 0.15s;
+  }
+  .profile-avatar-big:hover .avatar-edit-hint { opacity: 1; }
+  #avatar-upload-input { display: none; }
+
+  .profile-header-info { flex: 1; min-width: 0; }
+  .profile-name-display {
+    font-family:'Syne',sans-serif; font-size:20px; font-weight:800;
+    color:var(--text); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .profile-email-display { font-size:13px; color:var(--text3); margin-bottom:8px; }
+  .profile-joined { font-size:12px; color:var(--text3); }
+
+  .profile-body { padding: 24px 32px; }
+
+  .profile-section-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--text3); margin-bottom: 14px; margin-top: 24px;
+  }
+  .profile-section-title:first-child { margin-top: 0; }
+
+  .profile-progress-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .profile-course-card {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px;
+  }
+  .pcc-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .pcc-icon { font-size:18px; }
+  .pcc-name { font-size:13px; font-weight:600; color:var(--text2); }
+  .pcc-pct { font-size:20px; font-weight:800; font-family:'Syne',sans-serif; margin-bottom:4px; }
+  .pcc-bar { height:4px; background:var(--bg); border-radius:2px; overflow:hidden; }
+  .pcc-bar-fill { height:100%; border-radius:2px; transition:width 0.4s; }
+
+  .profile-form { display:flex; flex-direction:column; gap:14px; }
+  .profile-actions {
+    display:flex; gap:10px; padding: 0 32px 28px; margin-top: 4px;
+  }
+  .btn-profile-save {
+    flex:1; background:linear-gradient(135deg,var(--accent2),#6d28d9);
+    border:none; border-radius:9px; padding:11px;
+    font-family:'Instrument Sans',sans-serif; font-size:14px; font-weight:700;
+    color:white; cursor:pointer; transition:all 0.2s;
+  }
+  .btn-profile-save:hover { opacity:0.9; }
+  .btn-profile-close {
+    background:var(--bg3); border:1px solid var(--border);
+    border-radius:9px; padding:11px 20px;
+    font-family:'Instrument Sans',sans-serif; font-size:14px;
+    color:var(--text2); cursor:pointer; transition:all 0.15s;
+  }
+  .btn-profile-close:hover { border-color:var(--border); color:var(--text); }
+  .btn-sign-out {
+    background:rgba(255,107,107,0.08); border:1px solid rgba(255,107,107,0.2);
+    border-radius:9px; padding:11px 20px;
+    font-family:'Instrument Sans',sans-serif; font-size:14px; font-weight:600;
+    color:#ff6b6b; cursor:pointer; transition:all 0.15s;
+  }
+  .btn-sign-out:hover { background:rgba(255,107,107,0.15); }
+
+  .profile-save-msg { font-size:13px; color:var(--accent); display:none; padding:0 32px 16px; }
+  .profile-save-msg.show { display:block; }
+
+  @media(max-width:768px) {
+    .auth-modal { margin:16px; padding:28px 24px; }
+    .profile-modal { margin:16px; }
+    .profile-header { padding:20px 20px 18px; }
+    .profile-body { padding:16px 20px; }
+    .profile-actions { padding:0 20px 20px; }
+    .profile-progress-grid { grid-template-columns:1fr 1fr; }
+    .profile-save-msg { padding:0 20px 12px; }
+  }
 </style>
 </head>
 <body>
@@ -1170,6 +1398,15 @@
       <span class="bc-sep">/</span>
       <span class="bc-course" id="bc-course-name"></span>
     </div>
+    <!-- Auth button (right side) -->
+    <div id="nav-auth-area" style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <button class="btn-sign-in" id="btn-open-auth" onclick="openAuthModal()">Войти</button>
+      <button class="nav-user-btn" id="nav-user-btn" style="display:none" onclick="openProfileModal()">
+        <div class="nav-avatar" id="nav-avatar"><span id="nav-avatar-letter">?</span></div>
+        <span id="nav-user-name">Профиль</span>
+      </button>
+    </div>
+
     <div class="nav-right">
       <div class="progress-bar-wrap" id="progress-wrap-sql" style="display:none">
         <span id="progress-text">0 / 13</span>
@@ -1188,6 +1425,104 @@
     </div>
   </div>
 </nav>
+
+<!-- ══ AUTH MODAL ══ -->
+<div class="auth-overlay" id="auth-overlay" onclick="handleAuthOverlayClick(event)">
+  <div class="auth-modal">
+    <div class="auth-logo"><div class="logo-dot"></div>PM Academy</div>
+    <div class="auth-title">Добро пожаловать</div>
+    <div class="auth-sub">Войдите, чтобы сохранять прогресс и настроить профиль</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Войти</button>
+      <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Регистрация</button>
+    </div>
+    <div class="auth-form" id="form-login">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="login-email" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input class="form-input" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <div class="auth-error" id="login-error"></div>
+      <button class="btn-auth-submit" id="btn-login" onclick="handleLogin()">Войти</button>
+    </div>
+    <div class="auth-form hidden" id="form-register">
+      <div class="form-group">
+        <label class="form-label">Имя</label>
+        <input class="form-input" type="text" id="reg-name" placeholder="Как вас зовут?" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="reg-email" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input class="form-input" type="password" id="reg-password" placeholder="Минимум 6 символов" autocomplete="new-password">
+      </div>
+      <div class="auth-error" id="reg-error"></div>
+      <div class="auth-success" id="reg-success"></div>
+      <button class="btn-auth-submit" id="btn-register" onclick="handleRegister()">Создать аккаунт</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROFILE MODAL ══ -->
+<div class="profile-overlay" id="profile-overlay" onclick="handleProfileOverlayClick(event)">
+  <div class="profile-modal">
+    <div class="profile-header">
+      <div class="profile-avatar-big" id="profile-avatar-big" onclick="triggerAvatarUpload()">
+        <span id="profile-avatar-letter-big">?</span>
+        <div class="avatar-edit-hint">✏️</div>
+      </div>
+      <input type="file" id="avatar-upload-input" accept="image/*" onchange="handleAvatarUpload(event)">
+      <div class="profile-header-info">
+        <div class="profile-name-display" id="profile-name-display">—</div>
+        <div class="profile-email-display" id="profile-email-display">—</div>
+        <div class="profile-joined" id="profile-joined"></div>
+      </div>
+    </div>
+    <div class="profile-body">
+      <div class="profile-section-title">📊 Прогресс по курсам</div>
+      <div class="profile-progress-grid">
+        <div class="profile-course-card">
+          <div class="pcc-head"><span class="pcc-icon">🗄️</span><span class="pcc-name">SQL</span></div>
+          <div class="pcc-pct" id="pcc-sql-pct" style="color:var(--accent)">0%</div>
+          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-sql-fill" style="background:var(--accent);width:0%"></div></div>
+        </div>
+        <div class="profile-course-card">
+          <div class="pcc-head"><span class="pcc-icon">💻</span><span class="pcc-name">Разработка ПО</span></div>
+          <div class="pcc-pct" id="pcc-dev-pct" style="color:#ff9966">0%</div>
+          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-dev-fill" style="background:#ff9966;width:0%"></div></div>
+        </div>
+        <div class="profile-course-card">
+          <div class="pcc-head"><span class="pcc-icon">📋</span><span class="pcc-name">Управление проектами</span></div>
+          <div class="pcc-pct" id="pcc-pm-pct" style="color:#a855f7">0%</div>
+          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-pm-fill" style="background:#a855f7;width:0%"></div></div>
+        </div>
+        <div class="profile-course-card">
+          <div class="pcc-head"><span class="pcc-icon">🐍</span><span class="pcc-name">Python для PM</span></div>
+          <div class="pcc-pct" id="pcc-py-pct" style="color:#f59e0b">0%</div>
+          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-py-fill" style="background:#f59e0b;width:0%"></div></div>
+        </div>
+      </div>
+      <div class="profile-section-title" style="margin-top:24px">✏️ Редактировать профиль</div>
+      <div class="profile-form">
+        <div class="form-group">
+          <label class="form-label">Имя</label>
+          <input class="form-input" type="text" id="profile-name-input" placeholder="Ваше имя">
+        </div>
+      </div>
+    </div>
+    <div class="profile-save-msg" id="profile-save-msg">✓ Профиль сохранён</div>
+    <div class="profile-actions">
+      <button class="btn-profile-save" onclick="saveProfile()">Сохранить</button>
+      <button class="btn-profile-close" onclick="closeProfileModal()">Закрыть</button>
+      <button class="btn-sign-out" onclick="handleSignOut()">Выйти</button>
+    </div>
+  </div>
+</div>
 
 <!-- COURSE DRAWER -->
 <div class="course-drawer" id="course-drawer">
@@ -6600,6 +6935,316 @@ function updatePyProgress() {
   if (fill) fill.style.width = pct + '%';
   updateDrawerProgress();
 }
+
+// ══════════════════════════════════════════════════════
+// SUPABASE AUTH & PROFILE
+// ══════════════════════════════════════════════════════
+
+// ── CONFIGURATION ──
+// Замени эти значения на свои из Supabase Dashboard → Settings → API
+const SUPABASE_URL = 'https://ynfqletcntdcbtxmohma.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_kdpWFucDyOX2WEHqhwQt6A_1ul0RAzF';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentUser = null;
+
+// ── INIT: check session on page load ──
+(async function initAuth() {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      currentUser = session.user;
+      await loadProfile(currentUser);
+      renderLoggedIn();
+    } else {
+      renderLoggedOut();
+    }
+  } catch(e) {
+    console.warn('Supabase not configured yet:', e.message);
+    renderLoggedOut();
+  }
+
+  // Listen for auth state changes
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      currentUser = session.user;
+      await loadProfile(currentUser);
+      renderLoggedIn();
+      closeAuthModal();
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      renderLoggedOut();
+    }
+  });
+})();
+
+// ── PROFILE: load from Supabase ──
+async function loadProfile(user) {
+  try {
+    const { data } = await sb.from('profiles').select('*').eq('id', user.id).single();
+    if (data) {
+      user._profile = data;
+    }
+  } catch(e) {}
+}
+
+// ── UI: render logged-in state ──
+function renderLoggedIn() {
+  const user = currentUser;
+  if (!user) return;
+
+  const profile = user._profile || {};
+  const name = profile.name || user.email.split('@')[0];
+  const avatarUrl = profile.avatar_url || null;
+
+  // Nav button
+  document.getElementById('btn-open-auth').style.display = 'none';
+  const userBtn = document.getElementById('nav-user-btn');
+  userBtn.style.display = 'flex';
+  document.getElementById('nav-user-name').textContent = name;
+
+  const navAvatar = document.getElementById('nav-avatar');
+  if (avatarUrl) {
+    navAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar">`;
+  } else {
+    navAvatar.innerHTML = `<span id="nav-avatar-letter">${name[0].toUpperCase()}</span>`;
+  }
+}
+
+// ── UI: render logged-out state ──
+function renderLoggedOut() {
+  document.getElementById('btn-open-auth').style.display = '';
+  document.getElementById('nav-user-btn').style.display = 'none';
+}
+
+// ── AUTH MODAL ──
+function openAuthModal() {
+  document.getElementById('auth-overlay').classList.add('show');
+  setTimeout(() => document.getElementById('login-email').focus(), 300);
+}
+function closeAuthModal() {
+  document.getElementById('auth-overlay').classList.remove('show');
+  clearAuthErrors();
+}
+function handleAuthOverlayClick(e) {
+  if (e.target === document.getElementById('auth-overlay')) closeAuthModal();
+}
+
+function switchAuthTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('tab-login').classList.toggle('active', isLogin);
+  document.getElementById('tab-register').classList.toggle('active', !isLogin);
+  document.getElementById('form-login').classList.toggle('hidden', !isLogin);
+  document.getElementById('form-register').classList.toggle('hidden', isLogin);
+  clearAuthErrors();
+}
+
+function clearAuthErrors() {
+  ['login-error','reg-error','reg-success'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('show'); el.textContent = ''; }
+  });
+}
+
+function showAuthError(id, msg) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = msg; el.classList.add('show'); }
+}
+
+// ── LOGIN ──
+async function handleLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const btn = document.getElementById('btn-login');
+
+  if (!email || !password) { showAuthError('login-error','Заполните все поля'); return; }
+
+  btn.disabled = true; btn.textContent = 'Входим...';
+  try {
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) {
+      const msg = error.message.includes('Invalid login') ? 'Неверный email или пароль' : error.message;
+      showAuthError('login-error', msg);
+    }
+  } catch(e) {
+    showAuthError('login-error', 'Ошибка подключения. Проверьте настройки Supabase.');
+  }
+  btn.disabled = false; btn.textContent = 'Войти';
+}
+
+// ── REGISTER ──
+async function handleRegister() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const btn = document.getElementById('btn-register');
+
+  if (!name || !email || !password) { showAuthError('reg-error','Заполните все поля'); return; }
+  if (password.length < 6) { showAuthError('reg-error','Пароль минимум 6 символов'); return; }
+
+  btn.disabled = true; btn.textContent = 'Создаём аккаунт...';
+  try {
+    const { data, error } = await sb.auth.signUp({ email, password });
+    if (error) {
+      showAuthError('reg-error', error.message);
+    } else {
+      // Save name to profiles table
+      if (data.user) {
+        await sb.from('profiles').upsert({
+          id: data.user.id,
+          name: name,
+          email: email,
+          created_at: new Date().toISOString()
+        });
+      }
+      const suc = document.getElementById('reg-success');
+      suc.textContent = '✓ Аккаунт создан! Проверьте email для подтверждения.';
+      suc.classList.add('show');
+    }
+  } catch(e) {
+    showAuthError('reg-error', 'Ошибка подключения. Проверьте настройки Supabase.');
+  }
+  btn.disabled = false; btn.textContent = 'Создать аккаунт';
+}
+
+// ── SIGN OUT ──
+async function handleSignOut() {
+  await sb.auth.signOut();
+  closeProfileModal();
+}
+
+// ── PROFILE MODAL ──
+function openProfileModal() {
+  if (!currentUser) { openAuthModal(); return; }
+  fillProfileModal();
+  document.getElementById('profile-overlay').classList.add('show');
+}
+function closeProfileModal() {
+  document.getElementById('profile-overlay').classList.remove('show');
+}
+function handleProfileOverlayClick(e) {
+  if (e.target === document.getElementById('profile-overlay')) closeProfileModal();
+}
+
+function fillProfileModal() {
+  const user = currentUser;
+  const profile = user._profile || {};
+  const name = profile.name || user.email.split('@')[0];
+  const avatarUrl = profile.avatar_url || null;
+  const email = user.email;
+  const joined = new Date(user.created_at).toLocaleDateString('ru-RU', {year:'numeric',month:'long',day:'numeric'});
+
+  document.getElementById('profile-name-display').textContent = name;
+  document.getElementById('profile-email-display').textContent = email;
+  document.getElementById('profile-joined').textContent = 'С нами с ' + joined;
+  document.getElementById('profile-name-input').value = name;
+
+  // Avatar
+  const bigAvatar = document.getElementById('profile-avatar-big');
+  if (avatarUrl) {
+    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar"><div class="avatar-edit-hint" onclick="triggerAvatarUpload()">✏️</div>`;
+  } else {
+    bigAvatar.innerHTML = `<span id="profile-avatar-letter-big">${name[0].toUpperCase()}</span><div class="avatar-edit-hint" onclick="triggerAvatarUpload()">✏️</div>`;
+  }
+
+  // Progress
+  const sqlDone = typeof completed !== 'undefined' ? [...completed].filter(x=>x>0).length : 0;
+  const devDone = typeof devCompleted !== 'undefined' ? [...devCompleted].filter(x=>x>0).length : 0;
+  const pmDone  = typeof pmCompleted  !== 'undefined' ? [...pmCompleted].filter(x=>x>0).length : 0;
+  const pyDone  = typeof pyCompleted  !== 'undefined' ? pyCompleted.size : 0;
+
+  updateProfileCard('sql', sqlDone, 13);
+  updateProfileCard('dev', devDone, 12);
+  updateProfileCard('pm',  pmDone,  14);
+  updateProfileCard('py',  pyDone,  16);
+}
+
+function updateProfileCard(course, done, total) {
+  const pct = Math.round(done / total * 100);
+  const pctEl = document.getElementById('pcc-' + course + '-pct');
+  const fillEl = document.getElementById('pcc-' + course + '-fill');
+  if (pctEl) pctEl.textContent = pct + '%';
+  if (fillEl) fillEl.style.width = pct + '%';
+}
+
+async function saveProfile() {
+  if (!currentUser) return;
+  const name = document.getElementById('profile-name-input').value.trim();
+  if (!name) return;
+
+  try {
+    await sb.from('profiles').upsert({
+      id: currentUser.id,
+      name: name,
+      email: currentUser.email
+    });
+    currentUser._profile = { ...(currentUser._profile || {}), name };
+    document.getElementById('profile-name-display').textContent = name;
+    document.getElementById('nav-user-name').textContent = name;
+    const navAvatar = document.getElementById('nav-avatar');
+    if (!currentUser._profile?.avatar_url) {
+      navAvatar.innerHTML = `<span>${name[0].toUpperCase()}</span>`;
+    }
+    const msg = document.getElementById('profile-save-msg');
+    msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 2500);
+  } catch(e) {}
+}
+
+// ── AVATAR UPLOAD ──
+function triggerAvatarUpload() {
+  document.getElementById('avatar-upload-input').click();
+}
+
+async function handleAvatarUpload(event) {
+  if (!currentUser) return;
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Validate: max 2MB, image only
+  if (file.size > 2 * 1024 * 1024) { alert('Файл слишком большой. Максимум 2 МБ.'); return; }
+
+  const ext = file.name.split('.').pop();
+  const path = `${currentUser.id}/avatar.${ext}`;
+
+  try {
+    const { error: upErr } = await sb.storage.from('avatars').upload(path, file, { upsert: true });
+    if (upErr) throw upErr;
+
+    const { data } = sb.storage.from('avatars').getPublicUrl(path);
+    const avatarUrl = data.publicUrl + '?t=' + Date.now();
+
+    await sb.from('profiles').upsert({ id: currentUser.id, avatar_url: avatarUrl });
+    currentUser._profile = { ...(currentUser._profile || {}), avatar_url: avatarUrl };
+
+    // Update UI
+    const bigAvatar = document.getElementById('profile-avatar-big');
+    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar"><div class="avatar-edit-hint" onclick="triggerAvatarUpload()">✏️</div>`;
+    const navAvatar = document.getElementById('nav-avatar');
+    navAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar">`;
+  } catch(e) {
+    alert('Ошибка загрузки аватара: ' + e.message);
+  }
+}
+
+// ── KEYBOARD ESC ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeAuthModal();
+    closeProfileModal();
+  }
+});
+
+// ── ENTER KEY in auth forms ──
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const loginForm = document.getElementById('form-login');
+  const regForm = document.getElementById('form-register');
+  if (loginForm && !loginForm.classList.contains('hidden')) handleLogin();
+  else if (regForm && !regForm.classList.contains('hidden')) handleRegister();
+});
 
 </script>
 </body>
