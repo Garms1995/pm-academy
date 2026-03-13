@@ -1301,6 +1301,7 @@
     padding: 28px 32px 24px;
     border-bottom: 1px solid var(--border);
     display: flex; align-items: center; gap: 20px;
+    position: relative;
   }
   .profile-avatar-big {
     width: 72px; height: 72px; border-radius: 50%;
@@ -1475,9 +1476,13 @@
 <div class="profile-overlay" id="profile-overlay" onclick="handleProfileOverlayClick(event)">
   <div class="profile-modal">
     <div class="profile-header">
-      <div class="profile-avatar-big" id="profile-avatar-big" onclick="triggerAvatarUpload()">
+      <div class="profile-avatar-big" id="profile-avatar-big" onclick="showAvatarOptions()">
         <span id="profile-avatar-letter-big">?</span>
         <div class="avatar-edit-hint">✏️</div>
+      </div>
+      <div id="avatar-options-menu" style="display:none;position:absolute;top:100px;left:32px;z-index:100;flex-direction:column;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,0.4)">
+        <button onclick="triggerAvatarUpload()" style="background:none;border:none;padding:8px 14px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text2);cursor:pointer;border-radius:7px;text-align:left;white-space:nowrap" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='none'">📁 Загрузить файл</button>
+        <button onclick="triggerCamera()" style="background:none;border:none;padding:8px 14px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text2);cursor:pointer;border-radius:7px;text-align:left;white-space:nowrap" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='none'">📷 Сделать фото</button>
       </div>
       <input type="file" id="avatar-upload-input" accept="image/*" onchange="handleAvatarUpload(event)">
       <div class="profile-header-info">
@@ -1524,6 +1529,41 @@
       <button class="btn-profile-close" onclick="closeProfileModal()">Закрыть</button>
       <button class="btn-sign-out" onclick="handleSignOut()">Выйти</button>
     </div>
+  </div>
+</div>
+
+<!-- ══ ONBOARDING MODAL ══ -->
+<div class="auth-overlay" id="onboarding-overlay">
+  <div class="auth-modal" style="max-width:460px">
+    <div class="auth-logo"><div class="logo-dot"></div>PM Academy</div>
+    <div class="auth-title">Добро пожаловать! 👋</div>
+    <div class="auth-sub">Последний шаг — расскажите как вас зовут. Это нельзя пропустить.</div>
+    <div class="auth-form">
+      <div class="form-group">
+        <label class="form-label">Ваше имя</label>
+        <input class="form-input" type="text" id="onboarding-name-input" placeholder="Например: Андрей" autocomplete="name">
+      </div>
+      <div id="onboarding-error" style="font-size:13px;color:#ff6b6b;display:none;margin-top:-4px"></div>
+      <button class="btn-auth-submit" id="btn-onboarding-submit" onclick="handleOnboardingSubmit()" style="margin-top:8px;font-size:15px;padding:14px">
+        Приступить к обучению! 🚀
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CAMERA OVERLAY ══ -->
+<div id="camera-overlay" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(8,10,16,0.95);align-items:center;justify-content:center;flex-direction:column;gap:20px">
+  <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--text)">📷 Сделайте фото</div>
+  <div style="position:relative;width:320px;height:320px;border-radius:50%;overflow:hidden;border:3px solid var(--accent2)">
+    <video id="camera-stream" autoplay playsinline style="width:100%;height:100%;object-fit:cover"></video>
+  </div>
+  <div style="display:flex;gap:12px">
+    <button onclick="capturePhoto()" style="background:linear-gradient(135deg,var(--accent2),#6d28d9);border:none;border-radius:9px;padding:12px 28px;font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:700;color:white;cursor:pointer">
+      📸 Снять
+    </button>
+    <button onclick="closeCameraOverlay()" style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:12px 20px;font-family:'Instrument Sans',sans-serif;font-size:14px;color:var(--text2);cursor:pointer">
+      Отмена
+    </button>
   </div>
 </div>
 
@@ -6939,80 +6979,239 @@ function updatePyProgress() {
 // SUPABASE AUTH & PROFILE
 // ══════════════════════════════════════════════════════
 
-// ── CONFIGURATION ──
-// Замени эти значения на свои из Supabase Dashboard → Settings → API
+// ══════════════════════════════════════════════════════
+// SUPABASE AUTH & PROFILE  (v2)
+// ══════════════════════════════════════════════════════
+
 const SUPABASE_URL = 'https://ynfqletcntdcbtxmohma.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_kdpWFucDyOX2WEHqhwQt6A_1ul0RAzF';
-
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentUser = null;
+let syncTimer = null;
+const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, py: 16 };
 
-// ── INIT: check session on page load ──
+// ── INIT ──
 (async function initAuth() {
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (session) {
       currentUser = session.user;
       await loadProfile(currentUser);
+      await loadProgressFromDB();
+      await trackActivity();
       renderLoggedIn();
     } else {
       renderLoggedOut();
     }
   } catch(e) {
-    console.warn('Supabase not configured yet:', e.message);
+    console.warn('Supabase init:', e.message);
     renderLoggedOut();
   }
 
-  // Listen for auth state changes
   sb.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session) {
       currentUser = session.user;
       await loadProfile(currentUser);
+      await loadProgressFromDB();
+      await trackActivity();
       renderLoggedIn();
       closeAuthModal();
+      // Show onboarding if name not set
+      const profile = currentUser._profile || {};
+      const hasName = profile.name && profile.name.trim() && profile.name !== currentUser.email.split('@')[0];
+      if (!hasName) {
+        setTimeout(() => openOnboardingModal(), 400);
+      }
     } else if (event === 'SIGNED_OUT') {
       currentUser = null;
+      clearSyncTimer();
       renderLoggedOut();
     }
   });
+
+  // Sync on page hide/close
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden' && currentUser) saveProgressToDB();
+  });
+  window.addEventListener('beforeunload', () => {
+    if (currentUser) saveProgressToDB();
+  });
 })();
 
-// ── PROFILE: load from Supabase ──
+// ── PROFILE LOAD ──
 async function loadProfile(user) {
   try {
     const { data } = await sb.from('profiles').select('*').eq('id', user.id).single();
-    if (data) {
-      user._profile = data;
-    }
+    if (data) user._profile = data;
   } catch(e) {}
 }
 
-// ── UI: render logged-in state ──
+// ══════════════════════════════════════════════════════
+// PROGRESS SYNC  (localStorage ↔ Supabase)
+// ══════════════════════════════════════════════════════
+
+async function loadProgressFromDB() {
+  if (!currentUser) return;
+  try {
+    const { data } = await sb.from('user_progress').select('*').eq('user_id', currentUser.id);
+    if (!data || data.length === 0) return;
+    data.forEach(row => {
+      const lessons = row.completed_lessons || [];
+      if (row.course === 'sql') lessons.forEach(l => completed.add(l));
+      if (row.course === 'dev') lessons.forEach(l => devCompleted.add(l));
+      if (row.course === 'pm')  lessons.forEach(l => pmCompleted.add(l));
+      if (row.course === 'py')  lessons.forEach(l => pyCompleted.add(l));
+    });
+    updateDrawerProgress();
+    // Refresh current lesson view if inside a course
+    if (typeof currentLesson !== 'undefined' && activeCourse === 'sql') showLesson(currentLesson);
+    if (typeof currentDevLesson !== 'undefined' && activeCourse === 'dev') showDevLesson(currentDevLesson);
+    if (typeof currentPmLesson !== 'undefined' && activeCourse === 'pm') showPmLesson(currentPmLesson);
+    if (typeof currentPyLesson !== 'undefined' && activeCourse === 'py') showPyLesson(currentPyLesson);
+  } catch(e) { console.warn('loadProgressFromDB:', e.message); }
+}
+
+async function saveProgressToDB() {
+  if (!currentUser) return;
+  try {
+    const courses = [
+      { course: 'sql', set: completed },
+      { course: 'dev', set: devCompleted },
+      { course: 'pm',  set: pmCompleted },
+      { course: 'py',  set: pyCompleted },
+    ];
+    for (const { course, set } of courses) {
+      const lessons = [...set];
+      const total = COURSE_TOTALS[course];
+      const done = lessons.filter(x => x > 0).length;
+      await sb.from('user_progress').upsert({
+        user_id: currentUser.id,
+        course,
+        completed_lessons: lessons,
+        completed_at: done >= total ? new Date().toISOString() : null,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id,course' });
+    }
+  } catch(e) { console.warn('saveProgressToDB:', e.message); }
+}
+
+// Debounced sync — вызывается после каждого урока, но не чаще чем раз в 30 сек
+function scheduleSyncProgress() {
+  if (syncTimer) return;
+  syncTimer = setTimeout(async () => {
+    await saveProgressToDB();
+    syncTimer = null;
+  }, 30000);
+}
+function clearSyncTimer() {
+  if (syncTimer) { clearTimeout(syncTimer); syncTimer = null; }
+}
+
+// Патчим все completeAndNav функции — добавляем scheduleSyncProgress
+const _origCompleteAndNav = window.completeAndNav;
+window.completeAndNav = function(idx) {
+  if (_origCompleteAndNav) _origCompleteAndNav(idx);
+  scheduleSyncProgress();
+};
+
+// ══════════════════════════════════════════════════════
+// ACTIVITY TRACKING
+// ══════════════════════════════════════════════════════
+
+async function trackActivity() {
+  if (!currentUser) return;
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    const { data: existing } = await sb.from('user_activity')
+      .select('*').eq('user_id', currentUser.id).single();
+
+    if (!existing) {
+      await sb.from('user_activity').insert({
+        user_id: currentUser.id,
+        last_seen_at: new Date().toISOString(),
+        visit_count: 1,
+        streak_days: 1,
+        last_streak_date: today,
+        total_lessons_completed: 0
+      });
+    } else {
+      const lastDate = existing.last_streak_date;
+      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+      let streak = existing.streak_days || 0;
+      if (lastDate === today) {
+        // Same day — just update last_seen
+      } else if (lastDate === yesterday) {
+        streak += 1; // Consecutive day
+      } else {
+        streak = 1; // Streak broken
+      }
+      await sb.from('user_activity').update({
+        last_seen_at: new Date().toISOString(),
+        visit_count: (existing.visit_count || 0) + 1,
+        streak_days: streak,
+        last_streak_date: today
+      }).eq('user_id', currentUser.id);
+    }
+  } catch(e) { console.warn('trackActivity:', e.message); }
+}
+
+// ══════════════════════════════════════════════════════
+// ONBOARDING MODAL  (shown after first login)
+// ══════════════════════════════════════════════════════
+
+function openOnboardingModal() {
+  document.getElementById('onboarding-overlay').classList.add('show');
+  setTimeout(() => document.getElementById('onboarding-name-input').focus(), 300);
+}
+function closeOnboardingModal() {
+  document.getElementById('onboarding-overlay').classList.remove('show');
+}
+
+async function handleOnboardingSubmit() {
+  const name = document.getElementById('onboarding-name-input').value.trim();
+  const errEl = document.getElementById('onboarding-error');
+  if (!name) { errEl.textContent = 'Пожалуйста, введите имя'; errEl.style.display='block'; return; }
+  errEl.style.display = 'none';
+
+  const btn = document.getElementById('btn-onboarding-submit');
+  btn.disabled = true; btn.textContent = 'Сохраняем...';
+
+  try {
+    await sb.from('profiles').upsert({ id: currentUser.id, name, email: currentUser.email });
+    currentUser._profile = { ...(currentUser._profile || {}), name };
+    document.getElementById('nav-user-name').textContent = name;
+    const navAvatar = document.getElementById('nav-avatar');
+    navAvatar.innerHTML = `<span>${name[0].toUpperCase()}</span>`;
+    closeOnboardingModal();
+  } catch(e) {
+    errEl.textContent = 'Ошибка сохранения. Попробуйте ещё раз.';
+    errEl.style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = 'Приступить к обучению!';
+}
+
+// ── UI: render logged-in ──
 function renderLoggedIn() {
   const user = currentUser;
   if (!user) return;
-
   const profile = user._profile || {};
   const name = profile.name || user.email.split('@')[0];
   const avatarUrl = profile.avatar_url || null;
 
-  // Nav button
   document.getElementById('btn-open-auth').style.display = 'none';
   const userBtn = document.getElementById('nav-user-btn');
   userBtn.style.display = 'flex';
   document.getElementById('nav-user-name').textContent = name;
 
   const navAvatar = document.getElementById('nav-avatar');
-  if (avatarUrl) {
-    navAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar">`;
-  } else {
-    navAvatar.innerHTML = `<span id="nav-avatar-letter">${name[0].toUpperCase()}</span>`;
-  }
+  navAvatar.innerHTML = avatarUrl
+    ? `<img src="${avatarUrl}" alt="avatar">`
+    : `<span>${name[0].toUpperCase()}</span>`;
 }
 
-// ── UI: render logged-out state ──
+// ── UI: render logged-out ──
 function renderLoggedOut() {
   document.getElementById('btn-open-auth').style.display = '';
   document.getElementById('nav-user-btn').style.display = 'none';
@@ -7030,7 +7229,6 @@ function closeAuthModal() {
 function handleAuthOverlayClick(e) {
   if (e.target === document.getElementById('auth-overlay')) closeAuthModal();
 }
-
 function switchAuthTab(tab) {
   const isLogin = tab === 'login';
   document.getElementById('tab-login').classList.toggle('active', isLogin);
@@ -7039,14 +7237,12 @@ function switchAuthTab(tab) {
   document.getElementById('form-register').classList.toggle('hidden', isLogin);
   clearAuthErrors();
 }
-
 function clearAuthErrors() {
   ['login-error','reg-error','reg-success'].forEach(id => {
     const el = document.getElementById(id);
     if (el) { el.classList.remove('show'); el.textContent = ''; }
   });
 }
-
 function showAuthError(id, msg) {
   const el = document.getElementById(id);
   if (el) { el.textContent = msg; el.classList.add('show'); }
@@ -7057,59 +7253,42 @@ async function handleLogin() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   const btn = document.getElementById('btn-login');
-
   if (!email || !password) { showAuthError('login-error','Заполните все поля'); return; }
-
   btn.disabled = true; btn.textContent = 'Входим...';
   try {
     const { error } = await sb.auth.signInWithPassword({ email, password });
-    if (error) {
-      const msg = error.message.includes('Invalid login') ? 'Неверный email или пароль' : error.message;
-      showAuthError('login-error', msg);
-    }
-  } catch(e) {
-    showAuthError('login-error', 'Ошибка подключения. Проверьте настройки Supabase.');
-  }
+    if (error) showAuthError('login-error', error.message.includes('Invalid login') ? 'Неверный email или пароль' : error.message);
+  } catch(e) { showAuthError('login-error', 'Ошибка подключения.'); }
   btn.disabled = false; btn.textContent = 'Войти';
 }
 
 // ── REGISTER ──
 async function handleRegister() {
-  const name = document.getElementById('reg-name').value.trim();
   const email = document.getElementById('reg-email').value.trim();
   const password = document.getElementById('reg-password').value;
   const btn = document.getElementById('btn-register');
-
-  if (!name || !email || !password) { showAuthError('reg-error','Заполните все поля'); return; }
+  if (!email || !password) { showAuthError('reg-error','Заполните все поля'); return; }
   if (password.length < 6) { showAuthError('reg-error','Пароль минимум 6 символов'); return; }
-
   btn.disabled = true; btn.textContent = 'Создаём аккаунт...';
   try {
     const { data, error } = await sb.auth.signUp({ email, password });
     if (error) {
       showAuthError('reg-error', error.message);
     } else {
-      // Save name to profiles table
       if (data.user) {
-        await sb.from('profiles').upsert({
-          id: data.user.id,
-          name: name,
-          email: email,
-          created_at: new Date().toISOString()
-        });
+        await sb.from('profiles').upsert({ id: data.user.id, email });
       }
       const suc = document.getElementById('reg-success');
       suc.textContent = '✓ Аккаунт создан! Проверьте email для подтверждения.';
       suc.classList.add('show');
     }
-  } catch(e) {
-    showAuthError('reg-error', 'Ошибка подключения. Проверьте настройки Supabase.');
-  }
+  } catch(e) { showAuthError('reg-error', 'Ошибка подключения.'); }
   btn.disabled = false; btn.textContent = 'Создать аккаунт';
 }
 
 // ── SIGN OUT ──
 async function handleSignOut() {
+  await saveProgressToDB();
   await sb.auth.signOut();
   closeProfileModal();
 }
@@ -7132,28 +7311,22 @@ function fillProfileModal() {
   const profile = user._profile || {};
   const name = profile.name || user.email.split('@')[0];
   const avatarUrl = profile.avatar_url || null;
-  const email = user.email;
   const joined = new Date(user.created_at).toLocaleDateString('ru-RU', {year:'numeric',month:'long',day:'numeric'});
 
   document.getElementById('profile-name-display').textContent = name;
-  document.getElementById('profile-email-display').textContent = email;
+  document.getElementById('profile-email-display').textContent = user.email;
   document.getElementById('profile-joined').textContent = 'С нами с ' + joined;
   document.getElementById('profile-name-input').value = name;
 
-  // Avatar
   const bigAvatar = document.getElementById('profile-avatar-big');
-  if (avatarUrl) {
-    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar"><div class="avatar-edit-hint" onclick="triggerAvatarUpload()">✏️</div>`;
-  } else {
-    bigAvatar.innerHTML = `<span id="profile-avatar-letter-big">${name[0].toUpperCase()}</span><div class="avatar-edit-hint" onclick="triggerAvatarUpload()">✏️</div>`;
-  }
+  bigAvatar.innerHTML = avatarUrl
+    ? `<img src="${avatarUrl}" alt="avatar"><div class="avatar-edit-hint" onclick="showAvatarOptions()">✏️</div>`
+    : `<span id="profile-avatar-letter-big">${name[0].toUpperCase()}</span><div class="avatar-edit-hint" onclick="showAvatarOptions()">✏️</div>`;
 
-  // Progress
   const sqlDone = typeof completed !== 'undefined' ? [...completed].filter(x=>x>0).length : 0;
   const devDone = typeof devCompleted !== 'undefined' ? [...devCompleted].filter(x=>x>0).length : 0;
   const pmDone  = typeof pmCompleted  !== 'undefined' ? [...pmCompleted].filter(x=>x>0).length : 0;
   const pyDone  = typeof pyCompleted  !== 'undefined' ? pyCompleted.size : 0;
-
   updateProfileCard('sql', sqlDone, 13);
   updateProfileCard('dev', devDone, 12);
   updateProfileCard('pm',  pmDone,  14);
@@ -7162,88 +7335,107 @@ function fillProfileModal() {
 
 function updateProfileCard(course, done, total) {
   const pct = Math.round(done / total * 100);
-  const pctEl = document.getElementById('pcc-' + course + '-pct');
-  const fillEl = document.getElementById('pcc-' + course + '-fill');
-  if (pctEl) pctEl.textContent = pct + '%';
-  if (fillEl) fillEl.style.width = pct + '%';
+  const el = document.getElementById('pcc-' + course + '-pct');
+  const fill = document.getElementById('pcc-' + course + '-fill');
+  if (el) el.textContent = pct + '%';
+  if (fill) fill.style.width = pct + '%';
 }
 
 async function saveProfile() {
   if (!currentUser) return;
   const name = document.getElementById('profile-name-input').value.trim();
   if (!name) return;
-
   try {
-    await sb.from('profiles').upsert({
-      id: currentUser.id,
-      name: name,
-      email: currentUser.email
-    });
+    await sb.from('profiles').upsert({ id: currentUser.id, name, email: currentUser.email });
     currentUser._profile = { ...(currentUser._profile || {}), name };
     document.getElementById('profile-name-display').textContent = name;
     document.getElementById('nav-user-name').textContent = name;
     const navAvatar = document.getElementById('nav-avatar');
-    if (!currentUser._profile?.avatar_url) {
-      navAvatar.innerHTML = `<span>${name[0].toUpperCase()}</span>`;
-    }
+    if (!currentUser._profile?.avatar_url) navAvatar.innerHTML = `<span>${name[0].toUpperCase()}</span>`;
     const msg = document.getElementById('profile-save-msg');
     msg.classList.add('show');
     setTimeout(() => msg.classList.remove('show'), 2500);
   } catch(e) {}
 }
 
-// ── AVATAR UPLOAD ──
+// ── AVATAR: upload OR camera ──
+function showAvatarOptions() {
+  document.getElementById('avatar-options-menu').style.display =
+    document.getElementById('avatar-options-menu').style.display === 'flex' ? 'none' : 'flex';
+}
 function triggerAvatarUpload() {
+  document.getElementById('avatar-options-menu').style.display = 'none';
   document.getElementById('avatar-upload-input').click();
+}
+async function triggerCamera() {
+  document.getElementById('avatar-options-menu').style.display = 'none';
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+    document.getElementById('camera-stream').srcObject = stream;
+    document.getElementById('camera-overlay').style.display = 'flex';
+  } catch(e) {
+    alert('Не удалось получить доступ к камере: ' + e.message);
+  }
+}
+function closeCameraOverlay() {
+  const video = document.getElementById('camera-stream');
+  if (video.srcObject) { video.srcObject.getTracks().forEach(t => t.stop()); video.srcObject = null; }
+  document.getElementById('camera-overlay').style.display = 'none';
+}
+async function capturePhoto() {
+  const video = document.getElementById('camera-stream');
+  const canvas = document.createElement('canvas');
+  canvas.width = 400; canvas.height = 400;
+  const ctx = canvas.getContext('2d');
+  // Square crop from center
+  const size = Math.min(video.videoWidth, video.videoHeight);
+  const sx = (video.videoWidth - size) / 2;
+  const sy = (video.videoHeight - size) / 2;
+  ctx.drawImage(video, sx, sy, size, size, 0, 0, 400, 400);
+  canvas.toBlob(async blob => {
+    closeCameraOverlay();
+    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+    await uploadAvatarFile(file);
+  }, 'image/jpeg', 0.85);
 }
 
 async function handleAvatarUpload(event) {
-  if (!currentUser) return;
   const file = event.target.files[0];
   if (!file) return;
-
-  // Validate: max 2MB, image only
   if (file.size > 2 * 1024 * 1024) { alert('Файл слишком большой. Максимум 2 МБ.'); return; }
+  await uploadAvatarFile(file);
+}
 
-  const ext = file.name.split('.').pop();
+async function uploadAvatarFile(file) {
+  if (!currentUser) return;
+  const ext = file.name.split('.').pop() || 'jpg';
   const path = `${currentUser.id}/avatar.${ext}`;
-
   try {
     const { error: upErr } = await sb.storage.from('avatars').upload(path, file, { upsert: true });
     if (upErr) throw upErr;
-
     const { data } = sb.storage.from('avatars').getPublicUrl(path);
     const avatarUrl = data.publicUrl + '?t=' + Date.now();
-
     await sb.from('profiles').upsert({ id: currentUser.id, avatar_url: avatarUrl });
     currentUser._profile = { ...(currentUser._profile || {}), avatar_url: avatarUrl };
-
-    // Update UI
     const bigAvatar = document.getElementById('profile-avatar-big');
-    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar"><div class="avatar-edit-hint" onclick="triggerAvatarUpload()">✏️</div>`;
-    const navAvatar = document.getElementById('nav-avatar');
-    navAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar">`;
-  } catch(e) {
-    alert('Ошибка загрузки аватара: ' + e.message);
-  }
+    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar"><div class="avatar-edit-hint" onclick="showAvatarOptions()">✏️</div>`;
+    document.getElementById('nav-avatar').innerHTML = `<img src="${avatarUrl}" alt="avatar">`;
+  } catch(e) { alert('Ошибка загрузки аватара: ' + e.message); }
 }
 
-// ── KEYBOARD ESC ──
+// ── KEYBOARD ──
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeAuthModal();
-    closeProfileModal();
+  if (e.key === 'Escape') { closeAuthModal(); closeProfileModal(); closeCameraOverlay(); }
+  if (e.key === 'Enter') {
+    const loginForm = document.getElementById('form-login');
+    const regForm = document.getElementById('form-register');
+    const onboarding = document.getElementById('onboarding-overlay');
+    if (onboarding?.classList.contains('show')) handleOnboardingSubmit();
+    else if (loginForm && !loginForm.classList.contains('hidden')) handleLogin();
+    else if (regForm && !regForm.classList.contains('hidden')) handleRegister();
   }
 });
 
-// ── ENTER KEY in auth forms ──
-document.addEventListener('keydown', e => {
-  if (e.key !== 'Enter') return;
-  const loginForm = document.getElementById('form-login');
-  const regForm = document.getElementById('form-register');
-  if (loginForm && !loginForm.classList.contains('hidden')) handleLogin();
-  else if (regForm && !regForm.classList.contains('hidden')) handleRegister();
-});
 
 </script>
 </body>
