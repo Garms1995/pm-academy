@@ -1346,7 +1346,8 @@
   .pcc-name { font-size:13px; font-weight:600; color:var(--text2); }
   .pcc-pct { font-size:20px; font-weight:800; font-family:'Syne',sans-serif; margin-bottom:4px; }
   .pcc-bar { height:4px; background:var(--bg); border-radius:2px; overflow:hidden; }
-  .pcc-bar-fill { height:100%; border-radius:2px; transition:width 0.4s; }
+  .pcc-bar-fill { height:100%; border-radius:2px; transition:width 0.4s; min-width:0; }
+  .pcc-pct::before { content: none !important; }
 
   .profile-form { display:flex; flex-direction:column; gap:14px; }
   .profile-actions {
@@ -1479,13 +1480,15 @@
 <div class="profile-overlay" id="profile-overlay" onclick="handleProfileOverlayClick(event)">
   <div class="profile-modal">
     <div class="profile-header">
-      <div class="profile-avatar-big" id="profile-avatar-big" onclick="showAvatarOptions()">
-        <span id="profile-avatar-letter-big">?</span>
-        <div class="avatar-edit-hint">✏️</div>
-      </div>
-      <div id="avatar-options-menu" style="display:none;position:absolute;top:100px;left:32px;z-index:100;flex-direction:column;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,0.4)">
-        <button onclick="triggerAvatarUpload()" style="background:none;border:none;padding:8px 14px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text2);cursor:pointer;border-radius:7px;text-align:left;white-space:nowrap" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='none'">📁 Загрузить файл</button>
-        <button onclick="triggerCamera()" style="background:none;border:none;padding:8px 14px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text2);cursor:pointer;border-radius:7px;text-align:left;white-space:nowrap" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='none'">📷 Сделать фото</button>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div class="profile-avatar-big" id="profile-avatar-big">
+          <span id="profile-avatar-letter-big">?</span>
+          <div class="avatar-edit-hint">✏️</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button onclick="triggerAvatarUpload()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer">📁 Файл</button>
+          <button onclick="triggerCamera()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer">📷 Камера</button>
+        </div>
       </div>
       <input type="file" id="avatar-upload-input" accept="image/*" onchange="handleAvatarUpload(event)">
       <div class="profile-header-info">
@@ -1499,22 +1502,22 @@
       <div class="profile-progress-grid">
         <div class="profile-course-card">
           <div class="pcc-head"><span class="pcc-icon">🗄️</span><span class="pcc-name">SQL</span></div>
-          <div class="pcc-pct" id="pcc-sql-pct" style="color:var(--accent)">0%</div>
+          <div class="pcc-pct" id="pcc-sql-pct" style="color:var(--accent);font-size:20px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:4px">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-sql-fill" style="background:var(--accent);width:0%"></div></div>
         </div>
         <div class="profile-course-card">
           <div class="pcc-head"><span class="pcc-icon">💻</span><span class="pcc-name">Разработка ПО</span></div>
-          <div class="pcc-pct" id="pcc-dev-pct" style="color:#ff9966">0%</div>
+          <div class="pcc-pct" id="pcc-dev-pct" style="color:#ff9966;font-size:20px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:4px">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-dev-fill" style="background:#ff9966;width:0%"></div></div>
         </div>
         <div class="profile-course-card">
           <div class="pcc-head"><span class="pcc-icon">📋</span><span class="pcc-name">Управление проектами</span></div>
-          <div class="pcc-pct" id="pcc-pm-pct" style="color:#a855f7">0%</div>
+          <div class="pcc-pct" id="pcc-pm-pct" style="color:#a855f7;font-size:20px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:4px">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-pm-fill" style="background:#a855f7;width:0%"></div></div>
         </div>
         <div class="profile-course-card">
           <div class="pcc-head"><span class="pcc-icon">🐍</span><span class="pcc-name">Python для PM</span></div>
-          <div class="pcc-pct" id="pcc-py-pct" style="color:#f59e0b">0%</div>
+          <div class="pcc-pct" id="pcc-py-pct" style="color:#f59e0b;font-size:20px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:4px">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-py-fill" style="background:#f59e0b;width:0%"></div></div>
         </div>
       </div>
@@ -7322,9 +7325,11 @@ function fillProfileModal() {
   document.getElementById('profile-name-input').value = name;
 
   const bigAvatar = document.getElementById('profile-avatar-big');
-  bigAvatar.innerHTML = avatarUrl
-    ? `<img src="${avatarUrl}" alt="avatar"><div class="avatar-edit-hint" onclick="showAvatarOptions()">✏️</div>`
-    : `<span id="profile-avatar-letter-big">${name[0].toUpperCase()}</span><div class="avatar-edit-hint" onclick="showAvatarOptions()">✏️</div>`;
+  if (avatarUrl) {
+    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  } else {
+    bigAvatar.innerHTML = `<span id="profile-avatar-letter-big">${name[0].toUpperCase()}</span>`;
+  }
 
   const sqlDone = typeof completed !== 'undefined' ? [...completed].filter(x=>x>0).length : 0;
   const devDone = typeof devCompleted !== 'undefined' ? [...devCompleted].filter(x=>x>0).length : 0;
@@ -7341,7 +7346,10 @@ function updateProfileCard(course, done, total) {
   const el = document.getElementById('pcc-' + course + '-pct');
   const fill = document.getElementById('pcc-' + course + '-fill');
   if (el) el.textContent = pct + '%';
-  if (fill) fill.style.width = pct + '%';
+  if (fill) {
+    fill.style.width = pct + '%';
+    fill.style.display = pct === 0 ? 'none' : 'block';
+  }
 }
 
 async function saveProfile() {
@@ -7363,8 +7371,16 @@ async function saveProfile() {
 
 // ── AVATAR: upload OR camera ──
 function showAvatarOptions() {
-  document.getElementById('avatar-options-menu').style.display =
-    document.getElementById('avatar-options-menu').style.display === 'flex' ? 'none' : 'flex';
+  const menu = document.getElementById('avatar-options-menu');
+  const avatar = document.getElementById('profile-avatar-big');
+  const rect = avatar.getBoundingClientRect();
+  if (menu.style.display === 'flex') {
+    menu.style.display = 'none';
+    return;
+  }
+  menu.style.display = 'flex';
+  menu.style.top = (rect.bottom + 8) + 'px';
+  menu.style.left = rect.left + 'px';
 }
 function triggerAvatarUpload() {
   document.getElementById('avatar-options-menu').style.display = 'none';
@@ -7421,7 +7437,7 @@ async function uploadAvatarFile(file) {
     await sb.from('profiles').upsert({ id: currentUser.id, avatar_url: avatarUrl });
     currentUser._profile = { ...(currentUser._profile || {}), avatar_url: avatarUrl };
     const bigAvatar = document.getElementById('profile-avatar-big');
-    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar"><div class="avatar-edit-hint" onclick="showAvatarOptions()">✏️</div>`;
+    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
     document.getElementById('nav-avatar').innerHTML = `<img src="${avatarUrl}" alt="avatar">`;
   } catch(e) { alert('Ошибка загрузки аватара: ' + e.message); }
 }
