@@ -6164,7 +6164,8 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     storageKey: 'pm-academy-auth-v2',
     storage: safariSafeStorage,
     autoRefreshToken: true,
-    detectSessionInUrl: true
+    detectSessionInUrl: true,
+    lock: async (name, acquireTimeout, fn) => fn() // Disable Web Locks (Safari fix)
   }
 });
 
@@ -6237,6 +6238,11 @@ async function loadProgressFromDB() {
   try {
     const { data } = await sb.from('user_progress').select('*').eq('user_id', currentUser.id);
     if (!data || data.length === 0) return;
+    // Clear local sets before loading from DB to avoid stale data
+    completed.clear();
+    devCompleted.clear();
+    pmCompleted.clear();
+    vcCompleted.clear();
     data.forEach(row => {
       const lessons = row.completed_lessons || [];
       if (row.course === 'sql') lessons.forEach(l => completed.add(l));
