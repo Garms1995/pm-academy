@@ -5161,7 +5161,6 @@ function wrapTables() {
 
 
 function updateProgress() {
-  _origUpdateProgress();
   updateDrawerProgress();
 }
 
@@ -6260,26 +6259,38 @@ async function loadProgressFromDB() {
 
 async function saveProgressToDB() {
   if (!currentUser) return;
-  try {
-    const courses = [
-      { course: 'sql', set: completed },
-      { course: 'dev', set: devCompleted },
-      { course: 'pm',  set: pmCompleted },
-      { course: 'vc',  set: vcCompleted },
-    ];
-    for (const { course, set } of courses) {
+  const courses = [
+    { course: 'sql', set: completed },
+    { course: 'dev', set: devCompleted },
+    { course: 'pm',  set: pmCompleted },
+    { course: 'vc',  set: vcCompleted },
+  ];
+  for (const { course, set } of courses) {
+    try {
       const lessons = [...set];
       const total = COURSE_TOTALS[course];
       const done = lessons.filter(x => x > 0).length;
-      await sb.from('user_progress').upsert({
+      const record = {
         user_id: currentUser.id,
         course,
         completed_lessons: lessons,
         completed_at: done >= total ? new Date().toISOString() : null,
         updated_at: new Date().toISOString()
-      }, { onConflict: 'user_id,course' });
-    }
-  } catch(e) { console.warn('saveProgressToDB:', e.message); }
+      };
+      // Try update first, then insert if not exists
+      const { data: existing } = await sb.from('user_progress')
+        .select('id').eq('user_id', currentUser.id).eq('course', course).single();
+      if (existing) {
+        await sb.from('user_progress').update({
+          completed_lessons: lessons,
+          completed_at: record.completed_at,
+          updated_at: record.updated_at
+        }).eq('user_id', currentUser.id).eq('course', course);
+      } else {
+        await sb.from('user_progress').insert(record);
+      }
+    } catch(e) { console.warn('saveProgress error for course:', course, e.message); }
+  }
 }
 
 // Save progress immediately after each lesson (no delay)
