@@ -6336,24 +6336,20 @@ async function saveProgressToDB() {
   }
 }
 
-// Save progress immediately after each lesson (no delay)
+// Save progress after short debounce
 function scheduleSyncProgress() {
   if (syncTimer) clearTimeout(syncTimer);
   syncTimer = setTimeout(async () => {
+    console.log('Syncing progress to DB...');
     await saveProgressToDB();
     syncTimer = null;
-  }, 1500); // 1.5 sec debounce to avoid rapid duplicate calls
+  }, 800);
 }
 function clearSyncTimer() {
   if (syncTimer) { clearTimeout(syncTimer); syncTimer = null; }
 }
 
-// Патчим все completeAndNav функции — добавляем scheduleSyncProgress
-const _origCompleteAndNav = window.completeAndNav;
-window.completeAndNav = function(idx) {
-  if (_origCompleteAndNav) _origCompleteAndNav(idx);
-  scheduleSyncProgress();
-};
+// scheduleSyncProgress called directly inside each completeAndNav function
 
 // ══════════════════════════════════════════════════════
 // ACTIVITY TRACKING
