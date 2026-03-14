@@ -43,11 +43,11 @@
     backdrop-filter: blur(12px);
   }
   .top-nav-inner {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
     align-items: center;
     padding: 0 20px;
     height: 52px;
+    position: relative;
   }
   .platform-logo {
     font-family: 'Syne', sans-serif;
@@ -55,10 +55,13 @@
     font-size: 17px;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 9px;
     white-space: nowrap;
     color: var(--text);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
   }
   .logo-dot {
     width: 8px; height: 8px;
@@ -1394,7 +1397,7 @@
 <nav class="top-nav">
   <div class="top-nav-inner">
     <!-- Left: menu button -->
-    <div style="display:flex;align-items:center;gap:12px">
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
       <button class="nav-menu-btn" onclick="openDrawer()" aria-label="Открыть меню курсов">
         <span class="hmb">☰</span> Курсы
       </button>
@@ -1404,11 +1407,11 @@
       </div>
     </div>
 
-    <!-- Center: logo -->
+    <!-- Center: logo (absolute) -->
     <div class="platform-logo"><div class="logo-dot"></div>PM Academy</div>
 
-    <!-- Right: auth + progress -->
-    <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end">
+    <!-- Right: auth + progress (pushed to right edge) -->
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0">
       <div class="nav-right">
         <div class="progress-bar-wrap" id="progress-wrap-sql" style="display:none">
           <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
@@ -1422,15 +1425,12 @@
         <div class="progress-bar-wrap" id="progress-wrap-vc" style="display:none">
           <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,#ec4899,#be185d)" id="vc-progress-fill-nav"></div></div>
         </div>
-        </div>
       </div>
-      <div id="nav-auth-area" style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-        <button class="btn-sign-in" id="btn-open-auth" onclick="openAuthModal()">Войти</button>
-        <button class="nav-user-btn" id="nav-user-btn" style="display:none" onclick="openProfileModal()">
-          <div class="nav-avatar" id="nav-avatar"><span id="nav-avatar-letter">?</span></div>
-          <span id="nav-user-name">Профиль</span>
-        </button>
-      </div>
+      <button class="btn-sign-in" id="btn-open-auth" onclick="openAuthModal()">Войти</button>
+      <button class="nav-user-btn" id="nav-user-btn" style="display:none" onclick="openProfileModal()">
+        <div class="nav-avatar" id="nav-avatar"><span id="nav-avatar-letter">?</span></div>
+        <span id="nav-user-name">Профиль</span>
+      </button>
     </div>
   </div>
 </nav>
@@ -5491,7 +5491,7 @@ Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
 <head>
   <title>Название вкладки</title>
   <link rel="stylesheet" href="style.css">  <!-- подключаем стили -->
-</head>
+<\/head>
 <body>
   <h1>Это заголовок</h1>
   <p>Это абзац текста</p>
@@ -5500,9 +5500,9 @@ Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
     <li>Задача 1</li>
     <li>Задача 2</li>
   </ul>
-  <script src="app.js"></script>  <!-- подключаем JavaScript -->
-</body>
-</html>`)}
+  <script src="app.js"><\/script>  <!-- подключаем JavaScript -->
+<\/body>
+<\/html>`)}
   `)}
   ${vcB(`<h3>CSS — внешний вид</h3>
   <p>CSS описывает как элементы выглядят. Синтаксис: <code>элемент { свойство: значение; }</code></p>
@@ -5718,7 +5718,7 @@ create policy "Users see own tasks"
   with check (auth.uid() = user_id);`)}
   `)}
   ${vcB(`<h3>Подключение к проекту</h3>
-  ${vcCode('html',`<!-- Добавь в index.html перед закрывающим </body> -->`)}
+  ${vcCode('html',`<!-- Добавь в index.html перед закрывающим <\/body> -->`)}
   ${vcCode('javascript',`import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
 const supabase = createClient(
@@ -5738,13 +5738,13 @@ const supabase = createClient(
   ${vcB(`<h3>Регистрация и вход</h3>
   ${vcCode('javascript',`// Регистрация
 const { data, error } = await supabase.auth.signUp({
-  email: 'user@example.com',
+  email: '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="740107110634110c15190418115a171b19">[email&#160;protected]</a>',
   password: 'password123'
 });
 
 // Вход
 const { data, error } = await supabase.auth.signInWithPassword({
-  email: 'user@example.com',
+  email: '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7c090f190e3c19041d110c1019521f1311">[email&#160;protected]</a>',
   password: 'password123'
 });
 
@@ -5855,7 +5855,7 @@ async function sendWelcomeEmail(userEmail, userName) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      from: 'app@yourdomain.com',
+      from: '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="abcadbdbebd2c4ded9cfc4c6cac2c585c8c4c6">[email&#160;protected]</a>',
       to: userEmail,
       subject: 'Добро пожаловать, ' + userName + '!',
       html: '<h1>Рады видеть тебя!</h1><p>Твой аккаунт создан.</p>'
@@ -6591,15 +6591,4 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeAuthModal(); closeProfileModal(); closeCameraOverlay(); }
   if (e.key === 'Enter') {
     const loginForm = document.getElementById('form-login');
-    const regForm = document.getElementById('form-register');
-    const onboarding = document.getElementById('onboarding-overlay');
-    if (onboarding?.classList.contains('show')) handleOnboardingSubmit();
-    else if (loginForm && !loginForm.classList.contains('hidden')) handleLogin();
-    else if (regForm && !regForm.classList.contains('hidden')) handleRegister();
-  }
-});
-
-
-</script>
-</body>
-</html>
+    const regForm = document.getElementById('f
