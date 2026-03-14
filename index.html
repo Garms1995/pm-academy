@@ -6268,28 +6268,34 @@ async function saveProgressToDB() {
   for (const { course, set } of courses) {
     try {
       const lessons = [...set];
+      if (lessons.length === 0) continue;
       const total = COURSE_TOTALS[course];
       const done = lessons.filter(x => x > 0).length;
-      const record = {
-        user_id: currentUser.id,
-        course,
-        completed_lessons: lessons,
-        completed_at: done >= total ? new Date().toISOString() : null,
-        updated_at: new Date().toISOString()
-      };
-      // maybeSingle() returns null instead of error when not found
-      const { data: existing } = await sb.from('user_progress')
-        .select('id').eq('user_id', currentUser.id).eq('course', course).maybeSingle();
-      if (existing) {
-        await sb.from('user_progress').update({
+      // Try UPDATE first
+      const { error: updateError } = await sb.from('user_progress')
+        .update({
           completed_lessons: lessons,
-          completed_at: record.completed_at,
-          updated_at: record.updated_at
-        }).eq('user_id', currentUser.id).eq('course', course);
+          completed_at: done >= total ? new Date().toISOString() : null,
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', currentUser.id)
+        .eq('course', course);
+      // If UPDATE failed (no existing record), do INSERT
+      if (updateError) {
+        console.log('Inserting new record for course:', course);
+        const { error: insertError } = await sb.from('user_progress').insert({
+          user_id: currentUser.id,
+          course,
+          completed_lessons: lessons,
+          completed_at: done >= total ? new Date().toISOString() : null,
+          updated_at: new Date().toISOString()
+        });
+        if (insertError) console.warn('Insert error:', course, insertError.message);
+        else console.log('✅ Inserted progress for', course);
       } else {
-        await sb.from('user_progress').insert(record);
+        console.log('✅ Updated progress for', course, done, 'lessons');
       }
-    } catch(e) { console.warn('saveProgress error for course:', course, e.message); }
+    } catch(e) { console.warn('saveProgress error:', course, e.message); }
   }
 }
 
