@@ -1419,8 +1419,9 @@
         <div class="progress-bar-wrap" id="progress-wrap-pm" style="display:none">
           <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,#a855f7,#7c3aed)" id="pm-progress-fill"></div></div>
         </div>
-        <div class="progress-bar-wrap" id="progress-wrap-py" style="display:none">
-          <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,#f59e0b,#ea580c)" id="py-progress-fill"></div></div>
+        <div class="progress-bar-wrap" id="progress-wrap-vc" style="display:none">
+          <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,#ec4899,#be185d)" id="vc-progress-fill-nav"></div></div>
+        </div>
         </div>
       </div>
       <div id="nav-auth-area" style="display:flex;align-items:center;gap:8px;flex-shrink:0">
@@ -1481,13 +1482,9 @@
   <div class="profile-modal">
     <div class="profile-header">
       <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
-        <div class="profile-avatar-big" id="profile-avatar-big">
+        <div class="profile-avatar-big" id="profile-avatar-big" onclick="triggerAvatarUpload()" style="cursor:pointer">
           <span id="profile-avatar-letter-big">?</span>
           <div class="avatar-edit-hint">✏️</div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button onclick="triggerAvatarUpload()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer">📁 Файл</button>
-          <button onclick="triggerCamera()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer">📷 Камера</button>
         </div>
       </div>
       <input type="file" id="avatar-upload-input" accept="image/*" onchange="handleAvatarUpload(event)">
@@ -1516,9 +1513,10 @@
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-pm-fill" style="background:#a855f7;width:0%"></div></div>
         </div>
         <div class="profile-course-card">
-          <div class="pcc-head"><span class="pcc-icon">🐍</span><span class="pcc-name">Python для PM</span></div>
-          <div class="pcc-pct" id="pcc-py-pct" style="color:#f59e0b;font-size:20px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:4px">0%</div>
-          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-py-fill" style="background:#f59e0b;width:0%"></div></div>
+          <div class="pcc-head"><span class="pcc-icon">🤖</span><span class="pcc-name">Vibe Coding</span></div>
+          <div class="pcc-pct" id="pcc-vc-pct" style="color:#ec4899;font-size:20px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:4px">0%</div>
+          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-vc-fill" style="background:#ec4899;width:0%"></div></div>
+        </div>
         </div>
       </div>
       <div class="profile-section-title" style="margin-top:24px">✏️ Редактировать профиль</div>
@@ -1623,15 +1621,14 @@
         <div class="dci-bar"><div class="dci-bar-fill" id="drawer-pm-fill" style="background:#a855f7;width:0%"></div></div>
       </div>
     </div>
-
-    <div class="drawer-course-item" id="drawer-py" onclick="showCourse('py');closeDrawer()" style="border-color:transparent">
-      <span class="dci-icon">🐍</span>
+    <div class="drawer-course-item" id="drawer-vc" onclick="showCourse('vc');closeDrawer()" style="border-color:transparent">
+      <span class="dci-icon">🤖</span>
       <div class="dci-body">
-        <div class="dci-name">Python для PM</div>
-        <div class="dci-sub">16 уроков · 7 модулей</div>
+        <div class="dci-name">Vibe Coding</div>
+        <div class="dci-sub">21 урок · 8 модулей</div>
       </div>
       <div class="dci-progress">
-        <div class="dci-bar"><div class="dci-bar-fill" id="drawer-py-fill" style="background:#f59e0b;width:0%"></div></div>
+        <div class="dci-bar"><div class="dci-bar-fill" id="drawer-vc-fill" style="background:#ec4899;width:0%"></div></div>
       </div>
     </div>
 
@@ -1683,14 +1680,14 @@
         </div>
         <div class="course-card-arrow">→</div>
       </div>
-      <div class="course-card" style="border-top:3px solid #f59e0b;cursor:pointer" onclick="showCourse('py')">
-        <div class="course-card-icon">🐍</div>
-        <h2 style="color:var(--text)">Python для PM</h2>
-        <p>Lайфкодинг с Claude: установка, основы языка, автоматизация, Telegram-боты, дашборды на Streamlit. Для нетехнарей.</p>
+      <div class="course-card" style="border-top:3px solid #ec4899;cursor:pointer" onclick="showCourse('vc')">
+        <div class="course-card-icon">🤖</div>
+        <h2 style="color:var(--text)">Vibe Coding: от идеи до продакшна</h2>
+        <p>Среда разработки, архитектурное мышление, промптинг для Claude, frontend, базы данных, деплой — всё с нуля для PM.</p>
         <div class="course-card-meta">
-          <span class="c-badge" style="background:rgba(245,158,11,0.1);color:#f59e0b">16 уроков</span>
-          <span class="c-badge purple">7 модулей</span>
-          <span class="c-badge" style="background:rgba(245,158,11,0.1);color:#f59e0b">Новый!</span>
+          <span class="c-badge" style="background:rgba(236,72,153,0.1);color:#ec4899">21 урок</span>
+          <span class="c-badge" style="background:rgba(236,72,153,0.1);color:#ec4899">8 модулей</span>
+          <span class="c-badge" style="background:rgba(236,72,153,0.1);color:#ec4899">🔥 Новый!</span>
         </div>
         <div class="course-card-arrow">→</div>
       </div>
@@ -1925,82 +1922,50 @@
   </div>
 </div>
 
-<!-- PYTHON COURSE -->
-<div class="course-area" id="course-py">
+<!-- VIBE CODING COURSE -->
+<div class="course-area" id="course-vc" style="display:none">
   <div class="layout">
-    <nav class="sidebar" id="py-sidebar" style="border-right-color:rgba(245,158,11,0.2)">
+    <nav class="sidebar" id="vc-sidebar" style="border-right-color:rgba(236,72,153,0.2)">
       <div class="sidebar-section">Курс</div>
-      <div class="sidebar-item active" onclick="showPyLesson(0)" id="py-nav-0">
-        <span class="item-num">00</span><span class="item-icon">🏠</span><span>Введение</span>
-      </div>
-
-      <div class="sidebar-section">Модуль 1 — Среда разработки</div>
-      <div class="sidebar-item" onclick="showPyLesson(1)" id="py-nav-1">
-        <span class="item-num">01</span><span class="item-icon">🔧</span><span>Установка Python + VS Code</span>
-      </div>
-      <div class="sidebar-item" onclick="showPyLesson(2)" id="py-nav-2">
-        <span class="item-num">02</span><span class="item-icon">🤖</span><span>Рабочий процесс с Claude</span>
-      </div>
-
-      <div class="sidebar-section">Модуль 2 — Основы языка</div>
-      <div class="sidebar-item" onclick="showPyLesson(3)" id="py-nav-3">
-        <span class="item-num">03</span><span class="item-icon">📦</span><span>Переменные и типы</span>
-      </div>
-      <div class="sidebar-item" onclick="showPyLesson(4)" id="py-nav-4">
-        <span class="item-num">04</span><span class="item-icon">🔀</span><span>Условия и циклы</span>
-      </div>
-      <div class="sidebar-item" onclick="showPyLesson(5)" id="py-nav-5">
-        <span class="item-num">05</span><span class="item-icon">⚙️</span><span>Функции</span>
-      </div>
-
-      <div class="sidebar-section">Модуль 3 — Структуры данных</div>
-      <div class="sidebar-item" onclick="showPyLesson(6)" id="py-nav-6">
-        <span class="item-num">06</span><span class="item-icon">📋</span><span>Списки и словари</span>
-      </div>
-
-      <div class="sidebar-section">Модуль 4 — Работа с данными</div>
-      <div class="sidebar-item" onclick="showPyLesson(7)" id="py-nav-7">
-        <span class="item-num">07</span><span class="item-icon">📄</span><span>Файлы и CSV</span>
-      </div>
-      <div class="sidebar-item" onclick="showPyLesson(8)" id="py-nav-8">
-        <span class="item-num">08</span><span class="item-icon">🌐</span><span>JSON и API</span>
-      </div>
-      <div class="sidebar-item" onclick="showPyLesson(9)" id="py-nav-9">
-        <span class="item-num">09</span><span class="item-icon">📊</span><span>Excel и pandas</span>
-      </div>
-
-      <div class="sidebar-section">Модуль 5 — Практика</div>
-      <div class="sidebar-item" onclick="showPyLesson(10)" id="py-nav-10">
-        <span class="item-num">10</span><span class="item-icon">🤖</span><span>Telegram-бот для PM</span>
-      </div>
-      <div class="sidebar-item" onclick="showPyLesson(11)" id="py-nav-11">
-        <span class="item-num">11</span><span class="item-icon">⏰</span><span>Автоматизация и расписание</span>
-      </div>
-
-      <div class="sidebar-section">Модуль 6 — AI-разработка</div>
-      <div class="sidebar-item" onclick="showPyLesson(12)" id="py-nav-12">
-        <span class="item-num">12</span><span class="item-icon">✨</span><span>Vibe Coding с Claude</span>
-      </div>
-      <div class="sidebar-item" onclick="showPyLesson(13)" id="py-nav-13">
-        <span class="item-num">13</span><span class="item-icon">📦</span><span>Окружения и пакеты</span>
-      </div>
-
-      <div class="sidebar-section">Модуль 7 — Веб и проекты</div>
-      <div class="sidebar-item" onclick="showPyLesson(14)" id="py-nav-14">
-        <span class="item-num">14</span><span class="item-icon">📈</span><span>Streamlit — дашборды</span>
-      </div>
-      <div class="sidebar-item" onclick="showPyLesson(15)" id="py-nav-15">
-        <span class="item-num">15</span><span class="item-icon">🚀</span><span>Реальные проекты</span>
-      </div>
-
-      <div class="sidebar-section">Финал</div>
-      <div class="sidebar-item" onclick="showPyLesson(16)" id="py-nav-16">
-        <span class="item-num">16</span><span class="item-icon">🐍</span><span>Шпаргалка Python</span>
+      <div class="sidebar-item active" onclick="showVcLesson(0)" id="vc-nav-0"><span class="item-num">00</span><span class="item-icon">🤖</span><span>Введение</span></div>
+      <div class="sidebar-section">Модуль 1 · Среда разработки</div>
+      <div class="sidebar-item" onclick="showVcLesson(1)" id="vc-nav-1"><span class="item-num">01</span><span class="item-icon">💻</span><span>Установка VS Code</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(2)" id="vc-nav-2"><span class="item-num">02</span><span class="item-icon">🔌</span><span>Claude Code и API-ключ</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(3)" id="vc-nav-3"><span class="item-num">03</span><span class="item-icon">🌿</span><span>Git и GitHub</span></div>
+      <div class="sidebar-section">Модуль 2 · Архитектурное мышление</div>
+      <div class="sidebar-item" onclick="showVcLesson(4)" id="vc-nav-4"><span class="item-num">04</span><span class="item-icon">🗺️</span><span>Проектирование до кода</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(5)" id="vc-nav-5"><span class="item-num">05</span><span class="item-icon">🧩</span><span>Декомпозиция проекта</span></div>
+      <div class="sidebar-section">Модуль 3 · Промптинг</div>
+      <div class="sidebar-item" onclick="showVcLesson(6)" id="vc-nav-6"><span class="item-num">06</span><span class="item-icon">✍️</span><span>Анатомия промпта</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(7)" id="vc-nav-7"><span class="item-num">07</span><span class="item-icon">🚫</span><span>Антипримеры</span></div>
+      <div class="sidebar-section">Модуль 4 · Frontend</div>
+      <div class="sidebar-item" onclick="showVcLesson(8)" id="vc-nav-8"><span class="item-num">08</span><span class="item-icon">🎨</span><span>HTML/CSS с нуля</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(9)" id="vc-nav-9"><span class="item-num">09</span><span class="item-icon">⚡</span><span>JavaScript для PM</span></div>
+      <div class="sidebar-section">Модуль 5 · Логика приложения</div>
+      <div class="sidebar-item" onclick="showVcLesson(10)" id="vc-nav-10"><span class="item-num">10</span><span class="item-icon">⚙️</span><span>Как работает приложение</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(11)" id="vc-nav-11"><span class="item-num">11</span><span class="item-icon">🔄</span><span>API и интеграции</span></div>
+      <div class="sidebar-section">Модуль 6 · База данных</div>
+      <div class="sidebar-item" onclick="showVcLesson(12)" id="vc-nav-12"><span class="item-num">12</span><span class="item-icon">🗄️</span><span>Supabase: старт</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(13)" id="vc-nav-13"><span class="item-num">13</span><span class="item-icon">🔐</span><span>Авторизация</span></div>
+      <div class="sidebar-section">Модуль 7 · Внешние сервисы</div>
+      <div class="sidebar-item" onclick="showVcLesson(14)" id="vc-nav-14"><span class="item-num">14</span><span class="item-icon">🔗</span><span>Подключение API</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(15)" id="vc-nav-15"><span class="item-num">15</span><span class="item-icon">📧</span><span>Email и уведомления</span></div>
+      <div class="sidebar-section">Модуль 8 · Деплой</div>
+      <div class="sidebar-item" onclick="showVcLesson(16)" id="vc-nav-16"><span class="item-num">16</span><span class="item-icon">🚀</span><span>GitHub Pages / Vercel</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(17)" id="vc-nav-17"><span class="item-num">17</span><span class="item-icon">🏁</span><span>Финал: твой продукт</span></div>
+      <div class="sidebar-section">Справочники</div>
+      <div class="sidebar-item" onclick="showVcLesson(18)" id="vc-nav-18"><span class="item-num">18</span><span class="item-icon">📖</span><span>Глоссарий PM-а</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(19)" id="vc-nav-19"><span class="item-num">19</span><span class="item-icon">📚</span><span>Библиотека промптов</span></div>
+      <div class="sidebar-item" onclick="showVcLesson(20)" id="vc-nav-20"><span class="item-num">20</span><span class="item-icon">🗺️</span><span>Что дальше</span></div>
+      <div class="sidebar-progress">
+        <span id="vc-progress-text">0 / 20</span>
+        <div class="sp-bar"><div class="sp-fill" id="vc-progress-fill" style="background:linear-gradient(90deg,#ec4899,#be185d);width:0%"></div></div>
       </div>
     </nav>
-    <main class="main" id="py-main-content"></main>
+    <main class="main" id="vc-main-content"></main>
   </div>
 </div>
+
 
 <!-- SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -3582,14 +3547,20 @@ function updateProgress() {
 let activeCourse = 'home';
 
 function showCourse(course) {
+  // Auth gate: block courses for non-logged users
+  if (course !== 'home' && !currentUser) {
+    openAuthModal();
+    return;
+  }
+
   activeCourse = course;
-  ['home','sql','dev','pm','py'].forEach(c => {
+  ['home','sql','dev','pm','vc'].forEach(c => {
     const el = document.getElementById('course-' + c);
     if (el) el.style.display = c === course ? 'flex' : 'none';
   });
 
   // Update drawer active state
-  ['home','sql','dev','pm','py'].forEach(c => {
+  ['home','sql','dev','pm','vc'].forEach(c => {
     const d = document.getElementById('drawer-' + c);
     if (d) d.classList.toggle('active', c === course);
   });
@@ -3597,14 +3568,14 @@ function showCourse(course) {
   // Breadcrumb
   const bcWrap = document.getElementById('nav-breadcrumb');
   const bcName = document.getElementById('bc-course-name');
-  const names = {sql:'SQL для PM', dev:'Разработка ПО', pm:'Управление проектами', py:'Python для PM'};
+  const names = {sql:'SQL для PM', dev:'Разработка ПО', pm:'Управление проектами', vc:'Vibe Coding'};
   if (course !== 'home' && bcWrap && bcName) {
     bcWrap.style.display = 'flex';
     bcName.textContent = names[course] || '';
   } else if (bcWrap) { bcWrap.style.display = 'none'; }
 
   // Progress bar in nav
-  ['sql','dev','pm','py'].forEach(c => {
+  ['sql','dev','pm','vc'].forEach(c => {
     const el = document.getElementById('progress-wrap-' + c);
     if (el) el.style.display = c === course ? 'flex' : 'none';
   });
@@ -3620,7 +3591,7 @@ function showCourse(course) {
   if (course === 'sql' && currentLesson    === 0) showLesson(0);
   if (course === 'dev' && currentDevLesson === 0) showDevLesson(0);
   if (course === 'pm'  && currentPmLesson  === 0) showPmLesson(0);
-  if (course === 'py'  && currentPyLesson  === 0) showPyLesson(0);
+  if (course === 'vc'  && currentVcLesson  === 0) showVcLesson(0);
 }
 
 // ── COURSE DRAWER ──────────────────────────────
@@ -3681,13 +3652,11 @@ function updateDrawerProgress() {
   const pmFill = document.getElementById('drawer-pm-fill');
   if (pmEl) pmEl.textContent = pmDone + '/14';
   if (pmFill) pmFill.style.width = Math.round(pmDone/14*100) + '%';
-  // Python
-  if (typeof pyCompleted !== 'undefined') {
-    const pyDone = pyCompleted.size;
-    const pyEl = document.getElementById('drawer-py-pct');
-    const pyFill = document.getElementById('drawer-py-fill');
-    if (pyEl) pyEl.textContent = pyDone + '/16';
-    if (pyFill) pyFill.style.width = Math.round(pyDone/16*100) + '%';
+  // Vibe Coding
+  if (typeof vcCompleted !== 'undefined') {
+    const vcDone = [...vcCompleted].filter(x => x > 0).length;
+    const vcFill = document.getElementById('drawer-vc-fill');
+    if (vcFill) vcFill.style.width = Math.round(vcDone/20*100) + '%';
   }
 }
 
@@ -5193,1797 +5162,973 @@ function wrapTables() {
 function updateProgress() {
   _origUpdateProgress();
   updateDrawerProgress();
-}
-// ─────────────────────────────────────────────
-// PYTHON FOR PM COURSE
-// ─────────────────────────────────────────────
-const pyCompleted = new Set();
-let currentPyLesson = 0;
-const PY_TOTAL = 16;
-
-const pyBlock = (html) => `<div class="content-block">${html}</div>`;
-const pyCall  = (t,i,h) => `<div class="callout ${t}"><span class="callout-icon">${i}</span><div>${h}</div></div>`;
-const pyTable = (cols,rows) => `<div class="db-table-wrap"><table class="db-table"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(d=>`<td>${d}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-const pyCode  = (lang,code) => `<div class="code-wrap"><div class="code-header"><span>${lang}</span><span class="code-lang">${lang.toUpperCase()}</span></div><pre>${code}</pre></div>`;
-const pyNav   = (prev,next,isLast=false) => `<div class="lesson-nav" style="display:flex;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid var(--border)">
-  ${prev!==undefined?`<button class="btn-nav btn-prev" onclick="pyCompleteAndNav(${prev})">← Назад</button>`:''}
-  ${!isLast&&next!==undefined?`<button class="btn-nav btn-next" style="background:linear-gradient(135deg,#f59e0b,#ea580c);margin-left:auto" onclick="pyCompleteAndNav(${next})">Далее →</button>`:''}
-  ${isLast?`<button class="btn-complete" style="background:linear-gradient(135deg,#f59e0b,#ea580c);margin-left:auto" onclick="pyCompleteFinal()">✓ Завершить курс</button>`:''}
-</div>`;
-
-const pyLessons = [
-
-// ── 0. Введение ──────────────────────────────
-()=>`
-  <div class="lesson-tag">PM Academy · Python для PM</div>
-  <h1>Python + Claude = Суперсила PM</h1>
-  <div class="lesson-meta"><span class="meta-badge">7 модулей</span><span class="meta-badge">16 уроков</span><span class="meta-badge">~5 часов</span></div>
-  ${pyBlock(`<p>Этот курс создан для Project Manager, который хочет писать реальные приложения вместе с ИИ. Не нужно становиться программистом — нужно понимать Python достаточно, чтобы объяснить Claude что нужно, прочитать и запустить результат, и исправить когда что-то идёт не так.</p>`)}
-  ${pyCall('tip','🤖',`<strong>Философия курса:</strong> Claude пишет 80% кода. Ваша задача — понимать что происходит, грамотно ставить задачи и уметь отлаживать результат. Это называется <em>vibe coding</em> или <em>AI-assisted development</em>.`)}
-  ${pyBlock(`<h2>Что вы сможете делать после курса</h2>
-    <div class="metric-grid">
-      ${[['🤖 Автоматизация','Скрипты для рутины: отчёты, переименование файлов, обработка Excel'],
-         ['🌐 Telegram-боты','Бот для уведомлений команды, статусы проекта, напоминания'],
-         ['📊 Работа с данными','Обработка CSV, Excel, JSON — анализ без Excel-формул'],
-         ['🔌 API-интеграции','Подключение к Jira, Notion, Google Sheets, Slack'],
-         ['🖥️ Простые веб-приложения','Дашборды на Streamlit за 30 минут'],
-         ['🧠 Работа с ИИ','Скрипты с OpenAI/Claude API для автоматизации задач']].map(([n,d])=>`<div class="metric-card"><div class="metric-card-label">${n}</div><div class="metric-card-desc">${d}</div></div>`).join('')}
-    </div>`)}
-  ${pyBlock(`<h2>Структура курса</h2>
-    <div class="step-list">
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">1</div><div class="step-content"><h4>Установка и среда</h4><p>Python, VS Code, Terminal — полный боевой стек с нуля</p></div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">2</div><div class="step-content"><h4>Основы языка</h4><p>Переменные, типы, условия, циклы, функции — только необходимое</p></div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">3</div><div class="step-content"><h4>Структуры данных</h4><p>Списки, словари, файлы — то, с чем работают реальные скрипты</p></div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">4</div><div class="step-content"><h4>Работа с данными</h4><p>CSV, Excel, JSON — читаем, обрабатываем, сохраняем</p></div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">5</div><div class="step-content"><h4>API и запросы</h4><p>HTTP-запросы, работа с внешними сервисами, Telegram-бот</p></div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">6</div><div class="step-content"><h4>Vibe Coding с Claude</h4><p>Как правильно ставить задачи ИИ, отлаживать, расширять код</p></div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">7</div><div class="step-content"><h4>Реальные проекты</h4><p>Готовые шаблоны: бот, дашборд, автоматизация отчётов</p></div></div>
-    </div>`)}
-  ${pyCall('info','⏱️','Рекомендуемый темп: <strong>1 урок в день</strong>. Каждый урок — это теория + код который нужно запустить самому. Не пропускайте практику — именно руки запоминают, а не глаза.')}
-  ${pyNav(undefined,1)}
-`,
-
-// ── 1. Установка: macOS ──────────────────────
-()=>`
-  <div class="lesson-tag">Модуль 1 · Урок 1</div>
-  <h1>Установка окружения</h1>
-  <div class="lesson-meta"><span class="meta-badge">Настройка</span><span class="meta-badge">~30 мин</span><span class="meta-badge">macOS + Windows</span></div>
-  ${pyCall('info','💻','Покрываем оба варианта: <strong>macOS</strong> и <strong>Windows</strong>. Выберите свой раздел.')}
-
-  ${pyBlock(`<h2>🍎 macOS — пошагово</h2>
-    <div class="step-list">
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">1</div><div class="step-content">
-        <h4>Установите Homebrew (менеджер пакетов)</h4>
-        <p>Откройте Terminal (Spotlight → Terminal) и выполните:</p>
-        ${pyCode('bash',`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`)}
-        <p style="color:var(--text3);font-size:13px">Homebrew — как App Store, только для разработчиков. Установит почти всё что нужно.</p>
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">2</div><div class="step-content">
-        <h4>Установите Python 3</h4>
-        ${pyCode('bash',`brew install python`)}
-        <p>Проверьте:</p>
-        ${pyCode('bash',`python3 --version
-# Должно вывести: Python 3.12.x или новее`)}
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">3</div><div class="step-content">
-        <h4>Установите VS Code</h4>
-        <p>Скачайте с <strong>code.visualstudio.com</strong> → перетащите в Applications.<br>Или через Homebrew:</p>
-        ${pyCode('bash',`brew install --cask visual-studio-code`)}
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">4</div><div class="step-content">
-        <h4>Установите расширение Python в VS Code</h4>
-        <p>VS Code → Extensions (⌘⇧X) → найдите «Python» от Microsoft → Install</p>
-      </div></div>
-    </div>`)}
-
-  ${pyBlock(`<h2>🪟 Windows — пошагово</h2>
-    <div class="step-list">
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">1</div><div class="step-content">
-        <h4>Установите Python с официального сайта</h4>
-        <p>Зайдите на <strong>python.org/downloads</strong> → скачайте последнюю версию Python 3.x.<br>
-        <strong style="color:#ff6b6b">⚠️ Важно:</strong> при установке обязательно поставьте галочку <strong>«Add Python to PATH»</strong></p>
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">2</div><div class="step-content">
-        <h4>Проверьте установку</h4>
-        <p>Откройте PowerShell (Win+X → Windows PowerShell):</p>
-        ${pyCode('powershell',`python --version
-# Должно вывести: Python 3.12.x`)}
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">3</div><div class="step-content">
-        <h4>Установите VS Code</h4>
-        <p>Скачайте с <strong>code.visualstudio.com/download</strong> → запустите установщик.<br>
-        При установке отметьте <strong>«Add to PATH»</strong> и <strong>«Open with Code»</strong>.</p>
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">4</div><div class="step-content">
-        <h4>Расширение Python в VS Code</h4>
-        <p>VS Code → Extensions (Ctrl+Shift+X) → «Python» от Microsoft → Install</p>
-      </div></div>
-    </div>`)}
-
-  ${pyBlock(`<h2>Проверка: первый скрипт</h2>
-    <p>Создайте папку <code>my-projects</code> на рабочем столе. Откройте её в VS Code: <strong>File → Open Folder</strong>.<br>
-    Создайте файл <code>hello.py</code> (кнопка «New File» в боковой панели):</p>
-    ${pyCode('python',`print("Привет, мир!")
-print("Я пишу на Python!")
-name = "Саша"
-print(f"Меня зовут {name}")`)}
-    <p>Запустите: кнопка ▶ в правом верхнем углу VS Code, или в терминале:</p>
-    ${pyCode('bash',`python3 hello.py   # macOS
-python hello.py    # Windows`)}
-  `)}
-
-  ${pyBlock(`<h2>Важные горячие клавиши VS Code</h2>
-    ${pyTable(['Действие','macOS','Windows'],
-      [['Открыть терминал','⌃\`','Ctrl+\`'],
-       ['Запустить файл','⌃F5','Ctrl+F5'],
-       ['Сохранить файл','⌘S','Ctrl+S'],
-       ['Поиск файлов','⌘P','Ctrl+P'],
-       ['Командная палитра','⌘⇧P','Ctrl+Shift+P'],
-       ['Форматировать код','⇧⌥F','Shift+Alt+F']])}
-  `)}
-  ${pyCall('tip','✅','После установки вы готовы. В следующем уроке — как общаться с Claude чтобы получать рабочий код с первого раза.')}
-  ${pyNav(0,2)}
-`,
-
-// ── 2. VS Code + Claude workflow ─────────────
-()=>`
-  <div class="lesson-tag">Модуль 1 · Урок 2</div>
-  <h1>Рабочий процесс: VS Code + Claude</h1>
-  <div class="lesson-meta"><span class="meta-badge">Workflow</span><span class="meta-badge">~25 мин</span></div>
-  ${pyBlock(`<p>Прежде чем писать код — научимся работать правильно. Хороший воркфлоу экономит часы. Плохой — превращает простую задачу в хаос.</p>`)}
-
-  ${pyBlock(`<h2>Анатомия VS Code для PM</h2>
-    <div class="step-list">
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">📁</div><div class="step-content"><h4>Explorer (левая панель)</h4><p>Файлы проекта. Всегда работайте в папке проекта, не открывайте отдельные файлы.</p></div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">✏️</div><div class="step-content"><h4>Editor (центр)</h4><p>Редактор кода. Подсветка синтаксиса, автодополнение, подсказки об ошибках.</p></div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">⌨️</div><div class="step-content"><h4>Terminal (низ)</h4><p>Консоль прямо в VS Code. Открыть: View → Terminal или ⌃\`. Здесь запускаем скрипты.</p></div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">🔴</div><div class="step-content"><h4>Problems (внизу)</h4><p>Список ошибок. Красный кружок слева от строки = ошибка. Hover на него — объяснение.</p></div></div>
-    </div>`)}
-
-  ${pyBlock(`<h2>Правила работы с Claude для кода</h2>
-    ${pyCall('warning','❌','<strong>Плохой промпт:</strong> «Напиши мне скрипт на Python»<br>Результат: общий шаблон который скорее всего не подойдёт.')}
-    ${pyCall('tip','✅','<strong>Хороший промпт:</strong> структурированный запрос с контекстом, входными данными, ожидаемым результатом и ограничениями.')}
-    <h2>Шаблон промпта для кода</h2>
-    <div style="background:var(--bg3);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:20px;margin:16px 0">
-      <p style="color:#f59e0b;font-weight:700;margin-bottom:12px">📋 Структура запроса:</p>
-      <p style="color:var(--text2);line-height:1.9;font-size:14px">
-        <strong style="color:var(--text)">Задача:</strong> [что конкретно нужно сделать]<br>
-        <strong style="color:var(--text)">Входные данные:</strong> [что есть на входе — файл CSV, список, API]<br>
-        <strong style="color:var(--text)">Результат:</strong> [что должно получиться на выходе]<br>
-        <strong style="color:var(--text)">Ограничения:</strong> [Python 3, без сторонних библиотек / только pandas / и т.д.]<br>
-        <strong style="color:var(--text)">Дополнительно:</strong> [добавить комментарии в коде / сохранить в файл / etc]
-      </p>
-    </div>
-    <h3>Пример хорошего промпта:</h3>
-    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px;color:var(--text2);line-height:1.8">
-      Задача: прочитать CSV файл с колонками [дата, задача, статус, ответственный] и сгенерировать текстовый отчёт<br>
-      Входные данные: файл tasks.csv в той же папке<br>
-      Результат: вывести в консоль и сохранить в report.txt — количество задач по статусам и список просроченных<br>
-      Ограничения: только стандартные библиотеки Python (csv, datetime)<br>
-      Добавить: подробные комментарии к каждому блоку кода
-    </div>`)}
-
-  ${pyBlock(`<h2>Три команды которые нужно знать всегда</h2>
-    ${pyCode('bash',`# 1. Запустить скрипт
-python3 script.py
-
-# 2. Установить библиотеку
-pip3 install requests     # macOS
-pip install requests      # Windows
-
-# 3. Посмотреть что установлено
-pip3 list`)}
-  `)}
-
-  ${pyBlock(`<h2>Когда код не работает — чеклист</h2>
-    ${pyTable(['#','Проверь','Как'],
-      [['1','Сохранён ли файл?','⌘S / Ctrl+S перед запуском'],
-       ['2','Правильная папка?','В терминале: pwd (показывает где ты)'],
-       ['3','Читай ошибку полностью','Последняя строка — суть ошибки, выше — где произошла'],
-       ['4','Скопируй ошибку в Claude','«Получаю такую ошибку: [текст]. Код: [код]. Что не так?»'],
-       ['5','Версия Python?','python3 --version — должна быть 3.8+'],
-       ['6','Библиотека установлена?','pip3 list | grep имя_библиотеки']])}
-  `)}
-  ${pyCall('tip','🤝','<strong>Главное правило:</strong> не тратьте больше 10 минут на поиск ошибки самостоятельно. Скопируйте ошибку + код → отправьте Claude. ИИ видит опечатки и логические ошибки мгновенно.')}
-  ${pyNav(1,3)}
-`,
-
-// ── 3. Переменные и типы ────────────────────
-()=>`
-  <div class="lesson-tag">Модуль 2 · Урок 3</div>
-  <h1>Переменные и типы данных</h1>
-  <div class="lesson-meta"><span class="meta-badge">Основы</span><span class="meta-badge">~20 мин</span></div>
-  ${pyBlock(`<p>Переменная — это коробка с подписью, в которой хранится значение. Python не требует объявлять тип — он определяет его сам. Это делает код быстрым для написания, но требует внимания при отладке.</p>`)}
-
-  ${pyBlock(`<h2>Основные типы данных</h2>
-    ${pyCode('python',`# Числа
-age = 28              # int — целое число
-salary = 150000.50    # float — дробное число
-year = 2025
-
-# Строки (текст)
-name = "Иван Петров"
-city = 'Москва'
-role = f"Senior PM at Company"  # f-строка — с подстановкой
-
-# Булевые значения
-is_active = True
-is_blocked = False
-
-# None — отсутствие значения
-manager = None  # ещё не назначен
-
-# Проверить тип переменной:
-print(type(age))      # <class 'int'>
-print(type(name))     # <class 'str'>
-print(type(is_active)) # <class 'bool'>`)}
-  `)}
-
-  ${pyBlock(`<h2>Строки — самый важный тип для PM</h2>
-    ${pyCode('python',`name = "Алексей"
-role = "Product Manager"
-company = "Ozon"
-
-# f-строки — вставляем переменные в текст
-greeting = f"Привет, {name}! Ты {role} в {company}."
-print(greeting)  # Привет, Алексей! Ты Product Manager в Ozon.
-
-# Операции со строками
-text = "  привет мир  "
-print(text.strip())        # убрать пробелы: "привет мир"
-print(text.upper())        # ПРИВЕТ МИР
-print(text.lower())        # привет мир
-print(text.replace("мир", "Python"))  # привет Python
-
-# Разбить строку
-csv_line = "Иван,PM,Москва,150000"
-parts = csv_line.split(",")
-print(parts)  # ['Иван', 'PM', 'Москва', '150000']
-print(parts[0])  # Иван — первый элемент (индекс с 0!)
-
-# Склеить обратно
-result = " | ".join(parts)
-print(result)  # Иван | PM | Москва | 150000`)}
-  `)}
-
-  ${pyBlock(`<h2>Числа и арифметика</h2>
-    ${pyCode('python',`budget = 1_000_000  # нижнее подчёркивание = разделитель тысяч (читаемость)
-spent = 347_500
-remaining = budget - spent
-
-# Арифметика
-print(remaining)           # 652500
-print(spent / budget)      # 0.3475
-print(round(spent / budget * 100, 1))  # 34.8 (процент с 1 знаком)
-
-# Преобразование типов
-price_str = "15000"   # строка из CSV
-price_int = int(price_str)   # → число
-price_float = float("15000.50")  # → дробное
-
-# Полезные функции
-print(abs(-42))    # 42 — модуль
-print(max(10, 25, 7))  # 25
-print(min(10, 25, 7))  # 7
-print(sum([10, 25, 7])) # 42`)}
-  `)}
-
-  ${pyBlock(`<h2>Практика: скрипт для PM</h2>
-    ${pyCode('python',`# Создайте файл budget_calc.py и запустите
-
-project_name = "Редизайн мобильного приложения"
-budget_total = 2_500_000
-spent_development = 890_000
-spent_design = 340_000
-spent_testing = 120_000
-
-spent_total = spent_development + spent_design + spent_testing
-remaining = budget_total - spent_total
-pct_spent = round(spent_total / budget_total * 100, 1)
-
-print(f"Проект: {project_name}")
-print(f"Бюджет: {budget_total:,} ₽")
-print(f"Потрачено: {spent_total:,} ₽ ({pct_spent}%)")
-print(f"Остаток: {remaining:,} ₽")`)}
-    ${pyCall('tip','🎯','Запустите этот код! Поменяйте цифры на реальные данные своего проекта.')}
-  `)}
-  ${pyNav(2,4)}
-`,
-
-// ── 4. Условия и циклы ──────────────────────
-()=>`
-  <div class="lesson-tag">Модуль 2 · Урок 4</div>
-  <h1>Условия и циклы</h1>
-  <div class="lesson-meta"><span class="meta-badge">Основы</span><span class="meta-badge">~25 мин</span></div>
-  ${pyBlock(`<p>Условия и циклы — это логика программы. С ними код умеет принимать решения и выполнять повторяющиеся действия. Это то, что превращает скрипт из «посчитать один раз» в «обработать 1000 строк».</p>`)}
-
-  ${pyBlock(`<h2>Условия — if / elif / else</h2>
-    ${pyCode('python',`# Базовый if
-budget_remaining = 150_000
-
-if budget_remaining > 500_000:
-    print("Бюджет в норме ✅")
-elif budget_remaining > 100_000:
-    print("Бюджет на контроле ⚠️")
-else:
-    print("Бюджет критический 🔴")
-
-# Вывод: Бюджет на контроле ⚠️
-
-# Операторы сравнения
-# >  больше     >=  больше или равно
-# <  меньше     <=  меньше или равно
-# == равно      !=  не равно
-
-# Логические операторы
-age = 28
-experience = 3
-
-if age >= 25 and experience >= 2:
-    print("Подходит на Senior PM")
-
-if experience < 1 or age < 22:
-    print("Нужен Junior уровень")
-
-# Проверка наличия в строке
-task = "Сделать ретроспективу спринта"
-if "спринт" in task.lower():
-    print("Scrum-задача")`)}
-  `)}
-
-  ${pyBlock(`<h2>Циклы — for</h2>
-    ${pyCode('python',`# Пройтись по списку
-team = ["Анна", "Борис", "Виктор", "Галина"]
-
-for member in team:
-    print(f"Привет, {member}!")
-
-# С нумерацией — enumerate
-for i, member in enumerate(team, 1):
-    print(f"{i}. {member}")
-# 1. Анна
-# 2. Борис ...
-
-# Диапазон чисел — range
-for sprint in range(1, 6):  # 1, 2, 3, 4, 5
-    print(f"Спринт {sprint}: планируем задачи")
-
-# Цикл по словарю
-statuses = {"todo": 12, "in_progress": 5, "done": 23, "blocked": 2}
-
-for status, count in statuses.items():
-    print(f"{status}: {count} задач")`)}
-  `)}
-
-  ${pyBlock(`<h2>Цикл while и break/continue</h2>
-    ${pyCode('python',`# while — пока условие истинно
-attempts = 0
-max_attempts = 3
-
-while attempts < max_attempts:
-    print(f"Попытка {attempts + 1}")
-    attempts += 1  # сокращение от attempts = attempts + 1
-
-# break — прервать цикл досрочно
-tasks = ["Дизайн", "Разработка", "БЛОКЕР", "Тестирование"]
-
-for task in tasks:
-    if task == "БЛОКЕР":
-        print(f"Стоп! Найден блокер: {task}")
-        break
-    print(f"Выполняем: {task}")
-
-# continue — пропустить итерацию
-for task in tasks:
-    if task == "БЛОКЕР":
-        print(f"Пропускаем блокер: {task}")
-        continue
-    print(f"Задача: {task}")`)}
-  `)}
-
-  ${pyBlock(`<h2>Практика: статус-репорт</h2>
-    ${pyCode('python',`# Создайте status_report.py
-
-tasks = [
-    {"name": "Дизайн главной", "status": "done", "owner": "Анна"},
-    {"name": "API интеграция", "status": "in_progress", "owner": "Борис"},
-    {"name": "Тесты", "status": "blocked", "owner": "Виктор"},
-    {"name": "Документация", "status": "todo", "owner": "Галина"},
-    {"name": "Деплой", "status": "done", "owner": "Борис"},
-]
-
-print("=== СТАТУС СПРИНТА ===")
-done = 0
-blocked_tasks = []
-
-for task in tasks:
-    emoji = {"done":"✅","in_progress":"🔄","blocked":"🔴","todo":"⬜"}.get(task["status"],"❓")
-    print(f"{emoji} {task['name']} — {task['owner']}")
-    if task["status"] == "done":
-        done += 1
-    if task["status"] == "blocked":
-        blocked_tasks.append(task["name"])
-
-print(f"\\nГотово: {done}/{len(tasks)}")
-if blocked_tasks:
-    print(f"Блокеры: {', '.join(blocked_tasks)}")`)}
-  `)}
-  ${pyNav(3,5)}
-`,
-
-// ── 5. Функции ──────────────────────────────
-()=>`
-  <div class="lesson-tag">Модуль 2 · Урок 5</div>
-  <h1>Функции — строительные блоки</h1>
-  <div class="lesson-meta"><span class="meta-badge">Основы</span><span class="meta-badge">~20 мин</span></div>
-  ${pyBlock(`<p>Функция — это именованный блок кода который можно вызвать в любой момент. Вместо того чтобы копировать один и тот же код 10 раз — вы пишете функцию один раз и вызываете её.</p>`)}
-
-  ${pyBlock(`<h2>Создание и вызов функций</h2>
-    ${pyCode('python',`# Простая функция
-def greet(name):
-    message = f"Привет, {name}!"
-    return message
-
-print(greet("Алексей"))  # Привет, Алексей!
-print(greet("Мария"))    # Привет, Мария!
-
-# Функция с несколькими параметрами
-def calc_budget_status(total, spent):
-    remaining = total - spent
-    pct = round(spent / total * 100, 1)
-
-    if pct < 50:
-        status = "🟢 Норма"
-    elif pct < 80:
-        status = "🟡 Внимание"
-    else:
-        status = "🔴 Критично"
-
-    return remaining, pct, status  # можно вернуть несколько значений
-
-# Вызов и распаковка результата
-rem, pct, status = calc_budget_status(1_000_000, 650_000)
-print(f"Остаток: {rem:,} ₽ ({pct}%) — {status}")`)}
-  `)}
-
-  ${pyBlock(`<h2>Параметры по умолчанию</h2>
-    ${pyCode('python',`# Значения по умолчанию — если аргумент не передан
-def create_task(name, status="todo", priority="medium"):
-    return {
-        "name": name,
-        "status": status,
-        "priority": priority
-    }
-
-task1 = create_task("Написать ТЗ")  # использует значения по умолчанию
-task2 = create_task("Деплой", status="in_progress", priority="high")
-
-print(task1)  # {'name': 'Написать ТЗ', 'status': 'todo', 'priority': 'medium'}
-print(task2)  # {'name': 'Деплой', 'status': 'in_progress', 'priority': 'high'}`)}
-  `)}
-
-  ${pyBlock(`<h2>Лямбда-функции (однострочные)</h2>
-    ${pyCode('python',`# lambda — компактная функция в одну строку
-# Часто используется для сортировки
-
-tasks = [
-    {"name": "Деплой", "priority": 3},
-    {"name": "Дизайн", "priority": 1},
-    {"name": "Тесты",  "priority": 2},
-]
-
-# Сортировка по приоритету
-sorted_tasks = sorted(tasks, key=lambda t: t["priority"])
-for t in sorted_tasks:
-    print(f"P{t['priority']}: {t['name']}")`)}
-  `)}
-
-  ${pyBlock(`<h2>Практика: модульный отчёт</h2>
-    ${pyCode('python',`# Создайте report_functions.py
-
-def get_status_emoji(status):
-    emojis = {"done":"✅","in_progress":"🔄","blocked":"🔴","todo":"⬜"}
-    return emojis.get(status, "❓")
-
-def count_by_status(tasks):
-    counts = {}
-    for task in tasks:
-        s = task["status"]
-        counts[s] = counts.get(s, 0) + 1
-    return counts
-
-def print_sprint_report(sprint_name, tasks):
-    print(f"\\n{'='*40}")
-    print(f"  {sprint_name}")
-    print(f"{'='*40}")
-    for task in tasks:
-        emoji = get_status_emoji(task["status"])
-        print(f"  {emoji} {task['name']}")
-    counts = count_by_status(tasks)
-    print(f"\\nИтого: {counts}")
-
-# Использование
-sprint_tasks = [
-    {"name": "Авторизация", "status": "done"},
-    {"name": "Профиль", "status": "in_progress"},
-    {"name": "Уведомления", "status": "blocked"},
-]
-print_sprint_report("Спринт 12", sprint_tasks)`)}
-  `)}
-  ${pyNav(4,6)}
-`,
-
-// ── 6. Списки и словари ─────────────────────
-()=>`
-  <div class="lesson-tag">Модуль 3 · Урок 6</div>
-  <h1>Списки и словари</h1>
-  <div class="lesson-meta"><span class="meta-badge">Структуры данных</span><span class="meta-badge">~25 мин</span></div>
-  ${pyBlock(`<p>Списки и словари — это 90% работы с данными в Python. Список хранит упорядоченный набор элементов, словарь — пары ключ-значение. Вместе они позволяют представить любые данные: команды, задачи, метрики, API-ответы.</p>`)}
-
-  ${pyBlock(`<h2>Списки (list)</h2>
-    ${pyCode('python',`# Создание списка
-team = ["Анна", "Борис", "Виктор"]
-scores = [95, 87, 72, 88, 91]
-
-# Доступ к элементам (индекс с 0)
-print(team[0])    # Анна (первый)
-print(team[-1])   # Виктор (последний)
-print(team[1:])   # ['Борис', 'Виктор'] (срез)
-
-# Изменение
-team.append("Дарья")          # добавить в конец
-team.insert(1, "Елена")       # вставить на позицию 1
-team.remove("Борис")          # удалить по значению
-popped = team.pop()           # удалить и вернуть последний
-
-# Полезные операции
-print(len(team))              # количество элементов
-print(sorted(scores))         # отсортированная копия
-print(sum(scores))            # сумма
-print(sum(scores)/len(scores)) # среднее
-
-# Проверка наличия
-if "Анна" in team:
-    print("Анна в команде")`)}
-  `)}
-
-  ${pyBlock(`<h2>List comprehension — элегантный способ создать список</h2>
-    ${pyCode('python',`tasks = ["  Дизайн  ", "разработка", "ТЕСТЫ", " деплой"]
-
-# Обычный способ
-clean_tasks = []
-for t in tasks:
-    clean_tasks.append(t.strip().capitalize())
-
-# List comprehension — то же самое в одну строку
-clean_tasks = [t.strip().capitalize() for t in tasks]
-print(clean_tasks)  # ['Дизайн', 'Разработка', 'Тесты', 'Деплой']
-
-# С фильтрацией
-scores = [95, 42, 87, 23, 91, 55, 78]
-high_scores = [s for s in scores if s >= 75]
-print(high_scores)  # [95, 87, 91, 78]`)}
-  `)}
-
-  ${pyBlock(`<h2>Словари (dict)</h2>
-    ${pyCode('python',`# Создание словаря
-person = {
-    "name": "Иван Петров",
-    "role": "Senior PM",
-    "salary": 200_000,
-    "skills": ["Scrum", "PMBOK", "Python"]
-}
-
-# Доступ к значениям
-print(person["name"])          # Иван Петров
-print(person.get("age", "Н/Д"))  # Н/Д (безопасно, без ошибки)
-
-# Изменение и добавление
-person["salary"] = 220_000
-person["city"] = "Москва"
-
-# Удаление
-del person["salary"]
-removed = person.pop("city", None)  # безопасное удаление
-
-# Перебор
-for key, value in person.items():
-    print(f"{key}: {value}")
-
-# Проверка ключа
-if "role" in person:
-    print(f"Роль: {person['role']}")`)}
-  `)}
-
-  ${pyBlock(`<h2>Список словарей — основа для работы с данными</h2>
-    ${pyCode('python',`# Это то, что вы будете использовать постоянно
-employees = [
-    {"name": "Анна",    "dept": "Product", "salary": 180_000, "yoe": 4},
-    {"name": "Борис",   "dept": "Dev",     "salary": 250_000, "yoe": 6},
-    {"name": "Виктор",  "dept": "Design",  "salary": 150_000, "yoe": 2},
-    {"name": "Галина",  "dept": "Product", "salary": 200_000, "yoe": 5},
-]
-
-# Все имена
-names = [e["name"] for e in employees]
-
-# Фильтрация — только Product
-product_team = [e for e in employees if e["dept"] == "Product"]
-
-# Сортировка по зарплате (убывание)
-by_salary = sorted(employees, key=lambda e: e["salary"], reverse=True)
-
-# Средняя зарплата
-avg_salary = sum(e["salary"] for e in employees) / len(employees)
-print(f"Средняя зарплата: {avg_salary:,.0f} ₽")`)}
-  `)}
-  ${pyNav(5,7)}
-`,
-
-// ── 7. Файлы и CSV ──────────────────────────
-()=>`
-  <div class="lesson-tag">Модуль 4 · Урок 7</div>
-  <h1>Работа с файлами и CSV</h1>
-  <div class="lesson-meta"><span class="meta-badge">Данные</span><span class="meta-badge">~25 мин</span></div>
-  ${pyBlock(`<p>Файлы — это мост между вашим скриптом и реальным миром. Читать логи, писать отчёты, обрабатывать CSV из Jira или Excel — всё начинается с умения работать с файлами.</p>`)}
-
-  ${pyBlock(`<h2>Чтение и запись текстовых файлов</h2>
-    ${pyCode('python',`# Запись в файл (создаёт или перезаписывает)
-with open("report.txt", "w", encoding="utf-8") as f:
-    f.write("Отчёт по спринту 12\\n")
-    f.write("Дата: 2025-03-01\\n")
-    f.write("Статус: завершён\\n")
-
-# Дозапись в конец файла (append)
-with open("report.txt", "a", encoding="utf-8") as f:
-    f.write("\\nДобавленная строка\\n")
-
-# Чтение файла
-with open("report.txt", "r", encoding="utf-8") as f:
-    content = f.read()        # весь текст одной строкой
-    print(content)
-
-# Чтение построчно
-with open("report.txt", "r", encoding="utf-8") as f:
-    for line in f:
-        print(line.strip())   # strip убирает \\n в конце`)}
-    ${pyCall('tip','🔐','<strong>with open(...) as f</strong> — это правильный способ открывать файлы. Файл автоматически закроется после блока, даже если произойдёт ошибка.')}
-  `)}
-
-  ${pyBlock(`<h2>CSV — основной формат данных</h2>
-    ${pyCode('python',`import csv
-
-# Создадим тестовый CSV
-tasks_data = [
-    ["id", "task", "status", "owner", "points"],
-    [1, "Дизайн главной", "done", "Анна", 3],
-    [2, "API авторизации", "in_progress", "Борис", 8],
-    [3, "Unit тесты", "todo", "Виктор", 5],
-    [4, "Деплой на staging", "blocked", "Борис", 2],
-]
-
-# Запись CSV
-with open("tasks.csv", "w", newline="", encoding="utf-8") as f:
-    writer = csv.writer(f)
-    writer.writerows(tasks_data)
-
-# Чтение CSV
-with open("tasks.csv", "r", encoding="utf-8") as f:
-    reader = csv.DictReader(f)  # каждая строка = словарь
-    for row in reader:
-        print(f"{row['id']}. {row['task']} [{row['status']}] — {row['owner']}")`)}
-  `)}
-
-  ${pyBlock(`<h2>Реальный пример: анализ выгрузки из Jira</h2>
-    ${pyCode('python',`import csv
-from collections import defaultdict
-
-# Предположим у нас есть CSV-экспорт из Jira
-def analyze_sprint(filepath):
-    stats = defaultdict(int)   # счётчик по статусам
-    blocked_tasks = []
-    owners = defaultdict(list) # задачи по исполнителям
-
-    with open(filepath, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            status = row["status"]
-            stats[status] += 1
-
-            if status == "blocked":
-                blocked_tasks.append(row["task"])
-
-            owners[row["owner"]].append(row["task"])
-
-    # Вывод отчёта
-    print("\\n📊 СТАТИСТИКА СПРИНТА")
-    print("-" * 30)
-    for status, count in sorted(stats.items()):
-        print(f"  {status}: {count}")
-
-    if blocked_tasks:
-        print(f"\\n🔴 Блокеры ({len(blocked_tasks)}):")
-        for t in blocked_tasks:
-            print(f"  • {t}")
-
-    print("\\n👥 Нагрузка по команде:")
-    for owner, tasks in owners.items():
-        print(f"  {owner}: {len(tasks)} задач")
-
-analyze_sprint("tasks.csv")`)}
-  `)}
-  ${pyNav(6,8)}
-`,
-
-// ── 8. JSON и API ───────────────────────────
-()=>`
-  <div class="lesson-tag">Модуль 4 · Урок 8</div>
-  <h1>JSON и работа с API</h1>
-  <div class="lesson-meta"><span class="meta-badge">Данные</span><span class="meta-badge">~25 мин</span></div>
-  ${pyBlock(`<p>JSON — универсальный язык данных в интернете. Любой API возвращает JSON. Любой конфиг хранится в JSON. Понимание JSON = умение работать с любым веб-сервисом.</p>`)}
-
-  ${pyBlock(`<h2>JSON — что это</h2>
-    ${pyCode('python',`import json
-
-# JSON — это словари и списки в текстовом формате
-# Выглядит так:
-json_text = """
-{
-  "project": "PM Academy",
-  "version": "2.0",
-  "team": [
-    {"name": "Иван", "role": "PM"},
-    {"name": "Анна", "role": "Dev"}
-  ],
-  "active": true,
-  "budget": null
-}
-"""
-
-# Парсинг: текст → Python-объект
-data = json.loads(json_text)
-print(data["project"])          # PM Academy
-print(data["team"][0]["name"])  # Иван
-
-# Сериализация: Python-объект → текст/файл
-config = {"api_key": "abc123", "debug": False}
-json_str = json.dumps(config, ensure_ascii=False, indent=2)
-print(json_str)
-
-# Сохранить JSON в файл
-with open("config.json", "w", encoding="utf-8") as f:
-    json.dump(config, f, ensure_ascii=False, indent=2)
-
-# Прочитать JSON из файла
-with open("config.json", "r", encoding="utf-8") as f:
-    loaded = json.load(f)`)}
-  `)}
-
-  ${pyBlock(`<h2>HTTP-запросы — библиотека requests</h2>
-    ${pyCode('bash',`pip3 install requests   # установить один раз`)}
-    ${pyCode('python',`import requests
-
-# GET запрос — получить данные
-response = requests.get("https://api.github.com/users/torvalds")
-
-print(response.status_code)  # 200 = успех, 404 = не найдено
-data = response.json()        # сразу парсит JSON
-
-print(data["name"])           # Linus Torvalds
-print(data["public_repos"])   # количество репозиториев
-
-# Параметры запроса
-params = {"q": "python pm automation", "per_page": 5}
-r = requests.get("https://api.github.com/search/repositories", params=params)
-results = r.json()
-for repo in results["items"]:
-    print(f"⭐ {repo['stargazers_count']} — {repo['full_name']}")`)}
-  `)}
-
-  ${pyBlock(`<h2>Публичные API для практики</h2>
-    ${pyTable(['API','URL','Что можно делать'],
-      [['GitHub','api.github.com','Данные о репозиториях, пользователях'],
-       ['OpenWeather','openweathermap.org/api','Погода (нужен бесплатный ключ)'],
-       ['ExchangeRate','exchangerate-api.com','Курсы валют бесплатно'],
-       ['JSONPlaceholder','jsonplaceholder.typicode.com','Тестовые данные без ключа'],
-       ['HH.ru','api.hh.ru','Вакансии, зарплаты (без ключа!']])}
-  `)}
-
-  ${pyBlock(`<h2>Реальный пример: мониторинг вакансий PM</h2>
-    ${pyCode('python',`import requests
-import json
-
-def get_pm_vacancies(city_id="1"):  # 1 = Москва
-    url = "https://api.hh.ru/vacancies"
-    params = {
-        "text": "product manager",
-        "area": city_id,
-        "per_page": 10,
-        "order_by": "salary_desc"
-    }
-    headers = {"User-Agent": "PMBot/1.0"}
-    r = requests.get(url, params=params, headers=headers)
-    return r.json()
-
-data = get_pm_vacancies()
-print(f"Найдено вакансий: {data['found']}\\n")
-
-for v in data["items"][:5]:
-    salary = v.get("salary")
-    if salary:
-        sal_str = f"{salary.get('from', '?')} — {salary.get('to', '?')} {salary.get('currency','')}"
-    else:
-        sal_str = "не указана"
-    print(f"💼 {v['name']}")
-    print(f"   🏢 {v['employer']['name']}")
-    print(f"   💰 {sal_str}\\n")`)}
-  `)}
-  ${pyNav(7,9)}
-`,
-
-// ── 9. Excel и pandas ────────────────────────
-()=>`
-  <div class="lesson-tag">Модуль 4 · Урок 9</div>
-  <h1>Excel и pandas</h1>
-  <div class="lesson-meta"><span class="meta-badge">Данные</span><span class="meta-badge">~30 мин</span></div>
-  ${pyBlock(`<p><strong>pandas</strong> — главная библиотека Python для работы с таблицами. Делает с данными то же что Excel, только быстрее, на больших объёмах и автоматически. PM использует pandas для обработки выгрузок из Jira, CRM, аналитики.</p>`)}
-
-  ${pyBlock(`<h2>Установка</h2>
-    ${pyCode('bash',`pip3 install pandas openpyxl
-# pandas — работа с таблицами
-# openpyxl — чтение/запись .xlsx файлов`)}
-  `)}
-
-  ${pyBlock(`<h2>Основы pandas — DataFrame</h2>
-    ${pyCode('python',`import pandas as pd
-
-# Создать таблицу из списка словарей
-data = [
-    {"task": "Дизайн",    "status": "done",        "points": 3,  "owner": "Анна"},
-    {"task": "API",       "status": "in_progress",  "points": 8,  "owner": "Борис"},
-    {"task": "Тесты",     "status": "done",         "points": 5,  "owner": "Виктор"},
-    {"task": "Деплой",    "status": "blocked",      "points": 2,  "owner": "Борис"},
-    {"task": "Документация","status":"todo",         "points": 3,  "owner": "Анна"},
-]
-
-df = pd.DataFrame(data)
-
-# Базовые операции
-print(df.head())          # первые 5 строк
-print(df.shape)           # (5, 4) — строки, колонки
-print(df.columns)         # список колонок
-print(df.dtypes)          # типы данных
-print(df.describe())      # статистика по числовым колонкам
-
-# Доступ к данным
-print(df["task"])         # колонка
-print(df[df["status"] == "done"])  # фильтрация
-print(df.sort_values("points", ascending=False))  # сортировка`)}
-  `)}
-
-  ${pyBlock(`<h2>Анализ данных</h2>
-    ${pyCode('python',`# Подсчёт по группам
-print(df["status"].value_counts())
-# done          2
-# in_progress   1
-# blocked       1
-# todo          1
-
-# Группировка + агрегация
-owner_stats = df.groupby("owner").agg(
-    tasks=("task", "count"),
-    total_points=("points", "sum"),
-    avg_points=("points", "mean")
-).reset_index()
-print(owner_stats)
-
-# Добавить вычисляемую колонку
-df["is_done"] = df["status"] == "done"
-df["priority"] = df["points"].apply(lambda p: "high" if p >= 5 else "low")
-
-# Итоговые метрики
-total_points = df["points"].sum()
-done_points = df[df["status"]=="done"]["points"].sum()
-velocity = round(done_points / total_points * 100, 1)
-print(f"Выполнено: {velocity}% story points")`)}
-  `)}
-
-  ${pyBlock(`<h2>Читаем и пишем Excel</h2>
-    ${pyCode('python',`import pandas as pd
-
-# Читаем Excel
-df = pd.read_excel("sprint_export.xlsx", sheet_name="Tasks")
-
-# Читаем CSV
-df = pd.read_csv("tasks.csv", encoding="utf-8")
-
-# Базовая обработка
-df.columns = df.columns.str.lower().str.strip()  # нормализуем заголовки
-df = df.dropna(subset=["task", "status"])        # удаляем пустые строки
-df["status"] = df["status"].str.lower().str.strip()
-
-# Создаём сводный отчёт
-summary = df.groupby("status")["points"].sum().reset_index()
-summary.columns = ["Статус", "Story Points"]
-
-# Сохраняем результат в Excel (несколько листов!)
-with pd.ExcelWriter("sprint_report.xlsx", engine="openpyxl") as writer:
-    df.to_excel(writer, sheet_name="Все задачи", index=False)
-    summary.to_excel(writer, sheet_name="Сводка", index=False)
-
-print("✅ Отчёт сохранён в sprint_report.xlsx")`)}
-  `)}
-  ${pyCall('tip','🚀','<strong>Лайфхак:</strong> попросите Claude: «Напиши pandas-скрипт который читает Excel с колонками [список], группирует по [поле] и сохраняет сводку в новый лист». Работает с первого раза в 90% случаев.')}
-  ${pyNav(8,10)}
-`,
-
-// ── 10. Telegram-бот ────────────────────────
-()=>`
-  <div class="lesson-tag">Модуль 5 · Урок 10</div>
-  <h1>Telegram-бот для PM</h1>
-  <div class="lesson-meta"><span class="meta-badge">Практика</span><span class="meta-badge">~35 мин</span></div>
-  ${pyBlock(`<p>Telegram-бот — один из самых полезных инструментов PM. Автоматические уведомления команде, статусы спринта, дейли-напоминания, ответы на частые вопросы — всё это реализуется за час кода.</p>`)}
-
-  ${pyBlock(`<h2>Шаг 1: Создать бота в Telegram</h2>
-    <div class="step-list">
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">1</div><div class="step-content">
-        <h4>Найдите @BotFather</h4>
-        <p>Откройте Telegram → поиск → @BotFather → /start</p>
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">2</div><div class="step-content">
-        <h4>Создайте бота</h4>
-        <p>Отправьте /newbot → придумайте имя (например «PM Team Bot») → придумайте username (например pmteam_demo_bot)</p>
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">3</div><div class="step-content">
-        <h4>Сохраните токен</h4>
-        <p>BotFather даст токен вида: <code style="color:#f59e0b">1234567890:AAFxxx...</code><br>
-        <strong style="color:#ff6b6b">Никому не передавайте токен — это пароль вашего бота!</strong></p>
-      </div></div>
-    </div>`)}
-
-  ${pyBlock(`<h2>Шаг 2: Установка и простой бот</h2>
-    ${pyCode('bash',`pip3 install python-telegram-bot`)}
-    ${pyCode('python',`# Создайте файл bot.py
-# ЗАМЕНИТЕ 'YOUR_TOKEN' на ваш токен от BotFather
-
-from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-
-TOKEN = "YOUR_TOKEN"  # ← вставьте сюда ваш токен
-
-# Обработчик команды /start
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    name = update.effective_user.first_name
-    await update.message.reply_text(
-        f"Привет, {name}! 👋\\n"
-        f"Я PM Bot — помогаю с управлением проектом.\\n\\n"
-        f"Команды:\\n"
-        f"/status — статус спринта\\n"
-        f"/standup — напомнить про стендап\\n"
-        f"/help — помощь"
-    )
-
-# Обработчик команды /status
-async def sprint_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # В реальном боте здесь можно читать из файла или API
-    status_text = (
-        "📊 *Спринт 12 — Статус*\\n\\n"
-        "✅ Дизайн главной — Анна\\n"
-        "🔄 API авторизации — Борис\\n"
-        "🔴 Тесты (блокер!) — Виктор\\n"
-        "⬜ Документация — Галина\\n\\n"
-        f"Готово: 1/4 задач"
-    )
-    await update.message.reply_text(status_text, parse_mode="Markdown")
-
-# Ответ на обычные сообщения
-async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
-    await update.message.reply_text(f"Получил: {text}. Используйте /help для списка команд.")
-
-# Запуск бота
-def main():
-    app = Application.builder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("status", sprint_status))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
-    print("Бот запущен! Найдите его в Telegram и напишите /start")
-    app.run_polling()
-
-if __name__ == "__main__":
-    main()`)}
-  `)}
-
-  ${pyBlock(`<h2>Шаг 3: Отправка уведомлений (push)</h2>
-    ${pyCode('python',`import requests
-
-# Узнать свой chat_id: напишите боту /start,
-# затем откройте: https://api.telegram.org/bot{TOKEN}/getUpdates
-# Найдите "chat":{"id": XXXXXXXX}
-
-def send_message(token, chat_id, text):
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    payload = {
-        "chat_id": chat_id,
-        "text": text,
-        "parse_mode": "Markdown"
-    }
-    r = requests.post(url, json=payload)
-    return r.json()
-
-# Использование — например, после обработки данных
-TOKEN = "YOUR_TOKEN"
-CHAT_ID = "YOUR_CHAT_ID"  # ваш chat_id
-
-send_message(TOKEN, CHAT_ID,
-    "🔔 *Ежедневный отчёт*\\n"
-    "✅ Завершено задач: 3\\n"
-    "⚠️ Блокеров: 1\\n"
-    "📅 До конца спринта: 2 дня"
-)`)}
-  `)}
-
-  ${pyCall('tip','💡','<strong>Идеи для PM-бота:</strong> утреннее напоминание о стендапе, еженедельный отчёт по спринту из CSV, уведомление о новых задачах с высоким приоритетом, команда /risk — список актуальных рисков.')}
-  ${pyNav(9,11)}
-`,
-
-// ── 11. Автоматизация и планировщик ─────────
-()=>`
-  <div class="lesson-tag">Модуль 5 · Урок 11</div>
-  <h1>Автоматизация и расписание</h1>
-  <div class="lesson-meta"><span class="meta-badge">Практика</span><span class="meta-badge">~25 мин</span></div>
-  ${pyBlock(`<p>Автоматизация — главная суперсила Python для PM. Скрипт который запускается сам в нужное время и делает рутинную работу — это то, что освобождает часы в неделю.</p>`)}
-
-  ${pyBlock(`<h2>os и pathlib — работа с файловой системой</h2>
-    ${pyCode('python',`import os
-from pathlib import Path
-
-# Текущая директория
-print(os.getcwd())  # где сейчас
-
-# Создать папку (если нет)
-Path("reports/2025").mkdir(parents=True, exist_ok=True)
-
-# Список файлов в папке
-for file in Path(".").iterdir():
-    if file.suffix == ".csv":
-        print(f"CSV файл: {file.name} ({file.stat().st_size} байт)")
-
-# Построить путь (работает на Windows и Mac одинаково)
-report_path = Path("reports") / "2025" / "sprint_12.txt"
-print(report_path)  # reports/2025/sprint_12.txt
-
-# Проверить существование
-if report_path.exists():
-    print("Файл уже есть")
-else:
-    report_path.write_text("Отчёт по спринту 12", encoding="utf-8")`)}
-  `)}
-
-  ${pyBlock(`<h2>schedule — запуск по расписанию</h2>
-    ${pyCode('bash',`pip3 install schedule`)}
-    ${pyCode('python',`import schedule
-import time
-from datetime import datetime
-
-def daily_standup_reminder():
-    now = datetime.now().strftime("%H:%M")
-    print(f"[{now}] 🔔 Напоминание: стендап через 15 минут!")
-    # Здесь можно добавить отправку в Telegram
-
-def weekly_report():
-    print("📊 Генерирую еженедельный отчёт...")
-    # Здесь вызов функции создания отчёта
-
-def check_deadlines():
-    print("⏰ Проверяю дедлайны...")
-    # Здесь логика проверки задач
-
-# Расписание
-schedule.every().day.at("09:45").do(daily_standup_reminder)
-schedule.every().monday.at("08:00").do(weekly_report)
-schedule.every(30).minutes.do(check_deadlines)
-
-print("⚡ Планировщик запущен. Ctrl+C для остановки.")
-while True:
-    schedule.run_pending()
-    time.sleep(60)  # проверяем каждую минуту`)}
-  `)}
-
-  ${pyBlock(`<h2>subprocess — запуск системных команд</h2>
-    ${pyCode('python',`import subprocess
-
-# Выполнить команду и получить результат
-result = subprocess.run(
-    ["git", "log", "--oneline", "-5"],  # последние 5 коммитов
-    capture_output=True, text=True
-)
-print(result.stdout)
-
-# Открыть файл в системном приложении
-import os, sys
-if sys.platform == "darwin":      # macOS
-    os.system("open report.xlsx")
-elif sys.platform == "win32":     # Windows
-    os.system("start report.xlsx")`)}
-  `)}
-
-  ${pyBlock(`<h2>Практика: полный автоматизированный отчёт</h2>
-    ${pyCode('python',`import csv
-import json
-from pathlib import Path
-from datetime import datetime
-
-def generate_daily_report(tasks_file, output_dir="reports"):
-    # Создаём папку если нет
-    Path(output_dir).mkdir(exist_ok=True)
-
-    tasks = []
-    with open(tasks_file, encoding="utf-8") as f:
-        tasks = list(csv.DictReader(f))
-
-    # Подсчёт статусов
-    stats = {}
-    for t in tasks:
-        s = t["status"]
-        stats[s] = stats.get(s, 0) + 1
-
-    blocked = [t["task"] for t in tasks if t["status"] == "blocked"]
-
-    # Формируем отчёт
-    date_str = datetime.now().strftime("%Y-%m-%d")
-    report = [
-        f"ЕЖЕДНЕВНЫЙ ОТЧЁТ — {date_str}",
-        "=" * 40,
-        ""
-    ]
-    for status, count in sorted(stats.items()):
-        report.append(f"  {status}: {count} задач")
-    if blocked:
-        report.append(f"\\n🔴 БЛОКЕРЫ:")
-        for b in blocked:
-            report.append(f"  • {b}")
-
-    # Сохраняем
-    output_path = Path(output_dir) / f"report_{date_str}.txt"
-    output_path.write_text("\\n".join(report), encoding="utf-8")
-    print(f"✅ Отчёт сохранён: {output_path}")
-    return "\\n".join(report)
-
-print(generate_daily_report("tasks.csv"))`)}
-  `)}
-  ${pyNav(10,12)}
-`,
-
-// ── 12. Vibe coding с Claude ─────────────────
-()=>`
-  <div class="lesson-tag">Модуль 6 · Урок 12</div>
-  <h1>Vibe Coding: искусство работы с Claude</h1>
-  <div class="lesson-meta"><span class="meta-badge">AI-разработка</span><span class="meta-badge">~30 мин</span></div>
-  ${pyBlock(`<p><strong>Vibe Coding</strong> — это когда вы описываете что хотите, Claude пишет код, вы запускаете, правите запрос, снова запускаете. Цикл занимает минуты, а не часы. Но есть приёмы которые делают этот процесс в 5 раз эффективнее.</p>`)}
-
-  ${pyBlock(`<h2>Уровни детализации промпта</h2>
-    ${pyTable(['Уровень','Промпт','Результат'],
-      [['❌ Плохо','Напиши скрипт для отчётов','Общий шаблон, нужно много правок'],
-       ['⚠️ Средне','Напиши скрипт который читает CSV и считает статистику','Рабочий, но не под ваши нужды'],
-       ['✅ Хорошо','[Полный шаблон с контекстом]','Рабочий код с первой попытки'],
-       ['🚀 Отлично','[Шаблон + пример данных + пример вывода]','Точное попадание']])}
-  `)}
-
-  ${pyBlock(`<h2>Шаблоны промптов для разных задач</h2>
-    <h3>📊 Обработка данных</h3>
-    <div style="background:var(--bg3);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:16px;margin:12px 0;font-size:13px;color:var(--text2);line-height:1.9">
-      Напиши Python-скрипт (Python 3, только стандартные библиотеки + pandas).<br>
-      <strong style="color:var(--text)">Входные данные:</strong> файл tasks.csv с колонками: id, task, status (done/in_progress/blocked/todo), owner, story_points, deadline (формат YYYY-MM-DD)<br>
-      <strong style="color:var(--text)">Что нужно:</strong><br>
-      1. Прочитать файл<br>
-      2. Посчитать задачи и story points по каждому статусу<br>
-      3. Найти просроченные задачи (deadline < сегодня и status != done)<br>
-      4. Сохранить результат в report.xlsx (два листа: Статистика и Просроченные)<br>
-      <strong style="color:var(--text)">Добавить:</strong> print-прогресс по ходу работы, try/except для обработки ошибок
-    </div>
-    <h3>🤖 Telegram-бот</h3>
-    <div style="background:var(--bg3);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:16px;margin:12px 0;font-size:13px;color:var(--text2);line-height:1.9">
-      Напиши Telegram-бота на python-telegram-bot v20+ (async).<br>
-      <strong style="color:var(--text)">Функции:</strong><br>
-      /start — приветствие с именем пользователя<br>
-      /status — читает файл sprint.json и отправляет форматированный статус<br>
-      /add [название задачи] — добавляет задачу в sprint.json со статусом todo<br>
-      /done [номер] — помечает задачу как done<br>
-      <strong style="color:var(--text)">Файл sprint.json:</strong> список задач {"id", "name", "status", "added_by"}<br>
-      Добавить обработку ошибок и понятные сообщения пользователю
-    </div>`)}
-
-  ${pyBlock(`<h2>Итеративное улучшение кода</h2>
-    <div class="step-list">
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">1</div><div class="step-content">
-        <h4>Запросить базовую версию</h4>
-        <p>«Напиши скрипт [описание]. Сначала простая рабочая версия без оптимизаций.»</p>
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">2</div><div class="step-content">
-        <h4>Запустить и проверить</h4>
-        <p>Если ошибка — скопировать весь traceback → «Получаю ошибку: [текст]. Код: [код]»</p>
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">3</div><div class="step-content">
-        <h4>Добавить функции итерациями</h4>
-        <p>«Добавь к этому коду: [новая функция]. Остальное не трогай.»</p>
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">4</div><div class="step-content">
-        <h4>Попросить объяснение</h4>
-        <p>«Объясни эту часть кода построчно. Почему используется именно такой подход?»</p>
-      </div></div>
-      <div class="step-item"><div class="step-num" style="color:#f59e0b">5</div><div class="step-content">
-        <h4>Попросить рефакторинг</h4>
-        <p>«Этот код работает. Сделай его чище: добавь комментарии, вынеси константы в начало.»</p>
-      </div></div>
-    </div>`)}
-
-  ${pyBlock(`<h2>Мощные мета-промпты</h2>
-    ${pyTable(['Задача','Промпт'],
-      [['Понять чужой код','Объясни этот Python-код шаг за шагом, как будто я не программист: [код]'],
-       ['Найти ошибку','Код должен [что делать], но делает [что происходит]. Найди проблему: [код]'],
-       ['Оптимизировать','Этот код работает медленно на больших CSV. Как ускорить без изменения логики?'],
-       ['Добавить функцию','К этому коду добавь функцию которая [описание]. Покажи только изменения.'],
-       ['Написать тест','Напиши простой тест для функции [название] который проверяет [сценарии]'],
-       ['Переписать чище','Этот код работает. Перепиши его чище используя best practices Python.']])}
-  `)}
-  ${pyCall('warning','⚠️','<strong>Главная ошибка новичка:</strong> скопировать код от Claude, не прочитать, запустить. Всегда читайте код перед запуском — даже 2 минуты понимания лучше чем часы дебага слепого кода.')}
-  ${pyNav(11,13)}
-`,
-
-// ── 13. Виртуальные окружения и пакеты ──────
-()=>`
-  <div class="lesson-tag">Модуль 6 · Урок 13</div>
-  <h1>Виртуальные окружения и пакеты</h1>
-  <div class="lesson-meta"><span class="meta-badge">Инфраструктура</span><span class="meta-badge">~20 мин</span></div>
-  ${pyBlock(`<p>Когда у вас больше одного проекта — нужны виртуальные окружения. Они изолируют зависимости: проект А использует pandas 1.x, проект Б — pandas 2.x, и они не конфликтуют.</p>`)}
-
-  ${pyBlock(`<h2>Виртуальное окружение (venv)</h2>
-    ${pyCode('bash',`# 1. Создать окружение в папке проекта
-python3 -m venv venv   # создаст папку venv/
-
-# 2. Активировать
-source venv/bin/activate    # macOS/Linux
-venv\\Scripts\\activate       # Windows
-
-# Теперь видите (venv) в начале строки терминала
-# Все pip install устанавливаются только в это окружение
-
-# 3. Установить зависимости
-pip install requests pandas openpyxl python-telegram-bot
-
-# 4. Сохранить список зависимостей
-pip freeze > requirements.txt
-
-# 5. Деактивировать когда закончили
-deactivate
-
-# Позже: восстановить всё из requirements.txt
-pip install -r requirements.txt`)}
-  `)}
-
-  ${pyBlock(`<h2>requirements.txt — стандарт для всех проектов</h2>
-    ${pyCode('text',`# requirements.txt
-requests==2.31.0
-pandas==2.1.4
-openpyxl==3.1.2
-python-telegram-bot==20.7
-schedule==1.2.1`)}
-    ${pyCall('tip','📦','Всегда создавайте requirements.txt. Когда попросите Claude написать код с зависимостями — он сам укажет что нужно установить. Или спросите: «Напиши requirements.txt для этого скрипта».')}
-  `)}
-
-  ${pyBlock(`<h2>Структура проекта — как организовать код</h2>
-    ${pyCode('text',`pm-bot/                     # папка проекта
-├── venv/                   # виртуальное окружение (не трогать, не коммитить)
-├── data/                   # входные данные
-│   └── tasks.csv
-├── reports/                # выходные отчёты
-├── src/                    # исходный код
-│   ├── bot.py              # Telegram-бот
-│   ├── analyzer.py         # анализ данных
-│   └── reporter.py         # генерация отчётов
-├── config.json             # настройки (без секретов!)
-├── .env                    # секреты: токены, пароли (не коммитить!)
-├── .gitignore              # что не загружать в git
-├── requirements.txt        # зависимости
-└── README.md               # описание проекта`)}
-  `)}
-
-  ${pyBlock(`<h2>.env — безопасное хранение секретов</h2>
-    ${pyCode('bash',`pip3 install python-dotenv`)}
-    ${pyCode('text',`# .env файл (НИКОГДА не добавляйте в git!)
-TELEGRAM_TOKEN=1234567890:AAFxxx
-JIRA_API_KEY=your_jira_key
-NOTION_TOKEN=secret_xxx`)}
-    ${pyCode('python',`# В коде загружаем так:
-from dotenv import load_dotenv
-import os
-
-load_dotenv()  # читает .env файл
-
-token = os.getenv("TELEGRAM_TOKEN")
-jira_key = os.getenv("JIRA_API_KEY")`)}
-    ${pyCode('text',`# .gitignore — добавьте эти строки
-venv/
-.env
-__pycache__/
-*.pyc
-reports/
-*.xlsx`)}
-  `)}
-  ${pyNav(12,14)}
-`,
-
-// ── 14. Streamlit — дашборды ─────────────────
-()=>`
-  <div class="lesson-tag">Модуль 6 · Урок 14</div>
-  <h1>Streamlit — дашборды за 30 минут</h1>
-  <div class="lesson-meta"><span class="meta-badge">Веб-приложения</span><span class="meta-badge">~30 мин</span></div>
-  ${pyBlock(`<p><strong>Streamlit</strong> — библиотека которая превращает Python-скрипт в веб-приложение. Никакого HTML, CSS, JS — просто Python. Идеально для PM: дашборд спринта, мониторинг метрик, инструменты для команды.</p>`)}
-
-  ${pyBlock(`<h2>Установка и первый запуск</h2>
-    ${pyCode('bash',`pip3 install streamlit`)}
-    ${pyCode('python',`# Создайте dashboard.py
-import streamlit as st
-
-st.title("📊 PM Dashboard")
-st.write("Добро пожаловать в дашборд спринта!")`)}
-    ${pyCode('bash',`# Запуск (не python3, а streamlit run!)
-streamlit run dashboard.py
-# Откроется браузер на http://localhost:8501`)}
-  `)}
-
-  ${pyBlock(`<h2>Компоненты Streamlit</h2>
-    ${pyCode('python',`import streamlit as st
-import pandas as pd
-
-# Заголовки и текст
-st.title("Дашборд спринта")
-st.header("Общая статистика")
-st.subheader("По исполнителям")
-st.write("Любой текст или объект")
-st.markdown("**Жирный**, *курсив*, 🎯 эмодзи")
-
-# Метрики — красивые карточки
-col1, col2, col3, col4 = st.columns(4)
-col1.metric("Всего задач", 24)
-col2.metric("Выполнено", 16, delta="+3 за неделю")
-col3.metric("Блокеры", 2, delta="-1", delta_color="inverse")
-col4.metric("Velocity", "68%", delta="+12%")
-
-# Таблица
-data = pd.DataFrame({
-    "Задача": ["Дизайн", "API", "Тесты"],
-    "Статус": ["✅ Done", "🔄 Progress", "🔴 Blocked"],
-    "Исполнитель": ["Анна", "Борис", "Виктор"]
-})
-st.dataframe(data, use_container_width=True)
-
-# Графики (встроенные)
-import random
-chart_data = pd.DataFrame({"Задачи": [random.randint(3,10) for _ in range(14)]})
-st.line_chart(chart_data, color="#4fffb0")`)}
-  `)}
-
-  ${pyBlock(`<h2>Полный дашборд спринта</h2>
-    ${pyCode('python',`import streamlit as st
-import pandas as pd
-import json
-from datetime import datetime
-
-st.set_page_config(page_title="Sprint Dashboard", page_icon="📋", layout="wide")
-
-# Загрузка данных с возможностью обновить
-st.title("📋 Sprint Dashboard")
-
-uploaded = st.file_uploader("Загрузите CSV из Jira/Trello", type="csv")
-if uploaded:
-    df = pd.read_csv(uploaded)
-else:
-    # Демо-данные
-    df = pd.DataFrame([
-        {"task":"Дизайн","status":"done","owner":"Анна","points":3},
-        {"task":"API","status":"in_progress","owner":"Борис","points":8},
-        {"task":"Тесты","status":"done","owner":"Виктор","points":5},
-        {"task":"Деплой","status":"blocked","owner":"Борис","points":2},
-        {"task":"Документация","status":"todo","owner":"Анна","points":3},
-    ])
-    st.info("Показаны демо-данные. Загрузите свой CSV выше.")
-
-# Метрики
-total = len(df)
-done = len(df[df["status"]=="done"])
-blocked = len(df[df["status"]=="blocked"])
-points_done = df[df["status"]=="done"]["points"].sum() if "points" in df.columns else 0
-points_total = df["points"].sum() if "points" in df.columns else 0
-
-c1,c2,c3,c4 = st.columns(4)
-c1.metric("Всего задач", total)
-c2.metric("Выполнено", f"{done}/{total}", f"{round(done/total*100)}%")
-c3.metric("Блокеры", blocked, delta_color="inverse")
-c4.metric("Story Points", f"{points_done}/{points_total}")
-
-# Таблица с фильтром
-st.subheader("Задачи")
-status_filter = st.multiselect("Фильтр по статусу",
-    options=df["status"].unique(), default=df["status"].unique())
-filtered = df[df["status"].isin(status_filter)]
-st.dataframe(filtered, use_container_width=True)
-
-# Разбивка по исполнителям
-if "owner" in df.columns:
-    st.subheader("Нагрузка по команде")
-    owner_stats = df.groupby("owner").size().reset_index(name="задач")
-    st.bar_chart(owner_stats.set_index("owner"))`)}
-  `)}
-  ${pyCall('tip','🚀','<strong>Деплой дашборда:</strong> зарегистрируйтесь на share.streamlit.io → подключите GitHub-репозиторий → дашборд получает публичную ссылку. Бесплатно!')}
-  ${pyNav(13,15)}
-`,
-
-// ── 15. Реальные проекты ────────────────────
-()=>`
-  <div class="lesson-tag">Модуль 7 · Урок 15</div>
-  <h1>Реальные проекты для PM</h1>
-  <div class="lesson-meta"><span class="meta-badge">Практика</span><span class="meta-badge">~40 мин</span></div>
-  ${pyBlock(`<p>Три готовых проекта которые можно запустить прямо сейчас. Каждый решает реальную задачу PM. Используйте их как основу — попросите Claude адаптировать под ваш контекст.</p>`)}
-
-  ${pyBlock(`<h2>Проект 1: Weekly Report Bot</h2>
-    <p>Каждый понедельник отправляет в Telegram сводку по задачам из CSV.</p>
-    ${pyCode('python',`# weekly_report_bot.py
-import csv, schedule, time, requests
-from datetime import datetime
-from pathlib import Path
-
-TOKEN = "YOUR_TOKEN"
-CHAT_ID = "YOUR_CHAT_ID"
-TASKS_FILE = "tasks.csv"
-
-def load_tasks():
-    if not Path(TASKS_FILE).exists():
-        return []
-    with open(TASKS_FILE, encoding="utf-8") as f:
-        return list(csv.DictReader(f))
-
-def generate_weekly_report():
-    tasks = load_tasks()
-    if not tasks:
-        return "📊 Нет данных о задачах"
-
-    stats = {}
-    for t in tasks:
-        s = t.get("status", "unknown")
-        stats[s] = stats.get(s, 0) + 1
-
-    week = datetime.now().strftime("Неделя %W, %Y")
-    lines = [f"📊 *Еженедельный отчёт — {week}*", ""]
-    emoji_map = {"done":"✅","in_progress":"🔄","blocked":"🔴","todo":"⬜"}
-    for status, count in sorted(stats.items()):
-        lines.append(f"{emoji_map.get(status,'❓')} {status}: {count}")
-    lines.append(f"\\n📌 Всего задач: {len(tasks)}")
-
-    blocked = [t.get("task","?") for t in tasks if t.get("status")=="blocked"]
-    if blocked:
-        lines.append(f"\\n🚨 Блокеры ({len(blocked)}):")
-        for b in blocked[:3]:
-            lines.append(f"  • {b}")
-    return "\\n".join(lines)
-
-def send_report():
-    text = generate_weekly_report()
-    requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage",
-        json={"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"})
-    print(f"[{datetime.now():%H:%M}] Отчёт отправлен")
-
-schedule.every().monday.at("09:00").do(send_report)
-# Для теста: schedule.every(1).minutes.do(send_report)
-
-print("🤖 Бот запущен")
-while True:
-    schedule.run_pending()
-    time.sleep(60)`)}
-  `)}
-
-  ${pyBlock(`<h2>Проект 2: Jira / Trello CSV Analyzer</h2>
-    <p>Анализирует экспорт из Jira/Trello и создаёт красивый Excel-отчёт.</p>
-    ${pyCode('python',`# sprint_analyzer.py
-import pandas as pd
-from datetime import datetime, date
-
-def analyze_sprint(input_file, output_file=None):
-    df = pd.read_csv(input_file, encoding="utf-8")
-    df.columns = df.columns.str.lower().str.strip().str.replace(" ","_")
-
-    # Нормализуем статусы
-    status_map = {
-        "done":"done","closed":"done","resolved":"done",
-        "in progress":"in_progress","in_progress":"in_progress",
-        "to do":"todo","todo":"todo","open":"todo",
-        "blocked":"blocked","impediment":"blocked"
-    }
-    df["status"] = df.get("status", pd.Series(["todo"]*len(df))).str.lower().map(
-        lambda x: next((v for k,v in status_map.items() if k in str(x).lower()), "other")
-    )
-
-    # Метрики
-    by_status = df.groupby("status").size().reset_index(name="count")
-    by_owner = df.groupby(df.columns[df.columns.str.contains("owner|assignee|assigned")].tolist()[0] if any(df.columns.str.contains("owner|assignee")) else "status").size().reset_index(name="tasks")
-
-    # Дата
-    today = date.today().strftime("%Y-%m-%d")
-    if output_file is None:
-        output_file = f"sprint_report_{today}.xlsx"
-
-    with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
-        df.to_excel(writer, sheet_name="Все задачи", index=False)
-        by_status.to_excel(writer, sheet_name="По статусам", index=False)
-        by_owner.to_excel(writer, sheet_name="По исполнителям", index=False)
-
-    print(f"✅ Отчёт: {output_file}")
-    print(f"\\n📊 Статистика:")
-    for _, row in by_status.iterrows():
-        print(f"  {row['status']}: {row['count']}")
-
-if __name__ == "__main__":
-    import sys
-    file = sys.argv[1] if len(sys.argv) > 1 else "tasks.csv"
-    analyze_sprint(file)`)}
-  `)}
-
-  ${pyBlock(`<h2>Проект 3: Meeting Notes Processor</h2>
-    <p>Обрабатывает текстовые заметки митинга и извлекает action items.</p>
-    ${pyCode('python',`# meeting_processor.py
-import re
-from datetime import datetime
-from pathlib import Path
-
-def extract_action_items(notes_text):
-    """Ищет строки с маркерами action items"""
-    patterns = [
-        r"(?:action|todo|задача|нужно|сделать)[:\s]+(.+)",
-        r"@(\w+)\s+(.+)",           # @Имя задача
-        r"(?:AP|АП)[\s:]+(.+)",     # AP: задача
-    ]
-    items = []
-    for line in notes_text.split("\\n"):
-        line = line.strip()
-        for pattern in patterns:
-            match = re.search(pattern, line, re.IGNORECASE)
-            if match:
-                items.append({
-                    "text": match.group(match.lastindex),
-                    "line": line,
-                    "pattern": pattern
-                })
-                break
-    return items
-
-def process_meeting_notes(input_file):
-    text = Path(input_file).read_text(encoding="utf-8")
-    items = extract_action_items(text)
-
-    date_str = datetime.now().strftime("%Y-%m-%d_%H-%M")
-    output = Path(f"action_items_{date_str}.txt")
-
-    lines = [f"ACTION ITEMS — {datetime.now():%d.%m.%Y}", "="*40, ""]
-    for i, item in enumerate(items, 1):
-        lines.append(f"{i}. {item['text']}")
-    lines.extend(["", f"Всего: {len(items)} action items"])
-
-    output.write_text("\\n".join(lines), encoding="utf-8")
-    print(f"✅ {len(items)} action items → {output}")
-    for i, item in enumerate(items, 1):
-        print(f"  {i}. {item['text']}")
-
-process_meeting_notes("meeting_notes.txt")`)}
-  `)}
-  ${pyNav(14,16)}
-`,
-
-// ── 16. Шпаргалка Python ────────────────────
-()=>`
-  <div class="lesson-tag">Финал</div>
-  <h1>🐍 Шпаргалка Python для PM</h1>
-  <div class="lesson-meta"><span class="meta-badge">Справочник</span><span class="meta-badge">Всегда под рукой</span></div>
-
-  ${pyBlock(`<h2>⚡ Быстрый старт — что делать в первый день</h2>
-    ${pyCode('bash',`# macOS
-brew install python
-brew install --cask visual-studio-code
-# VS Code → Extensions → Python (Microsoft)
-
-# Windows: python.org → Download → ✅ Add to PATH
-# VS Code: code.visualstudio.com → Extensions → Python
-
-# Создать первый скрипт:
-echo 'print("Hello PM!")' > hello.py
-python3 hello.py  # macOS
-python hello.py   # Windows`)}
-  `)}
-
-  ${pyBlock(`<h2>📦 Ключевые библиотеки</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card">
-        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">📊 Данные</div>
-        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.9">pip install pandas        # таблицы
-pip install openpyxl      # Excel
-pip install xlrd          # .xls
-pip install matplotlib    # графики
-pip install plotly        # графики интерактивные</pre>
-      </div>
-      <div class="cheat-card">
-        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">🌐 Сеть и API</div>
-        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.9">pip install requests      # HTTP-запросы
-pip install httpx         # async HTTP
-pip install beautifulsoup4 # парсинг HTML
-pip install python-dotenv # .env файлы</pre>
-      </div>
-      <div class="cheat-card">
-        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">🤖 Боты и автоматизация</div>
-        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.9">pip install python-telegram-bot
-pip install schedule      # планировщик
-pip install pyautogui     # автокликер
-pip install selenium      # браузер-автоматизация</pre>
-      </div>
-      <div class="cheat-card">
-        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">🖥️ Веб-приложения</div>
-        <pre style="font-size:11.5px;color:var(--text2);padding:12px 14px;line-height:1.9">pip install streamlit     # дашборды за 30 мин
-pip install flask         # веб-сервер (лёгкий)
-pip install fastapi       # REST API
-pip install gradio        # AI-демо быстро</pre>
-      </div>
-    </div>`)}
-
-  ${pyBlock(`<h2>🔑 Синтаксис в одном взгляде</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card">
-        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">Переменные и типы</div>
-        <pre style="font-size:11px;color:var(--text2);padding:12px 14px;line-height:1.8">x = 42          # int
-y = 3.14        # float
-s = "hello"     # str
-b = True        # bool
-n = None        # NoneType
-lst = [1,2,3]   # list
-dct = {"k":"v"} # dict
-# f-строка:
-f"Привет {name}!"</pre>
-      </div>
-      <div class="cheat-card">
-        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">Условия и циклы</div>
-        <pre style="font-size:11px;color:var(--text2);padding:12px 14px;line-height:1.8">if x > 0:
-    print("плюс")
-elif x == 0:
-    print("ноль")
-else:
-    print("минус")
-
-for item in lst:
-    print(item)
-
-while x > 0:
-    x -= 1</pre>
-      </div>
-      <div class="cheat-card">
-        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">Функции и классы</div>
-        <pre style="font-size:11px;color:var(--text2);padding:12px 14px;line-height:1.8">def greet(name, age=0):
-    return f"{name}, {age}"
-
-# вызов:
-result = greet("Иван", 28)
-
-# lambda:
-fn = lambda x: x * 2
-
-# try/except:
-try:
-    x = int("abc")
-except ValueError as e:
-    print(f"Ошибка: {e}")</pre>
-      </div>
-      <div class="cheat-card">
-        <div class="cheat-card-header" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#f59e0b">Файлы и JSON</div>
-        <pre style="font-size:11px;color:var(--text2);padding:12px 14px;line-height:1.8">import json, csv
-
-# Читать файл:
-with open("f.txt","r") as f:
-    text = f.read()
-
-# Писать файл:
-with open("f.txt","w") as f:
-    f.write("текст")
-
-# JSON:
-data = json.loads(text)
-text = json.dumps(data)
-
-# CSV:
-reader = csv.DictReader(f)</pre>
-      </div>
-    </div>`)}
-
-  ${pyBlock(`<h2>🤖 Промпты для Claude — копируйте и используйте</h2>
-    ${pyTable(['Задача','Промпт-шаблон'],
-      [['Новый скрипт','Напиши Python-скрипт: [задача]. Вход: [данные]. Результат: [что нужно]. Библиотеки: только [список]. Добавь комментарии.'],
-       ['Разобрать ошибку','Получаю ошибку при запуске Python-скрипта. Ошибка: [traceback]. Код: [код]. Что не так и как исправить?'],
-       ['Добавить функцию','К этому Python-коду добавь: [функция]. Код: [код]. Покажи только изменённые части.'],
-       ['Объяснить код','Объясни этот Python-код построчно, как будто я не программист: [код]'],
-       ['Оптимизировать','Этот код работает, но медленно на файлах >10000 строк. Оптимизируй: [код]'],
-       ['Написать бота','Напиши Telegram-бота (python-telegram-bot v20, async). Команды: /[список]. Данные хранить в [JSON/CSV]. Добавь обработку ошибок.']])}
-  `)}
-
-  ${pyCall('tip','🏆','<strong>Напутствие:</strong> Python + Claude — это мощный тандем. Не бойтесь экспериментировать. Сломанный скрипт — это не провал, это урок. Каждый раз когда вы чините ошибку, вы становитесь лучше. Начните с малого: автоматизируйте одну рутинную задачу этой недели.')}
-  ${pyNav(15, undefined, true)}
-`
-];
-
-function showPyLesson(idx) {
-  currentPyLesson = idx;
-  document.querySelectorAll('#py-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
-  const navEl = document.getElementById('py-nav-' + idx);
-  if (navEl) {
-    navEl.classList.add('active');
-    if (pyCompleted.has(idx) && !navEl.querySelector('.check-badge')) {
-      const badge = document.createElement('span');
-      badge.className = 'check-badge';
-      badge.style.background = '#f59e0b';
-      badge.textContent = '✓';
-      navEl.appendChild(badge);
-    }
-  }
-  const main = document.getElementById('py-main-content');
-  main.innerHTML = pyLessons[idx]();
-  main.scrollTo(0, 0);
-  updatePyProgress();
-  setTimeout(wrapTables, 50);
-  closeSidebar();
-}
-
-function pyCompleteAndNav(targetIdx) {
-  pyCompleted.add(currentPyLesson);
-  const navEl = document.getElementById('py-nav-' + currentPyLesson);
-  if (navEl && !navEl.querySelector('.check-badge')) {
-    const badge = document.createElement('span');
-    badge.className = 'check-badge';
-    badge.style.background = '#f59e0b';
-    badge.textContent = '✓';
-    navEl.appendChild(badge);
-    navEl.classList.add('completed');
-  }
-  showPyLesson(targetIdx);
-}
-
-function pyCompleteFinal() {
-  pyCompleted.add(currentPyLesson);
-  updatePyProgress();
-  const navEl = document.getElementById('py-nav-' + currentPyLesson);
-  if (navEl && !navEl.querySelector('.check-badge')) {
-    const badge = document.createElement('span');
-    badge.className = 'check-badge';
-    badge.style.background = '#f59e0b';
-    badge.textContent = '✓';
-    navEl.appendChild(badge);
-    navEl.classList.add('completed');
-  }
-  document.getElementById('py-main-content').insertAdjacentHTML('beforeend', `
-    <div class="callout tip" style="margin-top:24px;animation:fadeUp 0.5s ease">
-      <span class="callout-icon">🎉</span>
-      <div><strong>Курс Python завершён!</strong> Вы знаете всё необходимое для lайфкодинга с Claude. Создайте свой первый реальный проект на этой неделе!</div>
-    </div>
-  `);
-}
-
-function updatePyProgress() {
-  const done = pyCompleted.size;
-  const pct = Math.round((done / PY_TOTAL) * 100);
-  const el = document.getElementById('py-progress-text');
-  if (el) el.textContent = `${done} / ${PY_TOTAL}`;
-  const fill = document.getElementById('py-progress-fill');
-  if (fill) fill.style.width = pct + '%';
-  updateDrawerProgress();
-}
 
 // ══════════════════════════════════════════════════════
 // SUPABASE AUTH & PROFILE
 // ══════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════
+// VIBE CODING COURSE
+// ══════════════════════════════════════════════════════
+const vcCompleted = new Set();
+let currentVcLesson = 0;
+const VC_TOTAL = 20;
+
+const vcB  = (h) => `<div class="content-block">${h}</div>`;
+const vcC  = (t,i,h) => `<div class="callout ${t}"><span class="callout-icon">${i}</span><div>${h}</div></div>`;
+const vcTb = (cols,rows) => `<div class="db-table-wrap"><table class="db-table"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(d=>`<td>${d}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const vcCode = (lang,code) => `<div class="code-wrap"><div class="code-header"><span>${lang}</span><span class="code-lang">${lang.toUpperCase()}</span></div><pre>${code}</pre></div>`;
+const vcNav = (prev,next,isLast=false) => `<div class="lesson-nav" style="display:flex;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid var(--border)">
+  ${prev!==undefined?`<button class="btn-nav btn-prev" onclick="vcCompleteAndNav(${prev})">← Назад</button>`:''}
+  ${!isLast&&next!==undefined?`<button class="btn-nav btn-next" style="background:linear-gradient(135deg,#ec4899,#be185d);margin-left:auto" onclick="vcCompleteAndNav(${next})">Далее →</button>`:''}
+  ${isLast?`<button class="btn-complete" style="background:linear-gradient(135deg,#ec4899,#be185d);margin-left:auto" onclick="vcCompleteFinal()">✓ Завершить курс</button>`:''}
+</div>`;
+
+const vcLessons = [
+
+// ── 0. Введение ──────────────────────────────
+()=>`
+  <div class="lesson-tag">PM Academy · Vibe Coding</div>
+  <h1 class="lesson-title">Добро пожаловать в Vibe Coding 🤖</h1>
+  ${vcB(`<p>Этот курс создан для одной цели: чтобы ты — PM без технического бэкграунда — научился самостоятельно создавать и публиковать рабочие веб-приложения с помощью AI.</p>
+  <p>Не "понять что такое код". Не "посмотреть как программисты работают". А <strong>самому создать продукт</strong> — от идеи до продакшна.</p>`)}
+  ${vcC('tip','🎯',`<strong>Что ты получишь после курса:</strong><br>Работающее веб-приложение опубликованное в интернете. Навык промптинга который даёт предсказуемый результат. Архитектурное мышление чтобы не застревать.`)}
+  ${vcB(`<h3>Три кита курса</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:16px">
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">⚙️</div>
+      <div style="font-weight:700;color:var(--text);margin-bottom:4px">Среда</div>
+      <div style="font-size:13px;color:var(--text3)">VS Code + Claude Code + Git — твоя мастерская</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">✍️</div>
+      <div style="font-weight:700;color:var(--text);margin-bottom:4px">Промпты</div>
+      <div style="font-size:13px;color:var(--text3)">Структура запроса которая даёт точный результат</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">🗺️</div>
+      <div style="font-weight:700;color:var(--text);margin-bottom:4px">Архитектура</div>
+      <div style="font-size:13px;color:var(--text3)">Системное мышление до первой строки кода</div>
+    </div>
+  </div>`)}
+  ${vcC('warning','⏱️',`<strong>Темп курса:</strong> 2–3 часа в неделю. Каждый модуль заканчивается рабочим результатом который можно открыть или показать.`)}
+  ${vcNav(undefined,1)}`,
+
+// ── 1. Установка VS Code ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 1 · Среда разработки</div>
+  <h1 class="lesson-title">Установка VS Code 💻</h1>
+  ${vcC('tip','💡',`VS Code — это твой рабочий стол. Здесь ты будешь видеть файлы проекта, писать промпты Claude Code и запускать команды. Думай о нём как о Notion, только для кода.`)}
+  ${vcB(`<h3>🍎 Mac — установка</h3>
+  <ol style="line-height:2">
+    <li>Открой <strong>code.visualstudio.com</strong> и нажми «Download for Mac»</li>
+    <li>Открой скачанный .zip файл — появится иконка VS Code</li>
+    <li>Перетащи иконку в папку <strong>Applications</strong></li>
+    <li>Открой VS Code → нажми <kbd>Cmd+Shift+P</kbd> → введи «shell command» → выбери <strong>Install 'code' command in PATH</strong></li>
+  </ol>`)}
+  ${vcB(`<h3>🪟 Windows — установка</h3>
+  <ol style="line-height:2">
+    <li>Открой <strong>code.visualstudio.com</strong> и нажми «Download for Windows»</li>
+    <li>Запусти скачанный .exe файл</li>
+    <li>На шаге «Select Additional Tasks» отметь галочку <strong>«Add to PATH»</strong> — это важно!</li>
+    <li>Нажимай «Next» и «Install»</li>
+  </ol>`)}
+  ${vcC('warning','⚠️',`Если пропустить «Add to PATH» на Windows — Claude Code не сможет найти VS Code. Если уже установил без этой галочки — переустанови.`)}
+  ${vcB(`<h3>Обязательные расширения</h3>
+  <p>После установки открой VS Code. Слева есть иконка с четырьмя квадратиками (Extensions). Установи:</p>
+  ${vcTb(['Расширение','Зачем'],
+    [['Prettier','Автоматически форматирует код — он будет выглядеть аккуратно'],
+     ['GitLens','Показывает историю изменений прямо в коде'],
+     ['Live Server','Открывает твой сайт в браузере и обновляет его при изменениях']]
+  )}`)}
+  ${vcC('tip','✅',`<strong>Результат модуля:</strong> VS Code установлен, расширения подключены, команда <code>code .</code> открывает любую папку в редакторе.`)}
+  ${vcNav(0,2)}`,
+
+// ── 2. Claude Code и API-ключ ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 1 · Среда разработки</div>
+  <h1 class="lesson-title">Claude Code и API-ключ 🔌</h1>
+  ${vcC('tip','💡',`Claude Code — это Claude прямо в терминале VS Code. Ты пишешь задачу, он пишет код, редактирует файлы, запускает команды. Не надо копировать код туда-сюда.`)}
+  ${vcB(`<h3>Установка Claude Code</h3>
+  <p>Открой терминал в VS Code (<kbd>Ctrl+\`</kbd> или <kbd>Cmd+\`</kbd>) и введи:</p>
+  ${vcCode('bash','npm install -g @anthropic-ai/claude-code')}
+  <p style="margin-top:12px">Если видишь ошибку «npm not found» — сначала установи Node.js с <strong>nodejs.org</strong> (версия LTS), потом повтори команду.</p>`)}
+  ${vcB(`<h3>Получение API-ключа</h3>
+  <ol style="line-height:2">
+    <li>Открой <strong>console.anthropic.com</strong></li>
+    <li>Зарегистрируйся или войди</li>
+    <li>Слева выбери «API Keys» → «Create Key»</li>
+    <li>Скопируй ключ — он начинается с <code>sk-ant-...</code></li>
+    <li>Сохрани ключ в безопасном месте (покажут только один раз!)</li>
+  </ol>`)}
+  ${vcC('warning','🔐',`API-ключ — это как пароль. Никогда не загружай файлы с ключом на GitHub. Никогда не делись им в чате или переписке.`)}
+  ${vcB(`<h3>Первый запуск</h3>
+  <p>В терминале VS Code введи:</p>
+  ${vcCode('bash','claude')}
+  <p style="margin-top:12px">Введи API-ключ когда попросит. Потом напиши:</p>
+  ${vcCode('text','Привет! Создай файл index.html с заголовком "Мой первый сайт"')}
+  <p style="margin-top:12px">Claude создаст файл прямо в твоей папке. Это и есть Vibe Coding.</p>`)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Claude Code установлен, API-ключ подключён, первый файл создан через промпт.`)}
+  ${vcNav(1,3)}`,
+
+// ── 3. Git и GitHub ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 1 · Среда разработки</div>
+  <h1 class="lesson-title">Git и GitHub 🌿</h1>
+  ${vcC('tip','💡',`Git — это машина времени для твоего проекта. Каждое сохранение (commit) — это точка куда можно вернуться. GitHub — облако где хранятся все эти точки. И это бесплатный хостинг для твоего сайта.`)}
+  ${vcB(`<h3>Установка Git</h3>
+  <p><strong>Mac:</strong> Git уже установлен. Проверь: открой терминал и введи <code>git --version</code></p>
+  <p><strong>Windows:</strong> Скачай с <strong>git-scm.com</strong>, установи со всеми настройками по умолчанию.</p>
+  <p style="margin-top:12px">После установки настрой себя:</p>
+  ${vcCode('bash',`git config --global user.name "Твоё Имя"
+git config --global user.email "твой@email.com"`)}
+  `)}
+  ${vcB(`<h3>Создание репозитория на GitHub</h3>
+  <ol style="line-height:2">
+    <li>Зарегистрируйся на <strong>github.com</strong></li>
+    <li>Нажми «+» → «New repository»</li>
+    <li>Дай название (например <code>my-first-app</code>)</li>
+    <li>Выбери «Public», отметь «Add README»</li>
+    <li>Нажми «Create repository»</li>
+  </ol>`)}
+  ${vcB(`<h3>Пять команд которые ты будешь использовать каждый день</h3>
+  ${vcTb(['Команда','Что делает','Аналогия'],
+    [['git status','Показывает что изменилось','Список несохранённых файлов'],
+     ['git add .','Отмечает все изменения для сохранения','Выделить всё перед копированием'],
+     ['git commit -m "текст"','Сохраняет снимок проекта','Нажать Ctrl+S с комментарием'],
+     ['git push','Отправляет на GitHub','Загрузить в облако'],
+     ['git pull','Скачивает последнюю версию с GitHub','Синхронизировать']]
+  )}`)}
+  ${vcC('warning','⚠️',`Частая ошибка: забыть <code>git add .</code> перед <code>git commit</code>. Тогда commit будет пустым. Порядок всегда: add → commit → push.`)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Git настроен, репозиторий на GitHub создан, ты умеешь делать add → commit → push.`)}
+  ${vcNav(2,4)}`,
+
+// ── 4. Проектирование до кода ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 2 · Архитектурное мышление</div>
+  <h1 class="lesson-title">Проектирование до кода 🗺️</h1>
+  ${vcC('warning','🚨',`<strong>Главное правило курса:</strong> Архитектура — всегда до кода. PM которые нарушают это правило переписывают всё с нуля через 2 недели.`)}
+  ${vcB(`<h3>Почему нельзя сразу писать код?</h3>
+  <p>Представь что ты строишь дом. Можно начать с того что попросить строителей «сделай что-нибудь». Они построят — но не то что ты хотел. Архитектурный план нужен не строителям — он нужен тебе, чтобы знать что именно заказывать.</p>
+  <p>Claude — отличный строитель. Но без твоего плана он будет угадывать.</p>`)}
+  ${vcB(`<h3>Архитектурный бриф — шаблон</h3>
+  <p>Перед стартом любого проекта заполни этот шаблон. Займёт 15 минут — сэкономит 15 часов.</p>
+  ${vcCode('text',`ПРОЕКТ: [название]
+ЧТО ДЕЛАЕТ: [одно предложение — суть продукта]
+ДЛЯ КОГО: [кто будет пользоваться]
+ГЛАВНЫЙ ЭКРАН: [что видит пользователь сразу после открытия]
+ДЕЙСТВИЯ ПОЛЬЗОВАТЕЛЯ: [список из 3-5 основных действий]
+ДАННЫЕ: [что нужно хранить — список]
+ТЕХНОЛОГИИ: [HTML/CSS/JS + Supabase + GitHub Pages]
+НЕ ВХОДИТ В MVP: [что НЕ делаем в первой версии]`)}
+  `)}
+  ${vcC('tip','💡',`<strong>Блок «Не входит в MVP»</strong> — самый важный. Он защищает тебя от scope creep. Напиши туда всё что придёт в голову после «а ещё было бы круто...».`)}
+  ${vcB(`<h3>Пример заполненного брифа</h3>
+  ${vcCode('text',`ПРОЕКТ: TaskBoard — личный трекер задач
+ЧТО ДЕЛАЕТ: помогает вести список задач с приоритетами и дедлайнами
+ДЛЯ КОГО: для себя и команды (до 10 человек)
+ГЛАВНЫЙ ЭКРАН: список задач с фильтром по статусу
+ДЕЙСТВИЯ: создать задачу / отметить выполненной / поставить приоритет / удалить
+ДАННЫЕ: задачи (текст, статус, приоритет, дата), пользователи
+ТЕХНОЛОГИИ: HTML/CSS/JS + Supabase + GitHub Pages
+НЕ ВХОДИТ В MVP: интеграция с Calendar, мобильное приложение, уведомления`)}
+  `)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Заполненный архитектурный бриф для своего приложения. Это документ с которым ты придёшь к Claude.`)}
+  ${vcNav(3,5)}`,
+
+// ── 5. Декомпозиция проекта ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 2 · Архитектурное мышление</div>
+  <h1 class="lesson-title">Декомпозиция проекта 🧩</h1>
+  ${vcC('tip','💡',`Декомпозиция — это разбить слона на бифштексы. Большой проект пугает. Список конкретных задач на сегодня — нет.`)}
+  ${vcB(`<h3>Промпт для декомпозиции</h3>
+  <p>После заполнения брифа — отдай его Claude с таким промптом:</p>
+  ${vcCode('text',`Ты — опытный технический архитектор. Я PM без опыта в коде.
+Вот мой архитектурный бриф:
+[вставь бриф]
+
+Задача: декомпозируй проект на модули в правильном порядке разработки.
+Для каждого модуля укажи:
+1. Что создаём
+2. Какой результат можно увидеть в браузере
+3. Зависит ли от других модулей
+
+Ограничения: HTML/CSS/JS, Supabase для БД, GitHub Pages для деплоя.
+Не используй фреймворки (React, Vue). Всё на vanilla JS.`)}
+  `)}
+  ${vcB(`<h3>Пример результата декомпозиции</h3>
+  ${vcTb(['#','Модуль','Результат в браузере','Зависит от'],
+    [['1','Базовая HTML-структура','Страница с заголовком и пустым списком','—'],
+     ['2','CSS стили','Красивый интерфейс','М1'],
+     ['3','JS: добавление задач','Можно вводить и видеть задачи','М1, М2'],
+     ['4','Supabase: сохранение','Задачи не исчезают после перезагрузки','М3'],
+     ['5','Авторизация','Личный аккаунт','М4'],
+     ['6','Деплой','Сайт по ссылке в интернете','М5']]
+  )}`)}
+  ${vcC('warning','⚠️',`<strong>Частая ошибка:</strong> начинать с красивого дизайна. Сначала — работающая логика на некрасивом HTML, потом — стили. Иначе потратишь день на цвета и останешься без функций.`)}
+  ${vcB(`<h3>Дорожная карта проекта</h3>
+  <p>После декомпозиции составь простую дорожную карту на 1 страницу:</p>
+  ${vcCode('text',`НЕДЕЛЯ 1: HTML + CSS (модули 1-2)
+НЕДЕЛЯ 2: JS логика (модуль 3)
+НЕДЕЛЯ 3: База данных (модуль 4)
+НЕДЕЛЯ 4: Авторизация + Деплой (модули 5-6)`)}
+  `)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Декомпозиция своего проекта на модули + дорожная карта. Теперь у тебя есть план и можно начинать.`)}
+  ${vcNav(4,6)}`,
+
+// ── 6. Анатомия промпта ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 3 · Искусство промптинга</div>
+  <h1 class="lesson-title">Анатомия промпта ✍️</h1>
+  ${vcC('tip','💡',`Промпт для разработки — это не просьба. Это техническое задание. Чем точнее ТЗ — тем точнее результат. Расплывчатый промпт = расплывчатый код.`)}
+  ${vcB(`<h3>Пять компонентов сильного промпта</h3>
+  ${vcTb(['Компонент','Что писать','Пример'],
+    [['Роль','Кто такой Claude в этом контексте','Ты — senior frontend-разработчик'],
+     ['Контекст','Кто ты и что за проект','Я PM без опыта в коде. Делаем TaskBoard'],
+     ['Этап','На каком шаге разработки','Сейчас мы на этапе создания формы добавления задачи'],
+     ['Задача','Что конкретно нужно сделать','Создай HTML-форму с полями: название, приоритет, дата'],
+     ['Ограничения','Что нельзя или как делать','Vanilla JS, без фреймворков. Объясни каждый блок кода.']]
+  )}`)}
+  ${vcB(`<h3>Шаблон промпта</h3>
+  ${vcCode('text',`Ты — senior [роль].
+Я PM без опыта в коде. Мы создаём [название проекта].
+Сейчас мы на этапе [этап разработки].
+
+Задача: [конкретное описание что нужно сделать]
+
+Ограничения:
+- [стек технологий]
+- [платформа]
+- [другие ограничения]
+
+Объясни каждый блок кода на русском языке.`)}
+  `)}
+  ${vcB(`<h3>Живой пример хорошего промпта</h3>
+  ${vcCode('text',`Ты — senior frontend-разработчик.
+Я PM без опыта в коде. Мы создаём TaskBoard — трекер задач.
+Сейчас этап 3: добавление задачи через форму.
+
+Задача: создай функцию addTask() которая:
+1. Читает значения из формы (название, приоритет, дата)
+2. Создаёт объект задачи с уникальным id
+3. Добавляет в массив tasks
+4. Вызывает renderTasks() для обновления списка
+5. Очищает форму после добавления
+
+Ограничения: vanilla JS, без библиотек, ES6+.
+Код в файле app.js который уже существует.
+Объясни каждую строку на русском.`)}
+  `)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Ты знаешь структуру промпта и можешь написать его для любой задачи разработки.`)}
+  ${vcNav(5,7)}`,
+
+// ── 7. Антипримеры промптов ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 3 · Искусство промптинга</div>
+  <h1 class="lesson-title">Антипримеры: как не надо 🚫</h1>
+  ${vcC('warning','⚠️',`Плохой промпт — главная причина плохого кода. Не потому что Claude плохой. А потому что он буквально выполняет то что написано.`)}
+  ${vcB(`<h3>Антипример 1: слишком расплывчато</h3>
+  ${vcCode('text',`❌ ПЛОХО:
+"Сделай мне сайт"
+
+✅ ПОЧЕМУ ПЛОХО:
+Claude не знает: какой сайт? для кого? какие функции? какой стек?
+Результат будет случайным — Claude придумает сам.
+
+✅ КАК НАДО:
+"Создай HTML страницу для трекера задач. 
+Структура: header с названием, форма добавления задачи (поля: текст, приоритет), 
+пустой список ul#task-list. Vanilla HTML без CSS."`)}`)}
+  ${vcB(`<h3>Антипример 2: несколько задач сразу</h3>
+  ${vcCode('text',`❌ ПЛОХО:
+"Добавь форму, сохраняй в базу, сделай красиво, добавь авторизацию и деплой на Vercel"
+
+✅ ПОЧЕМУ ПЛОХО:
+Claude сделает всё сразу — и ты не поймёшь что происходит.
+Если что-то сломается — непонятно где искать.
+
+✅ КАК НАДО:
+Одна задача = один промпт. Убедился что работает — идёшь дальше.`)}`)}
+  ${vcB(`<h3>Антипример 3: нет контекста</h3>
+  ${vcCode('text',`❌ ПЛОХО:
+"Почему кнопка не работает?"
+
+✅ ПОЧЕМУ ПЛОХО:
+Claude не видит твой код. Не знает какая кнопка. 
+Будет угадывать и скорее всего даст неправильный ответ.
+
+✅ КАК НАДО:
+"Вот мой код:
+[вставь код]
+
+Кнопка #add-btn не реагирует на клик. 
+Ожидаемое поведение: при клике вызывается функция addTask().
+Что не так?"`)}`)}
+  ${vcB(`<h3>Антипример 4: игнорировать ошибки</h3>
+  ${vcCode('text',`❌ ПЛОХО:
+"Он что-то написал в консоли, но я не понял — ладно, работает же"
+
+✅ ПОЧЕМУ ПЛОХО:
+Ошибки в консоли = долг. Потом накопится и всё сломается.
+
+✅ КАК НАДО:
+"В консоли браузера вижу ошибку:
+Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
+Вот мой код: [код]
+Объясни что это значит и как исправить."`)}`)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Ты знаешь 4 главные ошибки в промптах и как их избежать. Теперь твои запросы будут давать предсказуемый результат.`)}
+  ${vcNav(6,8)}`,
+
+// ── 8. HTML/CSS с нуля ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 4 · Frontend</div>
+  <h1 class="lesson-title">HTML/CSS: минимум для PM 🎨</h1>
+  ${vcC('tip','💡',`Тебе не нужно знать HTML как верстальщик. Тебе нужно уметь читать его и понимать структуру — тогда ты сможешь точно объяснить Claude что изменить.`)}
+  ${vcB(`<h3>HTML — скелет страницы</h3>
+  <p>HTML — это разметка. Она описывает структуру, не внешний вид. Каждый элемент — тег в угловых скобках.</p>
+  ${vcCode('html',`<!DOCTYPE html>
+<html>
+<head>
+  <title>Название вкладки</title>
+  <link rel="stylesheet" href="style.css">  <!-- подключаем стили -->
+</head>
+<body>
+  <h1>Это заголовок</h1>
+  <p>Это абзац текста</p>
+  <button id="my-btn">Нажми меня</button>
+  <ul id="task-list">
+    <li>Задача 1</li>
+    <li>Задача 2</li>
+  </ul>
+  <script src="app.js"></script>  <!-- подключаем JavaScript -->
+</body>
+</html>`)}
+  `)}
+  ${vcB(`<h3>CSS — внешний вид</h3>
+  <p>CSS описывает как элементы выглядят. Синтаксис: <code>элемент { свойство: значение; }</code></p>
+  ${vcCode('css',`/* Цвет фона страницы */
+body {
+  background-color: #1a1a2e;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+/* Стиль кнопки */
+button {
+  background: #ec4899;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Hover — при наведении мыши */
+button:hover {
+  background: #be185d;
+}`)}
+  `)}
+  ${vcC('tip','💡',`<strong>Лайфхак:</strong> когда тебе не нравится как выглядит элемент — правой кнопкой мыши → «Inspect» → меняй CSS прямо в браузере. Нашёл что хочешь — попроси Claude добавить это в файл.`)}
+  ${vcB(`<h3>Промпт для создания интерфейса</h3>
+  ${vcCode('text',`Ты — senior frontend-разработчик. Я PM без опыта.
+Создай интерфейс для [название проекта].
+
+Структура страницы:
+- Header: название приложения + кнопка профиля справа
+- Форма добавления: поле текста + кнопка «Добавить»
+- Список задач: каждый элемент с чекбоксом и кнопкой удаления
+
+Стиль: тёмная тема, акцентный цвет #ec4899, шрифт без засечек.
+Файлы: index.html и style.css отдельно.
+Объясни структуру HTML на русском.`)}
+  `)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Понимаешь структуру HTML и CSS. Умеешь описать нужный интерфейс в промпте.`)}
+  ${vcNav(7,9)}`,
+
+// ── 9. JavaScript для PM ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 4 · Frontend</div>
+  <h1 class="lesson-title">JavaScript для PM ⚡</h1>
+  ${vcC('tip','💡',`JavaScript делает страницу живой. HTML — это форма, CSS — внешний вид, JS — поведение. Нажал кнопку → что-то произошло. Это JS.`)}
+  ${vcB(`<h3>Четыре концепции которые тебе нужны</h3>
+  ${vcCode('javascript',`// 1. ПЕРЕМЕННЫЕ — хранят данные
+let taskText = "Написать отчёт";  // можно менять
+const MAX_TASKS = 100;            // нельзя менять
+
+// 2. ФУНКЦИИ — повторяемые действия
+function addTask(text) {
+  // код который что-то делает
+  console.log("Добавлена задача:", text);
+}
+
+// 3. СОБЫТИЯ — реакция на действия пользователя
+document.getElementById("add-btn").addEventListener("click", function() {
+  addTask("Новая задача");
+});
+
+// 4. DOM — управление HTML из JS
+const list = document.getElementById("task-list");
+list.innerHTML += "<li>Новый пункт</li>";  // добавить в список`)}
+  `)}
+  ${vcC('warning','💡',`Не нужно писать JS самому — нужно понимать что читаешь. Когда Claude пишет код — ты должен понять: вот переменная, вот функция, вот событие. Этого достаточно.`)}
+  ${vcB(`<h3>Промпт для добавления логики</h3>
+  ${vcCode('text',`Ты — senior JS-разработчик. Я PM.
+Вот мой текущий index.html: [код]
+
+Добавь в файл app.js следующую логику:
+1. При клике на кнопку #add-btn — читать значение из input#task-input
+2. Если поле пустое — показать alert "Введите задачу"
+3. Если не пустое — добавить <li> в список #task-list
+4. Очистить поле ввода после добавления
+
+Vanilla JS, без jQuery. Объясни каждую строку.`)}
+  `)}
+  ${vcB(`<h3>Как читать ошибки в консоли</h3>
+  <p>Открой консоль браузера: <kbd>F12</kbd> → вкладка «Console». Типичные ошибки:</p>
+  ${vcTb(['Ошибка','Что значит','Как исправить'],
+    [['Cannot read properties of null','Ищешь элемент которого нет в HTML','Проверь правильность id элемента'],
+     ['is not a function','Вызываешь то что не является функцией','Проверь имя функции, нет ли опечатки'],
+     ['is not defined','Переменная не объявлена','Объяви переменную через let или const'],
+     ['Unexpected token','Синтаксическая ошибка','Найди и исправь скобку или кавычку']]
+  )}`)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Понимаешь базовые концепции JS, умеешь читать ошибки и составлять промпт для добавления логики.`)}
+  ${vcNav(8,10)}`,
+
+// ── 10. Как работает приложение ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 5 · Логика приложения</div>
+  <h1 class="lesson-title">Как работает приложение ⚙️</h1>
+  ${vcC('tip','💡',`Понять архитектуру приложения — значит понять кто за что отвечает. Это помогает точно говорить Claude куда добавить новую функцию.`)}
+  ${vcB(`<h3>Три слоя веб-приложения</h3>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px">
+    <div style="background:var(--bg3);border-left:3px solid #ec4899;padding:16px;border-radius:8px">
+      <div style="font-weight:700;color:#ec4899;margin-bottom:4px">🎨 Frontend (клиент)</div>
+      <div style="color:var(--text2);font-size:14px">То что видит пользователь. HTML + CSS + JS. Работает в браузере на компьютере пользователя.</div>
+    </div>
+    <div style="background:var(--bg3);border-left:3px solid var(--accent);padding:16px;border-radius:8px">
+      <div style="font-weight:700;color:var(--accent);margin-bottom:4px">⚙️ Backend (сервер)</div>
+      <div style="color:var(--text2);font-size:14px">Бизнес-логика и данные. В нашем случае — Supabase берёт эту роль. Работает в облаке.</div>
+    </div>
+    <div style="background:var(--bg3);border-left:3px solid var(--accent2);padding:16px;border-radius:8px">
+      <div style="font-weight:700;color:var(--accent2);margin-bottom:4px">🗄️ База данных</div>
+      <div style="color:var(--text2);font-size:14px">Хранилище всех данных. Таблицы, записи, запросы. В Supabase — PostgreSQL.</div>
+    </div>
+  </div>`)}
+  ${vcB(`<h3>Жизнь запроса: от клика до ответа</h3>
+  <p>Что происходит когда пользователь нажимает «Сохранить задачу»:</p>
+  ${vcCode('text',`1. Пользователь нажимает кнопку
+2. JS перехватывает событие click
+3. JS читает данные из формы
+4. JS отправляет запрос к Supabase API
+5. Supabase проверяет авторизацию
+6. Supabase записывает данные в таблицу tasks
+7. Supabase возвращает подтверждение
+8. JS обновляет список на экране`)}
+  `)}
+  ${vcC('warning','💡',`Запросы к базе данных — асинхронные. Это значит JS не ждёт ответа, а продолжает работать. Поэтому используется <code>async/await</code>. Claude сам это напишет — тебе важно понять зачем.`)}
+  ${vcB(`<h3>State — состояние приложения</h3>
+  <p>State — это текущие данные в памяти браузера. Список задач, статус загрузки, текущий пользователь — всё это state.</p>
+  ${vcCode('javascript',`// State приложения
+let state = {
+  tasks: [],           // список задач
+  user: null,          // текущий пользователь
+  isLoading: false     // идёт ли загрузка
+};
+
+// При изменении state — перерисовываем интерфейс
+function render() {
+  // показываем актуальный state
+}`)}
+  `)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Понимаешь три слоя приложения, жизнь запроса и что такое state. Можешь объяснить Claude куда добавить новую функцию.`)}
+  ${vcNav(9,11)}`,
+
+// ── 11. API и интеграции ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 5 · Логика приложения</div>
+  <h1 class="lesson-title">API и интеграции 🔄</h1>
+  ${vcC('tip','💡',`API — это меню ресторана. Ты говоришь что хочешь (запрос) — кухня готовит и приносит (ответ). Тебе не нужно знать как готовят — нужно знать как заказывать.`)}
+  ${vcB(`<h3>Как работает API</h3>
+  ${vcCode('javascript',`// Запрос к API — получить список задач
+const response = await fetch('https://api.example.com/tasks', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer ' + apiKey,
+    'Content-Type': 'application/json'
+  }
+});
+
+const data = await response.json();  // превращаем ответ в объект
+console.log(data.tasks);             // массив задач`)}
+  <p style="margin-top:12px">Не пугайся этого кода — Claude напишет его за тебя. Тебе важно понять: запрос → ответ → используем данные.</p>`)}
+  ${vcB(`<h3>HTTP методы — четыре действия</h3>
+  ${vcTb(['Метод','Действие','Аналогия'],
+    [['GET','Получить данные','Открыть страницу'],
+     ['POST','Создать новое','Отправить форму'],
+     ['PUT / PATCH','Обновить существующее','Редактировать документ'],
+     ['DELETE','Удалить','Удалить файл']]
+  )}`)}
+  ${vcB(`<h3>Промпт для работы с API</h3>
+  ${vcCode('text',`Ты — senior JS-разработчик. Я PM.
+Мне нужно подключить API [название сервиса] к моему проекту.
+
+Документация API: [ссылка или краткое описание]
+Задача: [что конкретно нужно сделать с этим API]
+
+Требования:
+- Обработать ошибки (что показывать если запрос не прошёл)
+- Показывать loader пока идёт запрос
+- Объяснить каждый шаг на русском
+
+Текущий код: [вставь файл app.js]`)}
+  `)}
+  ${vcC('warning','⚠️',`API-ключи никогда не хранятся в коде который ты загружаешь на GitHub. Используй переменные окружения или храни ключ в Supabase. Claude подскажет как — спроси.`)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Понимаешь что такое API и HTTP методы. Умеешь составить промпт для подключения любого внешнего сервиса.`)}
+  ${vcNav(10,12)}`,
+
+// ── 12. Supabase старт ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 6 · База данных</div>
+  <h1 class="lesson-title">Supabase: старт 🗄️</h1>
+  ${vcC('tip','💡',`Supabase — это Firebase для взрослых, но бесплатный. База данных + авторизация + хранилище файлов. Настраивается за 15 минут, не требует знания серверного кода.`)}
+  ${vcB(`<h3>Создание проекта</h3>
+  <ol style="line-height:2">
+    <li>Зайди на <strong>supabase.com</strong> и зарегистрируйся</li>
+    <li>«New Project» → выбери регион ближайший к тебе (EU West для России)</li>
+    <li>Придумай пароль базы данных — сохрани в надёжном месте</li>
+    <li>Подожди 2 минуты пока проект создаётся</li>
+  </ol>`)}
+  ${vcB(`<h3>Создание таблицы</h3>
+  <p>Перейди в «Table Editor» → «New Table». Пример для трекера задач:</p>
+  ${vcCode('sql',`-- В SQL Editor выполни:
+create table tasks (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users not null,
+  text text not null,
+  priority text default 'medium',
+  completed boolean default false,
+  created_at timestamptz default now()
+);
+
+-- Включаем защиту: каждый видит только свои задачи
+alter table tasks enable row level security;
+create policy "Users see own tasks"
+  on tasks for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);`)}
+  `)}
+  ${vcB(`<h3>Подключение к проекту</h3>
+  ${vcCode('html',`<!-- Добавь в index.html перед закрывающим </body> -->`)}
+  ${vcCode('javascript',`import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+  'https://ВАШ_ПРОЕКТ.supabase.co',  // Project URL
+  'ВАШ_ANON_KEY'                      // Project API Keys → anon public
+)`)}
+  `)}
+  ${vcC('tip','💡',`Промпт для работы с Supabase: <em>«Добавь функцию loadTasks() которая получает все задачи текущего пользователя из таблицы tasks в Supabase и отображает их в списке. Вот мой текущий код: [код]»</em>`)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Supabase проект создан, таблица tasks готова, подключение к проекту работает.`)}
+  ${vcNav(11,13)}`,
+
+// ── 13. Авторизация ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 6 · База данных</div>
+  <h1 class="lesson-title">Авторизация 🔐</h1>
+  ${vcC('tip','💡',`Supabase Auth — готовая система авторизации. Не нужно писать «логику паролей» самому. Email + пароль, Google, GitHub — всё из коробки.`)}
+  ${vcB(`<h3>Регистрация и вход</h3>
+  ${vcCode('javascript',`// Регистрация
+const { data, error } = await supabase.auth.signUp({
+  email: 'user@example.com',
+  password: 'password123'
+});
+
+// Вход
+const { data, error } = await supabase.auth.signInWithPassword({
+  email: 'user@example.com',
+  password: 'password123'
+});
+
+// Выход
+await supabase.auth.signOut();
+
+// Получить текущего пользователя
+const { data: { user } } = await supabase.auth.getUser();`)}
+  `)}
+  ${vcB(`<h3>Слушать изменения авторизации</h3>
+  ${vcCode('javascript',`// Этот код запускается при любом изменении статуса входа
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN') {
+    currentUser = session.user;
+    showApp();  // показываем приложение
+  }
+  if (event === 'SIGNED_OUT') {
+    currentUser = null;
+    showLogin();  // показываем форму входа
+  }
+});`)}
+  `)}
+  ${vcC('warning','💡',`Row Level Security (RLS) — это политика «каждый видит только своё». Обязательно включай для всех таблиц с пользовательскими данными. Без RLS все пользователи видят данные всех.`)}
+  ${vcB(`<h3>Промпт для авторизации</h3>
+  ${vcCode('text',`Добавь в мой проект авторизацию через Supabase:
+1. Форма входа/регистрации (email + пароль)
+2. При успешном входе — показывать основной экран
+3. При выходе — возвращать на форму входа
+4. Хранить сессию между перезагрузками
+
+Supabase уже подключён. URL и ключ уже в коде.
+Вот текущий index.html: [код]
+Объясни каждый шаг.`)}
+  `)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> В приложении работает регистрация, вход и выход. Данные защищены через RLS.`)}
+  ${vcNav(12,14)}`,
+
+// ── 14. Подключение внешних API ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 7 · Внешние сервисы</div>
+  <h1 class="lesson-title">Подключение внешних API 🔗</h1>
+  ${vcC('tip','💡',`Внешние API — это суперсилы для твоего приложения. Погода, карты, AI, переводы, платежи — всё это готовые сервисы которые ты подключаешь за один день.`)}
+  ${vcB(`<h3>Популярные API для PM-проектов</h3>
+  ${vcTb(['API','Что даёт','Бесплатный тариф'],
+    [['OpenAI / Claude','AI функции в приложении','$5 кредитов при регистрации'],
+     ['OpenWeatherMap','Погода по городу','1000 запросов в день'],
+     ['Telegram Bot API','Отправка уведомлений в Telegram','Бесплатно'],
+     ['Resend','Отправка email','3000 писем в месяц'],
+     ['Unsplash','Стоковые фото','50 запросов в час']]
+  )}`)}
+  ${vcB(`<h3>Паттерн подключения любого API</h3>
+  ${vcCode('javascript',`// Универсальный шаблон вызова API
+async function callExternalAPI(params) {
+  try {
+    const response = await fetch('https://api.service.com/endpoint', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + API_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    });
+
+    if (!response.ok) {
+      throw new Error('API ошибка: ' + response.status);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Ошибка:', error);
+    showError('Что-то пошло не так. Попробуйте позже.');
+  }
+}`)}
+  `)}
+  ${vcB(`<h3>Промпт для подключения API</h3>
+  ${vcCode('text',`Подключи API [название] к моему проекту.
+
+Цель: [что должно происходить — например "при клике на кнопку — отправлять текст задачи в ChatGPT и получать советы по её выполнению"]
+
+Документация: [ссылка или описание эндпоинта]
+API ключ: хранить в переменной API_KEY в начале файла
+
+Обработай ошибки и покажи пользователю понятное сообщение если что-то пошло не так.
+Добавь состояние загрузки (кнопка неактивна пока идёт запрос).`)}
+  `)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Умеешь подключить любой внешний API используя универсальный промпт.`)}
+  ${vcNav(13,15)}`,
+
+// ── 15. Email и уведомления ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 7 · Внешние сервисы</div>
+  <h1 class="lesson-title">Email и уведомления 📧</h1>
+  ${vcC('tip','💡',`Уведомления — это то что превращает одноразовый инструмент в ежедневную привычку. Email после регистрации, напоминание о задаче — простые вещи которые сильно влияют на retention.`)}
+  ${vcB(`<h3>Transactional email через Resend</h3>
+  <p><strong>Resend</strong> — лучший выбор для небольших проектов. 3000 писем в месяц бесплатно, простое API.</p>
+  <ol style="line-height:2">
+    <li>Зарегистрируйся на <strong>resend.com</strong></li>
+    <li>Создай API Key</li>
+    <li>Подтверди домен или используй тестовый адрес</li>
+  </ol>
+  ${vcCode('javascript',`// Отправка email через Resend
+async function sendWelcomeEmail(userEmail, userName) {
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + RESEND_API_KEY,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      from: 'app@yourdomain.com',
+      to: userEmail,
+      subject: 'Добро пожаловать, ' + userName + '!',
+      html: '<h1>Рады видеть тебя!</h1><p>Твой аккаунт создан.</p>'
+    })
+  });
+}`)}
+  `)}
+  ${vcB(`<h3>Telegram уведомления — проще всего</h3>
+  ${vcCode('javascript',`// Telegram Bot API — бесплатно и без домена
+async function sendTelegramNotification(message) {
+  const BOT_TOKEN = 'ваш_токен';  // получить у @BotFather
+  const CHAT_ID = 'ваш_chat_id';  // ваш личный chat id
+
+  await fetch(\`https://api.telegram.org/bot\${BOT_TOKEN}/sendMessage\`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: CHAT_ID, text: message })
+  });
+}`)}
+  <p style="margin-top:12px">Telegram-уведомление приходит мгновенно. Отлично для дашбордов и личных инструментов.</p>`)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Умеешь отправлять email через Resend и Telegram-уведомления. Пользователи получают подтверждения и напоминания.`)}
+  ${vcNav(14,16)}`,
+
+// ── 16. Деплой ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 8 · Деплой</div>
+  <h1 class="lesson-title">Деплой на GitHub Pages 🚀</h1>
+  ${vcC('tip','💡',`Деплой — это опубликовать приложение чтобы любой мог открыть его по ссылке. GitHub Pages — бесплатно, работает из коробки, нужен только репозиторий.`)}
+  ${vcB(`<h3>Деплой на GitHub Pages — пошагово</h3>
+  <ol style="line-height:2.2">
+    <li>Убедись что твой <code>index.html</code> лежит в корне репозитория</li>
+    <li>Открой репозиторий на GitHub</li>
+    <li>Перейди в <strong>Settings → Pages</strong></li>
+    <li>В разделе «Source» выбери ветку <strong>main</strong> и папку <strong>/ (root)</strong></li>
+    <li>Нажми «Save»</li>
+    <li>Подожди 2–3 минуты</li>
+    <li>Твой сайт доступен по адресу: <code>username.github.io/repo-name</code></li>
+  </ol>`)}
+  ${vcC('warning','⚠️',`GitHub Pages работает только со статическими сайтами (HTML + CSS + JS). Серверный код Node.js/Python там не работает. Для серверного кода используй Vercel.`)}
+  ${vcB(`<h3>Деплой на Vercel — для динамических проектов</h3>
+  <ol style="line-height:2">
+    <li>Зарегистрируйся на <strong>vercel.com</strong> через GitHub аккаунт</li>
+    <li>Нажми «New Project» → выбери свой репозиторий</li>
+    <li>Нажми «Deploy» — Vercel сам всё настроит</li>
+    <li>Каждый <code>git push</code> автоматически обновляет сайт</li>
+  </ol>
+  ${vcCode('text',`Твой сайт будет доступен по адресу:
+https://название-проекта.vercel.app`)}
+  `)}
+  ${vcB(`<h3>Переменные окружения в Vercel</h3>
+  <p>API-ключи нельзя хранить в коде. В Vercel есть специальный раздел:</p>
+  <p><strong>Project Settings → Environment Variables</strong> → добавь свои ключи</p>
+  ${vcCode('text',`SUPABASE_URL=https://ваш-проект.supabase.co
+SUPABASE_KEY=ваш-anon-ключ
+RESEND_API_KEY=ваш-ключ`)}
+  `)}
+  ${vcC('tip','✅',`<strong>Результат:</strong> Твоё приложение опубликовано в интернете и доступно по ссылке.`)}
+  ${vcNav(15,17)}`,
+
+// ── 17. Финал ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Модуль 8 · Деплой</div>
+  <h1 class="lesson-title">Финал: твой продукт в продакшне 🏁</h1>
+  ${vcC('tip','🎉',`<strong>Поздравляем!</strong> Ты прошёл весь путь от «я ничего не понимаю в коде» до работающего продукта в интернете. Это не просто курс — это навык который останется с тобой.`)}
+  ${vcB(`<h3>Чеклист запуска</h3>
+  <p>Прежде чем делиться ссылкой — пройди этот список:</p>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+    ${['✅ Приложение открывается по ссылке','✅ Регистрация и вход работают','✅ Основные функции работают','✅ Ошибки не появляются в консоли (F12)','✅ На мобильном телефоне тоже выглядит нормально','✅ API-ключи не видны в публичном коде'].map(item=>`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:14px;color:var(--text2)">${item}</div>`).join('')}
+  </div>`)}
+  ${vcB(`<h3>Как показывать проект</h3>
+  ${vcCode('text',`📌 Ссылка: username.github.io/my-project
+
+Что это: [одна строка о проекте]
+Зачем сделал: [боль которую решает]
+Стек: HTML/CSS/JS + Supabase + GitHub Pages
+Время разработки: [сколько ушло]
+Что дальше: [что хочешь добавить]`)}
+  `)}
+  ${vcC('tip','💡',`<strong>Главный урок курса:</strong> Vibe Coding — это не про то чтобы не знать код. Это про то чтобы думать продуктово и использовать AI как множитель своих возможностей. Ты теперь можешь создавать — и это меняет всё.`)}
+  ${vcB(`<h3>Что улучшить после запуска</h3>
+  ${vcTb(['Что','Зачем','Сложность'],
+    [['Добавить favicon','Выглядит профессионально','⭐'],
+     ['Custom domain','Своё имя вместо github.io','⭐⭐'],
+     ['Google Analytics','Смотреть кто заходит','⭐'],
+     ['Мобильная адаптация','Работает на телефоне','⭐⭐'],
+     ['PWA','Можно установить как приложение','⭐⭐⭐']]
+  )}`)}
+  ${vcNav(16,18)}`,
+
+// ── 18. Глоссарий ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Справочники</div>
+  <h1 class="lesson-title">Глоссарий PM-а 📖</h1>
+  ${vcC('tip','💡',`20 технических терминов объяснённых через продуктовые аналогии. Сохрани эту страницу — пригодится в разговорах с разработчиками.`)}
+  ${vcTb(['Термин','Что это такое','Аналогия для PM'],
+    [
+      ['Frontend','Всё что видит пользователь','Витрина магазина'],
+      ['Backend','Серверная логика','Склад и бэк-офис'],
+      ['API','Интерфейс для взаимодействия систем','Меню ресторана: заказываешь — получаешь'],
+      ['Database','Хранилище данных','Excel таблица, но мощная и быстрая'],
+      ['Repository (repo)','Папка проекта с историей изменений','Google Drive с версионированием'],
+      ['Commit','Сохранённый снимок проекта','Ctrl+S с комментарием «что изменил»'],
+      ['Deploy','Публикация приложения','Запустить продукт в прод'],
+      ['Branch','Параллельная версия кода','Черновик документа'],
+      ['Merge','Объединить две версии кода','Принять правки в Google Doc'],
+      ['Bug','Ошибка в коде','Дефект в продукте'],
+      ['Refactor','Переписать код без изменения функций','Реорганизация бэклога — функции те же, структура лучше'],
+      ['State','Текущие данные в памяти приложения','Что отображается на дашборде прямо сейчас'],
+      ['Async / Await','Код который ждёт ответа не блокируя остальное','Отправил письмо — занялся другим, ответ придёт'],
+      ['JSON','Формат передачи данных','Структурированный текстовый файл'],
+      ['Environment Variables','Секретные настройки вне кода','Пароли в 1Password, не в доке'],
+      ['localhost','Твой компьютер как сервер','Предпродуктовая среда на твоей машине'],
+      ['npm','Менеджер пакетов для JavaScript','App Store для кода'],
+      ['Dependency','Библиотека от которой зависит проект','Интеграция в продукте'],
+      ['Linter','Инструмент проверки стиля кода','Grammarly для кода'],
+      ['CI/CD','Автоматический деплой при изменении кода','Автопубликация после аппрува в CMS']
+    ]
+  )}
+  ${vcNav(17,19)}`,
+
+// ── 19. Библиотека промптов ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Справочники</div>
+  <h1 class="lesson-title">Библиотека промптов 📚</h1>
+  ${vcC('tip','💡',`Сводная таблица всех промптов курса. Найди ситуацию — возьми промпт — подставь свои данные.`)}
+  ${vcB(`<h3>Архитектура и проектирование</h3>
+  ${vcCode('text',`СИТУАЦИЯ: Декомпозировать проект на модули
+ПРОМПТ: "Ты — технический архитектор. Я PM. Вот мой архитектурный бриф: [бриф].
+Декомпозируй на модули в порядке разработки. Для каждого: что создаём, результат в браузере, зависимости.
+Стек: vanilla HTML/CSS/JS + Supabase + GitHub Pages."`)}`)}
+  ${vcB(`<h3>Frontend разработка</h3>
+  ${vcCode('text',`СИТУАЦИЯ: Создать интерфейс
+ПРОМПТ: "Ты — senior frontend-разработчик. Я PM. Создай интерфейс [описание].
+Стиль: [цвет/тема]. Файлы: index.html и style.css отдельно. Vanilla CSS. Объясни структуру."
+
+СИТУАЦИЯ: Добавить JS логику
+ПРОМПТ: "Добавь в app.js функцию [название] которая:
+1. [действие 1] 2. [действие 2] 3. [действие 3]
+Vanilla JS, ES6+. Текущий код: [код]. Объясни каждую строку."`)}`)}
+  ${vcB(`<h3>Работа с Supabase</h3>
+  ${vcCode('text',`СИТУАЦИЯ: Создать таблицу
+ПРОМПТ: "Создай SQL для таблицы [название] с полями: [список полей].
+Включи RLS с политикой что каждый видит только свои записи."
+
+СИТУАЦИЯ: Загрузить данные из БД
+ПРОМПТ: "Добавь функцию load[Entity]() которая получает из Supabase таблицы [таблица]
+все записи текущего пользователя и отображает в [элемент]. Supabase уже подключён: [код]."`)}`)}
+  ${vcB(`<h3>Отладка ошибок</h3>
+  ${vcCode('text',`СИТУАЦИЯ: Исправить ошибку
+ПРОМПТ: "В консоли браузера вижу ошибку:
+[вставь полный текст ошибки]
+Вот код: [код]
+Ожидаемое поведение: [что должно происходить]
+Что не так и как исправить? Объясни причину."`)}`)}
+  ${vcB(`<h3>Деплой и настройка</h3>
+  ${vcCode('text',`СИТУАЦИЯ: Подготовить к деплою
+ПРОМПТ: "Проверь мой проект перед деплоем на GitHub Pages:
+[код или список файлов]
+Что нужно исправить? На что обратить внимание при публикации?"`)}`)}
+  ${vcNav(18,20)}`,
+
+// ── 20. Что дальше ──────────────────────────────
+()=>`
+  <div class="lesson-tag">Справочники</div>
+  <h1 class="lesson-title">Что дальше 🗺️</h1>
+  ${vcC('tip','🚀',`Первый проект запущен. Это только начало. Вот roadmap следующих шагов.`)}
+  ${vcB(`<h3>Ближайшие 30 дней</h3>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+    ${[
+      ['Неделя 1','Улучши свой первый проект: добавь то что не вошло в MVP'],
+      ['Неделя 2','Покажи проект 3 реальным пользователям. Собери обратную связь'],
+      ['Неделя 3','Исправь топ-3 проблемы которые назвали пользователи'],
+      ['Неделя 4','Начни второй проект — теперь ты знаешь как']
+    ].map(([week,task])=>`<div style="display:grid;grid-template-columns:90px 1fr;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-weight:700;color:#ec4899;font-size:13px">${week}</div><div style="font-size:14px;color:var(--text2)">${task}</div></div>`).join('')}
+  </div>`)}
+  ${vcB(`<h3>Навыки для углублённого изучения</h3>
+  ${vcTb(['Навык','Зачем','Ресурс'],
+    [['React','Для более сложных интерфейсов','react.dev (официальная документация)'],
+     ['TypeScript','Меньше ошибок в большом коде','typescriptlang.org'],
+     ['Node.js','Серверный JS, собственный backend','nodejs.org/learn'],
+     ['SQL подробнее','Сложные запросы и аналитика','Курс SQL для PM в этой же академии'],
+     ['Figma','Прототипировать перед разработкой','figma.com/resources']]
+  )}`)}
+  ${vcB(`<h3>Типы проектов которые можно делать прямо сейчас</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
+    ${[
+      ['🛠️ Личные инструменты','Трекер задач, дневник, CRM для себя'],
+      ['📊 Дашборды','Визуализация данных из таблиц'],
+      ['🤖 AI-инструменты','Промпт-утилиты, генераторы контента'],
+      ['👥 Командные инструменты','Ретро-доски, планировщики спринтов'],
+      ['📝 Лендинги','Страницы для продуктов и мероприятий'],
+      ['🎓 Обучающие приложения','Флеш-карты, тесты, учебники']
+    ].map(([title,desc])=>`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px"><div style="font-weight:700;color:var(--text);margin-bottom:4px;font-size:14px">${title}</div><div style="font-size:13px;color:var(--text3)">${desc}</div></div>`).join('')}
+  </div>`)}
+  ${vcC('tip','💡',`<strong>Главное:</strong> Лучший следующий шаг — создать что-то что решает твою личную проблему. Ты лучший пользователь для своего первого продукта.`)}
+  ${vcNav(19,undefined,true)}`
+];
+
+function showVcLesson(idx) {
+  currentVcLesson = idx;
+  const main = document.getElementById('vc-main-content');
+  if (!main || !vcLessons[idx]) return;
+  main.innerHTML = vcLessons[idx]();
+  main.scrollTop = 0;
+
+  // Update sidebar active state
+  document.querySelectorAll('[id^="vc-nav-"]').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('vc-nav-' + idx);
+  if (navEl) {
+    navEl.classList.add('active');
+    if (vcCompleted.has(idx)) {
+      if (!navEl.querySelector('.check-badge')) {
+        const badge = document.createElement('span');
+        badge.className = 'check-badge';
+        badge.style.background = '#ec4899';
+        badge.textContent = '✓';
+        navEl.appendChild(badge);
+        navEl.classList.add('completed');
+      }
+    }
+  }
+  closeSidebar();
+  updateVcProgress();
+}
+
+function vcCompleteAndNav(targetIdx) {
+  vcCompleted.add(currentVcLesson);
+  updateVcProgress();
+  const navEl = document.getElementById('vc-nav-' + currentVcLesson);
+  if (navEl && !navEl.querySelector('.check-badge')) {
+    const badge = document.createElement('span');
+    badge.className = 'check-badge';
+    badge.style.background = '#ec4899';
+    badge.textContent = '✓';
+    navEl.appendChild(badge);
+    navEl.classList.add('completed');
+  }
+  showVcLesson(targetIdx);
+  scheduleSyncProgress();
+}
+
+function vcCompleteFinal() {
+  vcCompleted.add(currentVcLesson);
+  updateVcProgress();
+  const navEl = document.getElementById('vc-nav-' + currentVcLesson);
+  if (navEl && !navEl.querySelector('.check-badge')) {
+    const badge = document.createElement('span');
+    badge.className = 'check-badge';
+    badge.style.background = '#ec4899';
+    badge.textContent = '✓';
+    navEl.appendChild(badge);
+    navEl.classList.add('completed');
+  }
+  document.getElementById('vc-main-content').insertAdjacentHTML('beforeend', `
+    <div class="callout tip" style="margin-top:24px;animation:fadeUp 0.5s ease">
+      <span class="callout-icon">🎉</span>
+      <div><strong>Курс завершён!</strong> Ты прошёл путь от идеи до продакшна. Теперь создай свой следующий проект — уже самостоятельно!</div>
+    </div>
+  `);
+  scheduleSyncProgress();
+}
+
+function updateVcProgress() {
+  const done = [...vcCompleted].filter(x => x > 0).length;
+  const pct = Math.round((done / VC_TOTAL) * 100);
+  const el = document.getElementById('vc-progress-text');
+  if (el) el.textContent = `${done} / ${VC_TOTAL}`;
+  const fill = document.getElementById('vc-progress-fill');
+  if (fill) fill.style.width = pct + '%';
+  const navFill = document.getElementById('vc-progress-fill-nav');
+  if (navFill) navFill.style.width = pct + '%';
+  updateDrawerProgress();
+}
 
 // ══════════════════════════════════════════════════════
 // SUPABASE AUTH & PROFILE  (v2)
@@ -7068,14 +6213,13 @@ async function loadProgressFromDB() {
       if (row.course === 'sql') lessons.forEach(l => completed.add(l));
       if (row.course === 'dev') lessons.forEach(l => devCompleted.add(l));
       if (row.course === 'pm')  lessons.forEach(l => pmCompleted.add(l));
-      if (row.course === 'py')  lessons.forEach(l => pyCompleted.add(l));
+      if (row.course === 'vc')  lessons.forEach(l => vcCompleted.add(l));
     });
     updateDrawerProgress();
     // Refresh current lesson view if inside a course
     if (typeof currentLesson !== 'undefined' && activeCourse === 'sql') showLesson(currentLesson);
     if (typeof currentDevLesson !== 'undefined' && activeCourse === 'dev') showDevLesson(currentDevLesson);
     if (typeof currentPmLesson !== 'undefined' && activeCourse === 'pm') showPmLesson(currentPmLesson);
-    if (typeof currentPyLesson !== 'undefined' && activeCourse === 'py') showPyLesson(currentPyLesson);
   } catch(e) { console.warn('loadProgressFromDB:', e.message); }
 }
 
@@ -7086,7 +6230,7 @@ async function saveProgressToDB() {
       { course: 'sql', set: completed },
       { course: 'dev', set: devCompleted },
       { course: 'pm',  set: pmCompleted },
-      { course: 'py',  set: pyCompleted },
+      { course: 'vc',  set: vcCompleted },
     ];
     for (const { course, set } of courses) {
       const lessons = [...set];
@@ -7326,19 +6470,19 @@ function fillProfileModal() {
 
   const bigAvatar = document.getElementById('profile-avatar-big');
   if (avatarUrl) {
-    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"><div class="avatar-edit-hint">✏️</div>`;
   } else {
-    bigAvatar.innerHTML = `<span id="profile-avatar-letter-big">${name[0].toUpperCase()}</span>`;
+    bigAvatar.innerHTML = `<span id="profile-avatar-letter-big">${name[0].toUpperCase()}</span><div class="avatar-edit-hint">✏️</div>`;
   }
 
   const sqlDone = typeof completed !== 'undefined' ? [...completed].filter(x=>x>0).length : 0;
   const devDone = typeof devCompleted !== 'undefined' ? [...devCompleted].filter(x=>x>0).length : 0;
   const pmDone  = typeof pmCompleted  !== 'undefined' ? [...pmCompleted].filter(x=>x>0).length : 0;
-  const pyDone  = typeof pyCompleted  !== 'undefined' ? pyCompleted.size : 0;
+  const vcDone  = typeof vcCompleted  !== 'undefined' ? [...vcCompleted].filter(x=>x>0).length : 0;
   updateProfileCard('sql', sqlDone, 13);
   updateProfileCard('dev', devDone, 12);
   updateProfileCard('pm',  pmDone,  14);
-  updateProfileCard('py',  pyDone,  16);
+  updateProfileCard('vc',  vcDone,  20);
 }
 
 function updateProfileCard(course, done, total) {
@@ -7437,7 +6581,7 @@ async function uploadAvatarFile(file) {
     await sb.from('profiles').upsert({ id: currentUser.id, avatar_url: avatarUrl });
     currentUser._profile = { ...(currentUser._profile || {}), avatar_url: avatarUrl };
     const bigAvatar = document.getElementById('profile-avatar-big');
-    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"><div class="avatar-edit-hint">✏️</div>`;
     document.getElementById('nav-avatar').innerHTML = `<img src="${avatarUrl}" alt="avatar">`;
   } catch(e) { alert('Ошибка загрузки аватара: ' + e.message); }
 }
