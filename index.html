@@ -6277,9 +6277,9 @@ async function saveProgressToDB() {
         completed_at: done >= total ? new Date().toISOString() : null,
         updated_at: new Date().toISOString()
       };
-      // Try update first, then insert if not exists
+      // maybeSingle() returns null instead of error when not found
       const { data: existing } = await sb.from('user_progress')
-        .select('id').eq('user_id', currentUser.id).eq('course', course).single();
+        .select('id').eq('user_id', currentUser.id).eq('course', course).maybeSingle();
       if (existing) {
         await sb.from('user_progress').update({
           completed_lessons: lessons,
@@ -6561,23 +6561,14 @@ async function saveProfile() {
 
 // ── AVATAR: upload OR camera ──
 function showAvatarOptions() {
-  const menu = document.getElementById('avatar-options-menu');
-  const avatar = document.getElementById('profile-avatar-big');
-  const rect = avatar.getBoundingClientRect();
-  if (menu.style.display === 'flex') {
-    menu.style.display = 'none';
-    return;
-  }
-  menu.style.display = 'flex';
-  menu.style.top = (rect.bottom + 8) + 'px';
-  menu.style.left = rect.left + 'px';
+  triggerAvatarUpload();
 }
 function triggerAvatarUpload() {
-  document.getElementById('avatar-options-menu').style.display = 'none';
+  // avatar menu removed
   document.getElementById('avatar-upload-input').click();
 }
 async function triggerCamera() {
-  document.getElementById('avatar-options-menu').style.display = 'none';
+  // avatar menu removed
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
     document.getElementById('camera-stream').srcObject = stream;
