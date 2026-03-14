@@ -6265,8 +6265,10 @@ async function loadProfile(user) {
 async function loadProgressFromDB() {
   if (!currentUser) return;
   try {
-    const { data } = await sb.from('user_progress').select('*').eq('user_id', currentUser.id);
-    if (!data || data.length === 0) return;
+    const { data, error } = await sb.from('user_progress').select('*').eq('user_id', currentUser.id);
+    console.log('loadProgressFromDB: rows=', data?.length, 'error=', error?.message);
+    if (error) { console.warn('loadProgressFromDB error:', error.message); return; }
+    if (!data || data.length === 0) { console.log('No progress in DB yet'); return; }
     // Clear local sets before loading from DB to avoid stale data
     completed.clear();
     devCompleted.clear();
@@ -6274,17 +6276,19 @@ async function loadProgressFromDB() {
     vcCompleted.clear();
     data.forEach(row => {
       const lessons = row.completed_lessons || [];
+      console.log('Loading course:', row.course, 'lessons:', lessons.length);
       if (row.course === 'sql') lessons.forEach(l => completed.add(l));
       if (row.course === 'dev') lessons.forEach(l => devCompleted.add(l));
       if (row.course === 'pm')  lessons.forEach(l => pmCompleted.add(l));
       if (row.course === 'vc')  lessons.forEach(l => vcCompleted.add(l));
     });
+    console.log('After load - dev lessons:', devCompleted.size);
     updateDrawerProgress();
     // Refresh current lesson view if inside a course
     if (typeof currentLesson !== 'undefined' && activeCourse === 'sql') showLesson(currentLesson);
     if (typeof currentDevLesson !== 'undefined' && activeCourse === 'dev') showDevLesson(currentDevLesson);
     if (typeof currentPmLesson !== 'undefined' && activeCourse === 'pm') showPmLesson(currentPmLesson);
-  } catch(e) { console.warn('loadProgressFromDB:', e.message); }
+  } catch(e) { console.warn('loadProgressFromDB exception:', e.message); }
 }
 
 async function saveProgressToDB() {
