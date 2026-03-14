@@ -1348,9 +1348,10 @@
   .pcc-icon { font-size:18px; }
   .pcc-name { font-size:13px; font-weight:600; color:var(--text2); }
   .pcc-pct { font-size:20px; font-weight:800; font-family:'Syne',sans-serif; margin-bottom:4px; }
-  .pcc-bar { height:4px; background:var(--bg); border-radius:2px; overflow:hidden; }
-  .pcc-bar-fill { height:100%; border-radius:2px; transition:width 0.4s; min-width:0; }
-  .pcc-pct::before { content: none !important; }
+  .pcc-bar { height:4px; background:var(--bg2); border-radius:2px; overflow:hidden; position:relative; }
+  .pcc-bar-fill { height:100%; border-radius:2px; transition:width 0.4s ease; }
+  .pcc-bar-fill[style*="width:0%"] { display: none; }
+  .pcc-pct::before, .pcc-pct::after { content: none !important; display: none !important; }
 
   .profile-form { display:flex; flex-direction:column; gap:14px; }
   .profile-actions {
@@ -6135,7 +6136,15 @@ function updateVcProgress() {
 const SUPABASE_URL = 'https://ynfqletcntdcbtxmohma.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_kdpWFucDyOX2WEHqhwQt6A_1ul0RAzF';
 const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true,
+    storageKey: 'pm-academy-auth',
+    storage: window.localStorage,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
 
 let currentUser = null;
 let syncTimer = null;
