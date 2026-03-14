@@ -6302,7 +6302,8 @@ async function saveProgressToDB() {
   for (const { course, set } of courses) {
     try {
       const lessons = [...set];
-      if (lessons.length === 0) continue;
+      console.log('saveProgress check:', course, 'set size:', set.size, 'lessons:', lessons);
+      if (lessons.length === 0) { console.log('Skipping', course, '- empty'); continue; }
       const total = COURSE_TOTALS[course];
       const done = lessons.filter(x => x > 0).length;
       // SELECT first to check existence, then INSERT or UPDATE
