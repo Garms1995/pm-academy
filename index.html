@@ -3510,6 +3510,7 @@ function completeAndNav(targetIdx) {
     navEl.classList.add('completed');
   }
   showLesson(targetIdx);
+  scheduleSyncProgress();
 }
 
 function completeLesson(idx) {
@@ -4321,6 +4322,7 @@ function devCompleteAndNav(targetIdx) {
     navEl.classList.add('completed');
   }
   showDevLesson(targetIdx);
+  scheduleSyncProgress();
 }
 
 function devCompleteFinal() {
@@ -5105,6 +5107,7 @@ function pmCompleteAndNav(targetIdx) {
     navEl.classList.add('completed');
   }
   showPmLesson(targetIdx);
+  scheduleSyncProgress();
 }
 
 function pmCompleteFinal() {
@@ -6136,11 +6139,30 @@ function updateVcProgress() {
 const SUPABASE_URL = 'https://ynfqletcntdcbtxmohma.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_kdpWFucDyOX2WEHqhwQt6A_1ul0RAzF';
 const { createClient } = supabase;
+// Safari ITP fix: try localStorage, fall back to sessionStorage
+const safariSafeStorage = {
+  getItem: (key) => {
+    try { return localStorage.getItem(key); } catch(e) {
+      try { return sessionStorage.getItem(key); } catch(e2) { return null; }
+    }
+  },
+  setItem: (key, value) => {
+    try { localStorage.setItem(key, value); } catch(e) {
+      try { sessionStorage.setItem(key, value); } catch(e2) {}
+    }
+  },
+  removeItem: (key) => {
+    try { localStorage.removeItem(key); } catch(e) {
+      try { sessionStorage.removeItem(key); } catch(e2) {}
+    }
+  }
+};
+
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     persistSession: true,
-    storageKey: 'pm-academy-auth',
-    storage: window.localStorage,
+    storageKey: 'pm-academy-auth-v2',
+    storage: safariSafeStorage,
     autoRefreshToken: true,
     detectSessionInUrl: true
   }
@@ -6148,7 +6170,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 
 let currentUser = null;
 let syncTimer = null;
-const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, py: 16 };
+const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, vc: 20 };
 
 // ── INIT ──
 (async function initAuth() {
@@ -6193,7 +6215,7 @@ const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, py: 16 };
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden' && currentUser) saveProgressToDB();
   });
-  window.addEventListener('beforeunload', () => {
+  window.addEventListener('pagehide', () => {
     if (currentUser) saveProgressToDB();
   });
 })();
@@ -6254,13 +6276,13 @@ async function saveProgressToDB() {
   } catch(e) { console.warn('saveProgressToDB:', e.message); }
 }
 
-// Debounced sync — вызывается после каждого урока, но не чаще чем раз в 30 сек
+// Save progress immediately after each lesson (no delay)
 function scheduleSyncProgress() {
-  if (syncTimer) return;
+  if (syncTimer) clearTimeout(syncTimer);
   syncTimer = setTimeout(async () => {
     await saveProgressToDB();
     syncTimer = null;
-  }, 30000);
+  }, 1500); // 1.5 sec debounce to avoid rapid duplicate calls
 }
 function clearSyncTimer() {
   if (syncTimer) { clearTimeout(syncTimer); syncTimer = null; }
