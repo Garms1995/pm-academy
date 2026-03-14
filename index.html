@@ -6198,6 +6198,7 @@ const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, vc: 20 };
       await trackActivity();
       renderLoggedIn();
       closeAuthModal();
+      setTimeout(() => testDBWrite(), 2000); // diagnostic
       // Show onboarding if name not set
       const profile = currentUser._profile || {};
       const hasName = profile.name && profile.name.trim() && profile.name !== currentUser.email.split('@')[0];
@@ -6219,6 +6220,35 @@ const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, vc: 20 };
     if (currentUser) saveProgressToDB();
   });
 })();
+
+// ── DIAGNOSTIC: test write access ──
+async function testDBWrite() {
+  if (!currentUser) return;
+  console.log('Testing DB write for user:', currentUser.id);
+  try {
+    // Simple insert test
+    const { data, error } = await sb
+      .from('user_progress')
+      .insert({
+        user_id: currentUser.id,
+        course: 'test_diagnostic',
+        completed_lessons: [0],
+        updated_at: new Date().toISOString()
+      });
+    if (error) {
+      console.error('❌ Write test FAILED:', JSON.stringify(error));
+    } else {
+      console.log('✅ Write test PASSED');
+      // Clean up test row
+      await sb.from('user_progress')
+        .delete()
+        .eq('user_id', currentUser.id)
+        .eq('course', 'test_diagnostic');
+    }
+  } catch(e) {
+    console.error('❌ Write test EXCEPTION:', e.message);
+  }
+}
 
 // ── PROFILE LOAD ──
 async function loadProfile(user) {
