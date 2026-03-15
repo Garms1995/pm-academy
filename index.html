@@ -1528,7 +1528,10 @@
   .profile-section-title:first-child { margin-top: 0; }
 
   .profile-progress-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .profile-progress-col {
+    flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0;
   }
   .profile-course-card {
     background: var(--bg3); border: 1px solid var(--border);
@@ -1659,6 +1662,66 @@
   }
   .btn-cert-close:hover { color: var(--text); }
 
+  /* ── Profile course card notes panel ── */
+  .pcc-notes-toggle {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; color: var(--text3);
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid var(--border);
+    cursor: pointer; user-select: none;
+    transition: color 0.15s;
+  }
+  .pcc-notes-toggle:hover { color: var(--accent2); }
+  .pcc-notes-toggle .pcc-notes-count {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1px 7px;
+    font-size: 10px; font-weight: 700; color: var(--text2);
+  }
+  .pcc-notes-toggle .pcc-notes-arrow { margin-left: auto; transition: transform 0.2s; font-size: 10px; }
+  .pcc-notes-toggle.open .pcc-notes-arrow { transform: rotate(180deg); }
+  .pcc-notes-list { display: none; margin-top: 8px; }
+  .pcc-notes-list.open { display: flex; flex-direction: column; gap: 4px; }
+  .pcc-note-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 7px 10px; border-radius: 8px;
+    background: var(--bg2); cursor: pointer;
+    transition: background 0.15s; text-align: left;
+    border: 1px solid transparent;
+  }
+  .pcc-note-item:hover { background: rgba(123,111,255,0.08); border-color: rgba(123,111,255,0.2); }
+  .pcc-note-lesson { font-size: 11px; font-weight: 600; color: var(--text2); white-space: nowrap; flex-shrink: 0; }
+  .pcc-note-preview { font-size: 11px; color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+
+  /* ── Profile certificates section ── */
+  .profile-certs-section { margin-top: 24px; }
+  .profile-cert-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .profile-cert-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px;
+    transition: border-color 0.15s;
+  }
+  .profile-cert-item:hover { border-color: var(--accent2); }
+  .profile-cert-badge {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .profile-cert-info { flex: 1; min-width: 0; }
+  .profile-cert-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .profile-cert-date { font-size: 11px; color: var(--text3); }
+  .btn-profile-cert-dl {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 12px;
+    font-family: 'Instrument Sans', sans-serif; font-size: 12px;
+    font-weight: 600; color: var(--text2); cursor: pointer;
+    transition: all 0.15s; flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .btn-profile-cert-dl:hover { color: var(--accent); border-color: rgba(79,255,176,0.3); background: rgba(79,255,176,0.05); }
+  .profile-certs-empty { font-size: 13px; color: var(--text3); padding: 12px 0; }
+
   .profile-form { display:flex; flex-direction:column; gap:14px; }
   .profile-actions {
     display:flex; gap:10px; padding: 0 32px 28px; margin-top: 4px;
@@ -1694,7 +1757,8 @@
     .profile-header { padding:20px 20px 18px; }
     .profile-body { padding:16px 20px; }
     .profile-actions { padding:0 20px 20px; }
-    .profile-progress-grid { grid-template-columns:1fr 1fr; }
+    .profile-progress-grid { flex-direction: column; }
+    .profile-progress-col { width: 100%; }
     .profile-save-msg { padding:0 20px 12px; }
   }
 </style>
@@ -1828,30 +1892,63 @@
         <span class="avg-time-label">мин/день среднее время занятий</span>
       </div>
       <div class="profile-progress-grid">
-        <div class="profile-course-card" onclick="goToCourseFromProfile('sql')">
-          <div class="pcc-head"><span class="pcc-icon">🗄️</span><span class="pcc-name">SQL</span></div>
+        <div class="profile-progress-col">
+        <div class="profile-course-card" id="pcc-sql-card">
+          <div class="pcc-head" onclick="goToCourseFromProfile('sql')"><span class="pcc-icon">🗄️</span><span class="pcc-name">SQL</span></div>
           <div class="pcc-pct" id="pcc-sql-pct" style="color:var(--accent)">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-sql-fill" style="background:var(--accent);width:0%"></div></div>
-          <div class="pcc-action" id="pcc-sql-action">Начать →</div>
+          <div class="pcc-action" id="pcc-sql-action" onclick="goToCourseFromProfile('sql')">Начать →</div>
+          <div class="pcc-notes-toggle" id="pcc-sql-notes-toggle" onclick="toggleProfileNotes('sql', event)" style="display:none">
+            <span>📝</span><span>Заметки</span>
+            <span class="pcc-notes-count" id="pcc-sql-notes-count">0</span>
+            <span class="pcc-notes-arrow">▼</span>
+          </div>
+          <div class="pcc-notes-list" id="pcc-sql-notes-list"></div>
         </div>
-        <div class="profile-course-card" onclick="goToCourseFromProfile('dev')">
-          <div class="pcc-head"><span class="pcc-icon">💻</span><span class="pcc-name">Разработка ПО</span></div>
-          <div class="pcc-pct" id="pcc-dev-pct" style="color:#ff9966">0%</div>
-          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-dev-fill" style="background:#ff9966;width:0%"></div></div>
-          <div class="pcc-action" id="pcc-dev-action">Начать →</div>
-        </div>
-        <div class="profile-course-card" onclick="goToCourseFromProfile('pm')">
-          <div class="pcc-head"><span class="pcc-icon">📋</span><span class="pcc-name">Управление проектами</span></div>
+        <div class="profile-course-card" id="pcc-pm-card">
+          <div class="pcc-head" onclick="goToCourseFromProfile('pm')"><span class="pcc-icon">📋</span><span class="pcc-name">Управление проектами</span></div>
           <div class="pcc-pct" id="pcc-pm-pct" style="color:#a855f7">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-pm-fill" style="background:#a855f7;width:0%"></div></div>
-          <div class="pcc-action" id="pcc-pm-action">Начать →</div>
+          <div class="pcc-action" id="pcc-pm-action" onclick="goToCourseFromProfile('pm')">Начать →</div>
+          <div class="pcc-notes-toggle" id="pcc-pm-notes-toggle" onclick="toggleProfileNotes('pm', event)" style="display:none">
+            <span>📝</span><span>Заметки</span>
+            <span class="pcc-notes-count" id="pcc-pm-notes-count">0</span>
+            <span class="pcc-notes-arrow">▼</span>
+          </div>
+          <div class="pcc-notes-list" id="pcc-pm-notes-list"></div>
         </div>
-        <div class="profile-course-card" onclick="goToCourseFromProfile('vc')">
-          <div class="pcc-head"><span class="pcc-icon">🤖</span><span class="pcc-name">Vibe Coding</span></div>
+        </div>
+        <div class="profile-progress-col">
+        <div class="profile-course-card" id="pcc-dev-card">
+          <div class="pcc-head" onclick="goToCourseFromProfile('dev')"><span class="pcc-icon">💻</span><span class="pcc-name">Разработка ПО</span></div>
+          <div class="pcc-pct" id="pcc-dev-pct" style="color:#ff9966">0%</div>
+          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-dev-fill" style="background:#ff9966;width:0%"></div></div>
+          <div class="pcc-action" id="pcc-dev-action" onclick="goToCourseFromProfile('dev')">Начать →</div>
+          <div class="pcc-notes-toggle" id="pcc-dev-notes-toggle" onclick="toggleProfileNotes('dev', event)" style="display:none">
+            <span>📝</span><span>Заметки</span>
+            <span class="pcc-notes-count" id="pcc-dev-notes-count">0</span>
+            <span class="pcc-notes-arrow">▼</span>
+          </div>
+          <div class="pcc-notes-list" id="pcc-dev-notes-list"></div>
+        </div>
+        <div class="profile-course-card" id="pcc-vc-card">
+          <div class="pcc-head" onclick="goToCourseFromProfile('vc')"><span class="pcc-icon">🤖</span><span class="pcc-name">Vibe Coding</span></div>
           <div class="pcc-pct" id="pcc-vc-pct" style="color:#ec4899">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-vc-fill" style="background:#ec4899;width:0%"></div></div>
-          <div class="pcc-action" id="pcc-vc-action">Начать →</div>
+          <div class="pcc-action" id="pcc-vc-action" onclick="goToCourseFromProfile('vc')">Начать →</div>
+          <div class="pcc-notes-toggle" id="pcc-vc-notes-toggle" onclick="toggleProfileNotes('vc', event)" style="display:none">
+            <span>📝</span><span>Заметки</span>
+            <span class="pcc-notes-count" id="pcc-vc-notes-count">0</span>
+            <span class="pcc-notes-arrow">▼</span>
+          </div>
+          <div class="pcc-notes-list" id="pcc-vc-notes-list"></div>
         </div>
+        </div>
+      </div>
+      <!-- Certificates section -->
+      <div class="profile-certs-section" id="profile-certs-section" style="display:none">
+        <div class="profile-section-title">🎓 Мои сертификаты</div>
+        <div class="profile-cert-list" id="profile-cert-list"></div>
       </div>
       <div class="profile-section-title" style="margin-top:24px">✏️ Редактировать профиль</div>
       <div class="profile-form">
@@ -6861,6 +6958,12 @@ async function loadProgressFromDB() {
       if (row.course === 'dev') lessons.forEach(l => devCompleted.add(l));
       if (row.course === 'pm')  lessons.forEach(l => pmCompleted.add(l));
       if (row.course === 'vc')  lessons.forEach(l => vcCompleted.add(l));
+      // Restore cert date from completed_at
+      if (row.completed_at && typeof earnedCertificates !== 'undefined') {
+        earnedCertificates[row.course] = {
+          date: new Date(row.completed_at).toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' })
+        };
+      }
     });
     updateDrawerProgress();
     // Restore all sidebar checkmarks from loaded data
@@ -6868,7 +6971,7 @@ async function loadProgressFromDB() {
     // Restore last lesson positions
     restoreLastLessons(data);
     // Load notes
-    loadAllNotes();
+    await loadAllNotes();
     // Refresh current lesson view if inside a course
     if (typeof currentLesson !== 'undefined' && activeCourse === 'sql') showLesson(currentLesson);
     if (typeof currentDevLesson !== 'undefined' && activeCourse === 'dev') showDevLesson(currentDevLesson);
@@ -7250,6 +7353,11 @@ function fillProfileModal() {
   updateProfileCard('pm',  pmDone,  14);
   updateProfileCard('vc',  vcDone,  20);
 
+  // Fill notes panels on cards
+  fillProfileNotes();
+  // Fill certificates section
+  fillProfileCertificates();
+
   // Load streak + visit_count (always works, no new columns needed)
   sb.from('user_activity').select('streak_days,visit_count').eq('user_id', user.id).single().then(({ data }) => {
     const row = document.getElementById('profile-streak-row');
@@ -7442,8 +7550,168 @@ document.addEventListener('keydown', e => {
 });
 
 // ══════════════════════════════════════════════════════
-// TASK 1 — RESET COURSE PROGRESS
+// PROFILE NOTES PANEL
 // ══════════════════════════════════════════════════════
+
+const COURSE_META = {
+  sql: { name: 'SQL для PM',                          accent: '#4fffb0', icon: '🗄️', total: 13 },
+  dev: { name: 'Разработка ПО',                       accent: '#ff9966', icon: '💻', total: 12 },
+  pm:  { name: 'Управление проектами',                accent: '#a855f7', icon: '📋', total: 14 },
+  vc:  { name: 'Vibe Coding: от идеи до продакшна',   accent: '#ec4899', icon: '🤖', total: 20 },
+};
+
+// Get lesson title from sidebar DOM
+function getLessonTitle(course, idx) {
+  const prefix = course === 'sql' ? 'nav-' : course + '-nav-';
+  const el = document.getElementById(prefix + idx);
+  if (!el) return 'Урок ' + idx;
+  // Get last <span> text (the title span)
+  const spans = el.querySelectorAll('span:not(.check-badge):not(.note-dot):not(.item-num):not(.item-icon)');
+  if (spans.length > 0) return spans[spans.length - 1].textContent.trim();
+  return 'Урок ' + idx;
+}
+
+function fillProfileNotes() {
+  ['sql','dev','pm','vc'].forEach(course => {
+    const courseNotes = Object.keys(notesCache)
+      .filter(key => key.startsWith(course + ':') && notesCache[key]?.trim())
+      .map(key => ({ idx: parseInt(key.split(':')[1]), text: notesCache[key] }))
+      .sort((a, b) => a.idx - b.idx);
+
+    const toggle = document.getElementById('pcc-' + course + '-notes-toggle');
+    const list   = document.getElementById('pcc-' + course + '-notes-list');
+    const count  = document.getElementById('pcc-' + course + '-notes-count');
+
+    if (!toggle || !list || !count) return;
+
+    if (courseNotes.length === 0) {
+      toggle.style.display = 'none';
+      list.innerHTML = '';
+      return;
+    }
+
+    toggle.style.display = 'flex';
+    count.textContent = courseNotes.length;
+
+    list.innerHTML = courseNotes.map(({ idx, text }) => {
+      const title = getLessonTitle(course, idx);
+      const preview = text.replace(/\n/g, ' ').slice(0, 60) + (text.length > 60 ? '…' : '');
+      return `<button class="pcc-note-item" onclick="goToNoteLesson('${course}', ${idx})">
+        <span class="pcc-note-lesson">Урок ${idx}</span>
+        <span class="pcc-note-preview">${title} — ${preview}</span>
+      </button>`;
+    }).join('');
+  });
+}
+
+function toggleProfileNotes(course, e) {
+  if (e) e.stopPropagation();
+  const toggle = document.getElementById('pcc-' + course + '-notes-toggle');
+  const list   = document.getElementById('pcc-' + course + '-notes-list');
+  if (!toggle || !list) return;
+  const isOpen = list.classList.contains('open');
+  toggle.classList.toggle('open', !isOpen);
+  list.classList.toggle('open', !isOpen);
+}
+
+function goToNoteLesson(course, idx) {
+  closeProfileModal();
+  showCourse(course);
+  // Wait for course to render then jump to specific lesson
+  setTimeout(() => {
+    if (course === 'sql') showLesson(idx);
+    if (course === 'dev') showDevLesson(idx);
+    if (course === 'pm')  showPmLesson(idx);
+    if (course === 'vc')  showVcLesson(idx);
+    // Auto-open notes block on that lesson
+    setTimeout(() => {
+      const header = document.getElementById(`notes-header-${course}-${idx}`);
+      const body   = document.getElementById(`notes-body-${course}-${idx}`);
+      if (header && body && !body.classList.contains('open')) {
+        header.classList.add('open');
+        body.classList.add('open');
+        body.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 150);
+  }, 100);
+}
+
+// ══════════════════════════════════════════════════════
+// PROFILE CERTIFICATES
+// ══════════════════════════════════════════════════════
+
+// Stores earned certs: course → { date }
+const earnedCertificates = {};
+
+function markCertEarned(course) {
+  if (!earnedCertificates[course]) {
+    earnedCertificates[course] = {
+      date: new Date().toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' })
+    };
+  }
+}
+
+function fillProfileCertificates() {
+  const section = document.getElementById('profile-certs-section');
+  const list    = document.getElementById('profile-cert-list');
+  if (!section || !list) return;
+
+  // Check which courses are 100% complete
+  const earned = [];
+  const totals = { sql: 13, dev: 12, pm: 14, vc: 20 };
+  const sets   = { sql: completed, dev: devCompleted, pm: pmCompleted, vc: vcCompleted };
+
+  Object.keys(totals).forEach(course => {
+    const done = typeof sets[course] !== 'undefined'
+      ? [...sets[course]].filter(x => x > 0).length : 0;
+    if (done >= totals[course]) {
+      markCertEarned(course);
+      earned.push(course);
+    }
+  });
+
+  if (earned.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  list.innerHTML = earned.map(course => {
+    const meta = COURSE_META[course];
+    const certDate = earnedCertificates[course]?.date || 'Дата не указана';
+    return `<div class="profile-cert-item">
+      <div class="profile-cert-badge" style="background:${meta.accent}22;border:1px solid ${meta.accent}44">
+        ${meta.icon}
+      </div>
+      <div class="profile-cert-info">
+        <div class="profile-cert-name">${meta.name}</div>
+        <div class="profile-cert-date">Получен: ${certDate}</div>
+      </div>
+      <button class="btn-profile-cert-dl" onclick="downloadCertFromProfile('${course}')">
+        ⬇ Скачать
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function downloadCertFromProfile(course) {
+  const meta = COURSE_META[course];
+  const name = currentUser?._profile?.name || currentUser?.email?.split('@')[0] || 'Пользователь';
+  const certDate = earnedCertificates[course]?.date ||
+    new Date().toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  // Draw certificate to temp canvas directly (no modal needed)
+  const W = 900, H = 600;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  _drawCertToContext(ctx, W, H, name, meta.name, meta.accent, certDate);
+
+  const link = document.createElement('a');
+  link.download = `pm_academy_certificate_${course}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
 
 async function resetCourseProgress(course) {
   const names = { sql: 'SQL для PM', dev: 'Разработка ПО', pm: 'Управление проектами', vc: 'Vibe Coding' };
@@ -7545,94 +7813,49 @@ function handleCertOverlayClick(e) {
   if (e.target === document.getElementById('cert-overlay')) closeCertificate();
 }
 
+// Shared drawing logic — used by both drawCertificate (modal) and downloadCertFromProfile
+function _drawCertToContext(ctx, W, H, userName, courseName, accentColor, dateStr) {
+  ctx.fillStyle = '#0d0f14';
+  ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = accentColor;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(16, 16, W - 32, H - 32);
+  ctx.strokeStyle = accentColor + '33';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(26, 26, W - 52, H - 52);
+  const corners = [[30,30],[W-30,30],[30,H-30],[W-30,H-30]];
+  corners.forEach(([x,y]) => {
+    ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = accentColor; ctx.fill();
+  });
+  const grad = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, 300);
+  grad.addColorStop(0, accentColor + '22'); grad.addColorStop(1, 'transparent');
+  ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+  ctx.font = '56px serif'; ctx.textAlign = 'center';
+  ctx.fillText('🎓', W/2, 140);
+  ctx.font = 'bold 13px sans-serif'; ctx.fillStyle = accentColor;
+  const certLabel = 'СЕРТИФИКАТ О ПРОХОЖДЕНИИ';
+  const letterGap = 4;
+  const totalWidth = ctx.measureText(certLabel).width + (certLabel.length - 1) * letterGap;
+  let lx = W/2 - totalWidth/2;
+  for (const ch of certLabel) { ctx.fillText(ch, lx, 175); lx += ctx.measureText(ch).width + letterGap; }
+  ctx.font = 'bold 32px sans-serif'; ctx.fillStyle = '#e8eaf0'; ctx.fillText(courseName, W/2, 240);
+  ctx.beginPath(); ctx.moveTo(W/2 - 120, 262); ctx.lineTo(W/2 + 120, 262);
+  ctx.strokeStyle = accentColor + '66'; ctx.lineWidth = 1; ctx.stroke();
+  ctx.font = '15px sans-serif'; ctx.fillStyle = '#8890a8'; ctx.fillText('выдан', W/2, 295);
+  ctx.font = 'bold 38px sans-serif'; ctx.fillStyle = '#ffffff'; ctx.fillText(userName, W/2, 350);
+  ctx.font = '14px sans-serif'; ctx.fillStyle = '#5a6278'; ctx.fillText(dateStr, W/2, 395);
+  ctx.font = 'bold 16px sans-serif'; ctx.fillStyle = accentColor; ctx.fillText('● PM Academy', W/2, H - 48);
+  ctx.font = '12px sans-serif'; ctx.fillStyle = '#3a4055';
+  ctx.fillText('garms1995.github.io/pm-academy', W/2, H - 28);
+}
+
 function drawCertificate(userName, courseName, accentColor, dateStr) {
   const W = 900, H = 600;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
-
-  // Background
-  ctx.fillStyle = '#0d0f14';
-  ctx.fillRect(0, 0, W, H);
-
-  // Outer border
-  ctx.strokeStyle = accentColor;
-  ctx.lineWidth = 2;
-  ctx.strokeRect(16, 16, W - 32, H - 32);
-
-  // Inner decorative border
-  ctx.strokeStyle = accentColor + '33';
-  ctx.lineWidth = 1;
-  ctx.strokeRect(26, 26, W - 52, H - 52);
-
-  // Corner accents
-  const corners = [[30,30],[W-30,30],[30,H-30],[W-30,H-30]];
-  corners.forEach(([x,y]) => {
-    ctx.beginPath();
-    ctx.arc(x, y, 5, 0, Math.PI * 2);
-    ctx.fillStyle = accentColor;
-    ctx.fill();
-  });
-
-  // Glow top center
-  const grad = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, 300);
-  grad.addColorStop(0, accentColor + '22');
-  grad.addColorStop(1, 'transparent');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
-
-  // Badge icon
-  ctx.font = '56px serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('🎓', W/2, 140);
-
-  // "СЕРТИФИКАТ" label — manual letter spacing for cross-browser support
-  ctx.font = 'bold 13px sans-serif';
-  ctx.fillStyle = accentColor;
-  const certLabel = 'СЕРТИФИКАТ О ПРОХОЖДЕНИИ';
-  const letterGap = 4;
-  const totalWidth = ctx.measureText(certLabel).width + (certLabel.length - 1) * letterGap;
-  let lx = W/2 - totalWidth/2;
-  for (const ch of certLabel) {
-    ctx.fillText(ch, lx, 175);
-    lx += ctx.measureText(ch).width + letterGap;
-  }
-
-  // Course name
-  ctx.font = 'bold 32px sans-serif';
-  ctx.fillStyle = '#e8eaf0';
-  ctx.fillText(courseName, W/2, 240);
-
-  // Divider
-  ctx.beginPath();
-  ctx.moveTo(W/2 - 120, 262); ctx.lineTo(W/2 + 120, 262);
-  ctx.strokeStyle = accentColor + '66'; ctx.lineWidth = 1; ctx.stroke();
-
-  // "выдан" text
-  ctx.font = '15px sans-serif';
-  ctx.fillStyle = '#8890a8';
-  ctx.fillText('выдан', W/2, 295);
-
-  // User name
-  ctx.font = 'bold 38px sans-serif';
-  ctx.fillStyle = '#ffffff';
-  ctx.fillText(userName, W/2, 350);
-
-  // Date
-  ctx.font = '14px sans-serif';
-  ctx.fillStyle = '#5a6278';
-  ctx.fillText(dateStr, W/2, 395);
-
-  // Bottom brand
-  ctx.font = 'bold 16px sans-serif';
-  ctx.fillStyle = accentColor;
-  ctx.fillText('● PM Academy', W/2, H - 48);
-
-  ctx.font = '12px sans-serif';
-  ctx.fillStyle = '#3a4055';
-  ctx.fillText('garms1995.github.io/pm-academy', W/2, H - 28);
-
-  // Place canvas in modal
+  _drawCertToContext(ctx, W, H, userName, courseName, accentColor, dateStr);
   const wrap = document.getElementById('cert-canvas-wrap');
   wrap.innerHTML = '';
   wrap.appendChild(canvas);
@@ -7648,14 +7871,18 @@ function downloadCertificate() {
   link.click();
 }
 
-// Patch showCompletion to store cert data
+// Single combined showCompletion patch — stores cert data AND marks cert as earned
 const _origShowCompletion = showCompletion;
 showCompletion = function(courseName, totalLessons, accentColor) {
+  // Store cert data for modal download
   currentCertData = {
     courseName,
     accentColor,
     date: new Date().toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' })
   };
+  // Mark cert as earned for profile section
+  const courseKey = Object.keys(COURSE_META).find(k => COURSE_META[k].name === courseName);
+  if (courseKey) markCertEarned(courseKey);
   _origShowCompletion(courseName, totalLessons, accentColor);
 };
 
