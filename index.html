@@ -7748,10 +7748,11 @@ async function handleRegister() {
 
 // ── SIGN OUT ──
 async function handleSignOut() {
-  await flushSessionTime();
-  await saveProgressToDB();
-  await sb.auth.signOut();
+  // Закрываем профиль сразу — пользователь видит мгновенный отклик
   closeProfileModal();
+  // Параллельно сохраняем всё что нужно, потом выходим
+  await Promise.allSettled([flushSessionTime(), saveProgressToDB()]);
+  await sb.auth.signOut();
 }
 
 // ── PROFILE MODAL ──
