@@ -1702,10 +1702,11 @@
   .profile-section-title:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 
   .profile-progress-grid {
-    display: flex; gap: 10px; align-items: flex-start;
-  }
-  .profile-progress-col {
-    flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    max-width: 380px;
+    margin: 0 auto;
   }
   .profile-course-card {
     background: var(--bg3); border: 1px solid var(--border);
@@ -1715,23 +1716,22 @@
     overflow: hidden;
   }
   .profile-course-card:hover { border-color: var(--accent2); background: rgba(123,111,255,0.05); }
-  /* Fixed top section — always same height */
+  /* Compact top section */
   .pcc-top {
-    padding: 14px 16px;
-    min-height: 110px;
+    padding: 12px 14px;
     display: flex; flex-direction: column;
   }
-  .pcc-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
-  .pcc-icon { font-size:18px; }
-  .pcc-name { font-size:13px; font-weight:600; color:var(--text2); flex:1; }
-  .pcc-pct { font-size:20px; font-weight:800; font-family:'Syne',sans-serif; margin-bottom:4px; }
-  .pcc-bar { height:4px; background:var(--bg2); border-radius:2px; overflow:hidden; position:relative; }
+  .pcc-head { display:flex; align-items:center; gap:7px; margin-bottom:8px; }
+  .pcc-icon { font-size:16px; }
+  .pcc-name { font-size:12px; font-weight:600; color:var(--text2); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .pcc-pct { font-size:18px; font-weight:800; font-family:'Syne',sans-serif; margin-bottom:4px; }
+  .pcc-bar { height:3px; background:var(--bg2); border-radius:2px; overflow:hidden; position:relative; }
   .pcc-bar-fill { height:100%; border-radius:2px; transition:width 0.4s ease; }
   .pcc-bar-fill[style*="width:0%"] { display: none; }
   .pcc-pct::before, .pcc-pct::after { content: none !important; display: none !important; }
   .pcc-action {
     font-size:11px; font-weight:600; color:var(--text3);
-    margin-top:auto; padding-top:8px; letter-spacing:0.02em; transition:color 0.15s;
+    margin-top:6px; letter-spacing:0.02em; transition:color 0.15s;
   }
   .profile-course-card:hover .pcc-action { color: var(--accent2); }
   /* Notes pin button in profile card header */
@@ -2056,8 +2056,8 @@
     .profile-header { padding:20px 20px 18px; }
     .profile-body { padding:16px 20px; }
     .profile-actions { padding:0 20px 20px; }
-    .profile-progress-grid { flex-direction: column; }
-    .profile-progress-col { width: 100%; }
+    .profile-progress-grid { max-width: 100%; }
+    .profile-progress-col { display: contents; }
     .profile-save-msg { padding:0 20px 12px; }
   }
 </style>
@@ -2225,7 +2225,6 @@
         <span class="avg-time-label">мин/день среднее время занятий</span>
       </div>
       <div class="profile-progress-grid">
-        <div class="profile-progress-col">
         <div class="profile-course-card" id="pcc-sql-card">
           <div class="pcc-top">
             <div class="pcc-head" onclick="goToCourseFromProfile('sql')">
@@ -2240,6 +2239,22 @@
             <div class="pcc-pct" id="pcc-sql-pct" style="color:var(--accent)">0%</div>
             <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-sql-fill" style="background:var(--accent);width:0%"></div></div>
             <div class="pcc-action" id="pcc-sql-action" onclick="goToCourseFromProfile('sql')">Начать →</div>
+          </div>
+        </div>
+        <div class="profile-course-card" id="pcc-dev-card">
+          <div class="pcc-top">
+            <div class="pcc-head" onclick="goToCourseFromProfile('dev')">
+              <span class="pcc-icon">💻</span><span class="pcc-name">Разработка ПО</span>
+              <div class="pcc-notes-pin" id="pcc-dev-pin" style="display:none">
+                <button class="btn-pcc-notes" onclick="togglePccNotes('dev', event)">
+                  📌 <span class="pin-count" id="pcc-dev-notes-count">0</span>
+                </button>
+                <div class="pcc-notes-dropdown" id="pcc-dev-notes-list"></div>
+              </div>
+            </div>
+            <div class="pcc-pct" id="pcc-dev-pct" style="color:#ff9966">0%</div>
+            <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-dev-fill" style="background:#ff9966;width:0%"></div></div>
+            <div class="pcc-action" id="pcc-dev-action" onclick="goToCourseFromProfile('dev')">Начать →</div>
           </div>
         </div>
         <div class="profile-course-card" id="pcc-pm-card">
@@ -2258,24 +2273,6 @@
             <div class="pcc-action" id="pcc-pm-action" onclick="goToCourseFromProfile('pm')">Начать →</div>
           </div>
         </div>
-        </div>
-        <div class="profile-progress-col">
-        <div class="profile-course-card" id="pcc-dev-card">
-          <div class="pcc-top">
-            <div class="pcc-head" onclick="goToCourseFromProfile('dev')">
-              <span class="pcc-icon">💻</span><span class="pcc-name">Разработка ПО</span>
-              <div class="pcc-notes-pin" id="pcc-dev-pin" style="display:none">
-                <button class="btn-pcc-notes" onclick="togglePccNotes('dev', event)">
-                  📌 <span class="pin-count" id="pcc-dev-notes-count">0</span>
-                </button>
-                <div class="pcc-notes-dropdown" id="pcc-dev-notes-list"></div>
-              </div>
-            </div>
-            <div class="pcc-pct" id="pcc-dev-pct" style="color:#ff9966">0%</div>
-            <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-dev-fill" style="background:#ff9966;width:0%"></div></div>
-            <div class="pcc-action" id="pcc-dev-action" onclick="goToCourseFromProfile('dev')">Начать →</div>
-          </div>
-        </div>
         <div class="profile-course-card" id="pcc-vc-card">
           <div class="pcc-top">
             <div class="pcc-head" onclick="goToCourseFromProfile('vc')">
@@ -2291,7 +2288,6 @@
             <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-vc-fill" style="background:#ec4899;width:0%"></div></div>
             <div class="pcc-action" id="pcc-vc-action" onclick="goToCourseFromProfile('vc')">Начать →</div>
           </div>
-        </div>
         </div>
       </div>
       <!-- Certificates section -->
