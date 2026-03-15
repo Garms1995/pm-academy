@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PM Academy — SQL & Разработка ПО</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.99.1"></script>
 <style>
   :root {
     --bg: #0d0f14;
@@ -2185,7 +2185,7 @@
       <div class="form-group">
         <label class="form-label">Пароль</label>
         <div class="password-wrap">
-          <input class="form-input" type="password" id="reg-password" placeholder="Минимум 6 символов" autocomplete="new-password">
+          <input class="form-input" type="password" id="reg-password" placeholder="Минимум 8 символов" autocomplete="new-password">
           <button type="button" class="btn-pw-toggle" onclick="togglePwVisibility('reg-password', this)" tabindex="-1">👁</button>
         </div>
       </div>
@@ -2299,7 +2299,7 @@
       <div class="profile-form">
         <div class="form-group">
           <label class="form-label">Имя</label>
-          <input class="form-input" type="text" id="profile-name-input" placeholder="Ваше имя">
+          <input class="form-input" type="text" id="profile-name-input" placeholder="Ваше имя" maxlength="100">
         </div>
       </div>
     </div>
@@ -2332,7 +2332,7 @@
     <div class="auth-form">
       <div class="form-group">
         <label class="form-label">Ваше имя</label>
-        <input class="form-input" type="text" id="onboarding-name-input" placeholder="Например: Андрей" autocomplete="name">
+        <input class="form-input" type="text" id="onboarding-name-input" placeholder="Например: Андрей" autocomplete="name" maxlength="100">
       </div>
       <div id="onboarding-error" style="font-size:13px;color:#ff6b6b;display:none;margin-top:-4px"></div>
       <button class="btn-auth-submit" id="btn-onboarding-submit" onclick="handleOnboardingSubmit()" style="margin-top:8px;font-size:15px;padding:14px">
@@ -2593,7 +2593,7 @@
     <aside class="lesson-notes-panel" id="sql-notes-panel">
       <div class="lesson-notes-panel-header">📝 Заметки к уроку</div>
       <div class="lesson-notes-panel-body">
-        <textarea id="sql-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..."></textarea>
+        <textarea id="sql-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..." maxlength="5000"></textarea>
         <div class="lesson-notes-panel-status" id="sql-notes-status">Начните вводить — сохраняется автоматически</div>
       </div>
     </aside>
@@ -2676,7 +2676,7 @@
       <aside class="lesson-notes-panel" id="dev-notes-panel">
         <div class="lesson-notes-panel-header">📝 Заметки к уроку</div>
         <div class="lesson-notes-panel-body">
-          <textarea id="dev-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..."></textarea>
+          <textarea id="dev-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..." maxlength="5000"></textarea>
           <div class="lesson-notes-panel-status" id="dev-notes-status">Начните вводить — сохраняется автоматически</div>
         </div>
       </aside>
@@ -2754,7 +2754,7 @@
       <aside class="lesson-notes-panel" id="pm-notes-panel">
         <div class="lesson-notes-panel-header">📝 Заметки к уроку</div>
         <div class="lesson-notes-panel-body">
-          <textarea id="pm-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..."></textarea>
+          <textarea id="pm-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..." maxlength="5000"></textarea>
           <div class="lesson-notes-panel-status" id="pm-notes-status">Начните вводить — сохраняется автоматически</div>
         </div>
       </aside>
@@ -2809,7 +2809,7 @@
       <aside class="lesson-notes-panel" id="vc-notes-panel">
         <div class="lesson-notes-panel-header">📝 Заметки к уроку</div>
         <div class="lesson-notes-panel-body">
-          <textarea id="vc-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..."></textarea>
+          <textarea id="vc-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..." maxlength="5000"></textarea>
           <div class="lesson-notes-panel-status" id="vc-notes-status">Начните вводить — сохраняется автоматически</div>
         </div>
       </aside>
@@ -7610,6 +7610,8 @@ async function handleOnboardingSubmit() {
   const name = document.getElementById('onboarding-name-input').value.trim();
   const errEl = document.getElementById('onboarding-error');
   if (!name) { errEl.textContent = 'Пожалуйста, введите имя'; errEl.style.display='block'; return; }
+  // SEC-3: Length validation
+  if (name.length > 100) { errEl.textContent = 'Имя не должно превышать 100 символов'; errEl.style.display='block'; return; }
   errEl.style.display = 'none';
 
   const btn = document.getElementById('btn-onboarding-submit');
@@ -7726,7 +7728,7 @@ async function handleRegister() {
   const password = document.getElementById('reg-password').value;
   const btn = document.getElementById('btn-register');
   if (!email || !password) { showAuthError('reg-error','Заполните все поля'); return; }
-  if (password.length < 6) { showAuthError('reg-error','Пароль минимум 6 символов'); return; }
+  if (password.length < 8) { showAuthError('reg-error','Пароль должен содержать минимум 8 символов'); return; }
   btn.disabled = true; btn.textContent = 'Создаём аккаунт...';
   try {
     const { data, error } = await sb.auth.signUp({ email, password });
@@ -7868,6 +7870,8 @@ async function saveProfile() {
   if (!currentUser) return;
   const name = document.getElementById('profile-name-input').value.trim();
   if (!name) return;
+  // SEC-3: Length validation
+  if (name.length > 100) { showToast('⚠️ Имя не должно превышать 100 символов'); return; }
   try {
     await sb.from('profiles').upsert({ id: currentUser.id, name, email: currentUser.email });
     currentUser._profile = { ...(currentUser._profile || {}), name };
@@ -8054,13 +8058,22 @@ async function capturePhoto() {
 async function handleAvatarUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
-  if (file.size > 2 * 1024 * 1024) { alert('Файл слишком большой. Максимум 2 МБ.'); return; }
+  // SEC-1: MIME-type validation
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    showToast('⚠️ Допустимые форматы: JPG, PNG, WebP, GIF');
+    event.target.value = '';
+    return;
+  }
+  if (file.size > 2 * 1024 * 1024) { showToast('⚠️ Файл слишком большой. Максимум 2 МБ.'); return; }
   await uploadAvatarFile(file);
 }
 
 async function uploadAvatarFile(file) {
   if (!currentUser) return;
-  const ext = file.name.split('.').pop() || 'jpg';
+  // SEC-1: Extension from MIME type, not filename (prevents extension spoofing)
+  const MIME_TO_EXT = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif' };
+  const ext = MIME_TO_EXT[file.type] || 'jpg';
   const path = `${currentUser.id}/avatar.${ext}`;
   try {
     // Cleanup: remove old avatar files before uploading new one
@@ -8239,14 +8252,16 @@ function openNotesModal(course) {
   } else {
     body.innerHTML = courseNotes.map(({ idx, text }) => {
       const lessonTitle = getLessonTitle(course, idx);
-      const escaped = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      // SEC-2: Escape both title and text before innerHTML
+      const escapedTitle = lessonTitle.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      const escapedText  = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
       return `<div class="notes-modal-item" onclick="goToNoteLesson('${course}', ${idx})">
         <div class="notes-modal-item-head">
           <span class="notes-modal-lesson">Урок ${idx}</span>
-          <span class="notes-modal-lesson-title">${lessonTitle}</span>
+          <span class="notes-modal-lesson-title">${escapedTitle}</span>
           <span class="notes-modal-goto-hint">→</span>
         </div>
-        <div class="notes-modal-text">${escaped}</div>
+        <div class="notes-modal-text">${escapedText}</div>
       </div>`;
     }).join('');
   }
