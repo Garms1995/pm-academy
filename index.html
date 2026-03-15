@@ -1765,6 +1765,34 @@
 </head>
 <body>
 
+<!-- ══ LOADING SCREEN (ТЗ-4) ══ -->
+<div id="loading-screen" style="
+  position:fixed;inset:0;z-index:9999;
+  background:#0d0f14;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+">
+  <div style="display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8eaf0;">
+    <div style="width:10px;height:10px;border-radius:50%;background:#4fffb0;box-shadow:0 0 12px #4fffb0;animation:pulse 1.5s infinite;flex-shrink:0"></div>
+    PM Academy
+  </div>
+  <div style="width:200px;height:3px;background:#1a1e28;border-radius:2px;overflow:hidden;">
+    <div style="height:100%;background:linear-gradient(90deg,#7b6fff,#4fffb0);border-radius:2px;animation:loading-bar 1.5s ease-in-out infinite;"></div>
+  </div>
+  <div style="font-size:13px;color:#5a6278;font-family:'Instrument Sans',sans-serif;">Загружаем курсы...</div>
+  <button id="loading-retry" onclick="location.reload()"
+    style="display:none;margin-top:8px;background:transparent;border:1px solid #252a38;border-radius:8px;
+    padding:8px 20px;color:#8890a8;font-family:'Instrument Sans',sans-serif;font-size:13px;cursor:pointer;">
+    ↺ Попробовать снова
+  </button>
+</div>
+<style>
+  @keyframes loading-bar {
+    0%   { transform: translateX(-100%); }
+    50%  { transform: translateX(0%); }
+    100% { transform: translateX(100%); }
+  }
+</style>
+
 <nav class="top-nav">
   <div class="top-nav-inner">
     <!-- Left: menu button -->
@@ -4059,43 +4087,45 @@ function showLesson(idx) {
     }
   }
 
-  // Build content
-  let html = '';
-  if (lesson.tag) {
-    html += `<div class="lesson-tag">${lesson.tag}</div>`;
-  }
-  if (lesson.title) {
-    html += `<h1>${lesson.title}</h1>`;
-    if (lesson.time) {
-      html += `<div class="lesson-meta"><span class="meta-badge">⏱ ${lesson.time}</span></div>`;
+  // Build content — use cache for non-zero lessons
+  let html = getCachedHtml('sql', idx);
+  if (!html) {
+    html = '';
+    if (lesson.tag) html += `<div class="lesson-tag">${lesson.tag}</div>`;
+    if (lesson.title) {
+      html += `<h1>${lesson.title}</h1>`;
+      if (lesson.time) html += `<div class="lesson-meta"><span class="meta-badge">⏱ ${lesson.time}</span></div>`;
     }
+    html += lesson.render();
+    // Nav buttons
+    const nav = lesson.nav || {};
+    html += '<div class="lesson-nav">';
+    if (nav.prev !== undefined) html += `<button class="btn-nav btn-prev" onclick="completeAndNav(${nav.prev})">← Назад</button>`;
+    if (nav.next !== undefined) {
+      html += `<button class="btn-nav btn-next" onclick="completeAndNav(${nav.next})">Далее →</button>`;
+    } else if (idx > 0) {
+      html += `<button class="btn-complete" onclick="completeLesson(${idx})">✓ Завершить курс</button>`;
+    }
+    html += '</div>';
+    if (idx > 0) setCachedHtml('sql', idx, html);
+  } else {
+    // Rebuild nav from cache — lesson nav wrapper already included
   }
-  html += lesson.render();
-
-  // Nav buttons
-  const nav = lesson.nav || {};
-  html += '<div class="lesson-nav">';
-  if (nav.prev !== undefined) {
-    html += `<button class="btn-nav btn-prev" onclick="completeAndNav(${nav.prev})">← Назад</button>`;
-  }
-  if (nav.next !== undefined) {
-    html += `<button class="btn-nav btn-next" onclick="completeAndNav(${nav.next})">Далее →</button>`;
-  } else if (idx > 0) {
-    html += `<button class="btn-complete" onclick="completeLesson(${idx})">✓ Завершить курс</button>`;
-  }
-  html += '</div>';
 
   const main = document.getElementById('main-content');
   main.innerHTML = html;
   main.scrollTo(0, 0);
   updateProgress();
-  // Inject notes block and restore last position
   injectNotesBlock('sql', idx, main);
   saveLastLesson('sql', idx);
+  // ТЗ-5: Prefetch next lesson
+  const nav = lesson.nav || {};
+  if (nav.next !== undefined) prefetchNextLesson('sql', nav.next);
 }
 
 function completeAndNav(targetIdx) {
   completed.add(currentLesson);
+  invalidateCache('sql', currentLesson); // ТЗ-2: инвалидация кеша
   // add check to sidebar
   const navEl = document.getElementById('nav-' + currentLesson);
   if (navEl && !navEl.querySelector('.check-badge') && currentLesson > 0) {
@@ -4902,15 +4932,22 @@ function showDevLesson(idx) {
     }
   }
   const main = document.getElementById('dev-main-content');
-  main.innerHTML = devLessons[idx]();
+  let devHtml = getCachedHtml('dev', idx);
+  if (!devHtml) {
+    devHtml = devLessons[idx]();
+    if (idx > 0) setCachedHtml('dev', idx, devHtml);
+  }
+  main.innerHTML = devHtml;
   main.scrollTo(0, 0);
   updateDevProgress();
   injectNotesBlock('dev', idx, main);
   saveLastLesson('dev', idx);
+  prefetchNextLesson('dev', idx + 1 <= 12 ? idx + 1 : undefined);
 }
 
 function devCompleteAndNav(targetIdx) {
   devCompleted.add(currentDevLesson);
+  invalidateCache('dev', currentDevLesson); // ТЗ-2: инвалидация кеша
   const navEl = document.getElementById('dev-nav-' + currentDevLesson);
   if (navEl && !navEl.querySelector('.check-badge') && currentDevLesson >= 0) {
     const badge = document.createElement('span');
@@ -5686,17 +5723,24 @@ function showPmLesson(idx) {
     }
   }
   const main = document.getElementById('pm-main-content');
-  main.innerHTML = pmLessons[idx]();
+  let pmHtml = getCachedHtml('pm', idx);
+  if (!pmHtml) {
+    pmHtml = pmLessons[idx]();
+    if (idx > 0) setCachedHtml('pm', idx, pmHtml);
+  }
+  main.innerHTML = pmHtml;
   main.scrollTo(0, 0);
   updatePmProgress();
   setTimeout(wrapTables, 50);
   closeSidebar();
   injectNotesBlock('pm', idx, main);
   saveLastLesson('pm', idx);
+  prefetchNextLesson('pm', idx + 1 <= 14 ? idx + 1 : undefined);
 }
 
 function pmCompleteAndNav(targetIdx) {
   pmCompleted.add(currentPmLesson);
+  invalidateCache('pm', currentPmLesson); // ТЗ-2: инвалидация кеша
   const navEl = document.getElementById('pm-nav-' + currentPmLesson);
   if (navEl && !navEl.querySelector('.check-badge')) {
     const badge = document.createElement('span');
@@ -6658,7 +6702,12 @@ function showVcLesson(idx) {
   currentVcLesson = idx;
   const main = document.getElementById('vc-main-content');
   if (!main || !vcLessons[idx]) return;
-  main.innerHTML = vcLessons[idx]();
+  let vcHtml = getCachedHtml('vc', idx);
+  if (!vcHtml) {
+    vcHtml = vcLessons[idx]();
+    if (idx > 0) setCachedHtml('vc', idx, vcHtml);
+  }
+  main.innerHTML = vcHtml;
   main.scrollTop = 0;
 
   // Update sidebar active state
@@ -6681,10 +6730,12 @@ function showVcLesson(idx) {
   updateVcProgress();
   injectNotesBlock('vc', idx, main);
   saveLastLesson('vc', idx);
+  prefetchNextLesson('vc', idx + 1 <= 20 ? idx + 1 : undefined);
 }
 
 function vcCompleteAndNav(targetIdx) {
   vcCompleted.add(currentVcLesson);
+  invalidateCache('vc', currentVcLesson); // ТЗ-2: инвалидация кеша
   updateVcProgress();
   const navEl = document.getElementById('vc-nav-' + currentVcLesson);
   if (navEl && !navEl.querySelector('.check-badge')) {
@@ -6888,9 +6939,13 @@ const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, vc: 20 };
     const { data: { session } } = await sb.auth.getSession();
     if (session) {
       currentUser = session.user;
-      await loadProfile(currentUser);
-      await loadProgressFromDB();
-      await trackActivity();
+      // ТЗ-1: Параллельная инициализация — все независимые запросы одновременно
+      await Promise.allSettled([
+        loadProfile(currentUser),
+        loadProgressFromDB(),
+        trackActivity()
+      ]);
+      // loadAllNotes вызывается внутри loadProgressFromDB (await)
       renderLoggedIn();
     } else {
       renderLoggedOut();
@@ -6898,14 +6953,18 @@ const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, vc: 20 };
   } catch(e) {
     console.warn('Supabase init:', e.message);
     renderLoggedOut();
+  } finally {
+    hideLoadingScreen();
   }
 
   sb.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session) {
       currentUser = session.user;
-      await loadProfile(currentUser);
-      await loadProgressFromDB();
-      await trackActivity();
+      await Promise.allSettled([
+        loadProfile(currentUser),
+        loadProgressFromDB(),
+        trackActivity()
+      ]);
       renderLoggedIn();
       closeAuthModal();
       // Show onboarding if name not set
@@ -7358,29 +7417,33 @@ function fillProfileModal() {
   // Fill certificates section
   fillProfileCertificates();
 
-  // Load streak + visit_count (always works, no new columns needed)
-  sb.from('user_activity').select('streak_days,visit_count').eq('user_id', user.id).single().then(({ data }) => {
-    const row = document.getElementById('profile-streak-row');
-    if (data && data.streak_days > 0) {
-      document.getElementById('profile-streak-value').textContent = data.streak_days;
-      document.getElementById('profile-visits-value').textContent = data.visit_count ? `${data.visit_count} визит(ов)` : '';
-      row.style.display = 'flex';
-    } else {
-      row.style.display = 'none';
-    }
-  }).catch(() => {});
-
-  // Load avg time — separate query, fails gracefully if column not yet added
-  sb.from('user_activity').select('total_time_minutes,visit_count').eq('user_id', user.id).single().then(({ data }) => {
-    const timeRow = document.getElementById('profile-avg-time-row');
-    if (data && data.total_time_minutes > 0 && data.visit_count > 0) {
-      const avgMin = Math.round(data.total_time_minutes / data.visit_count);
-      document.getElementById('profile-avg-time-value').textContent = avgMin;
-      timeRow.style.display = 'flex';
-    } else {
-      timeRow.style.display = 'none';
-    }
-  }).catch(() => { document.getElementById('profile-avg-time-row').style.display = 'none'; });
+  // ТЗ-3: Один объединённый запрос вместо двух к user_activity
+  sb.from('user_activity')
+    .select('streak_days, visit_count, total_time_minutes')
+    .eq('user_id', user.id).single()
+    .then(({ data }) => {
+      // Streak row
+      const streakRow = document.getElementById('profile-streak-row');
+      if (data && data.streak_days > 0) {
+        document.getElementById('profile-streak-value').textContent = data.streak_days;
+        document.getElementById('profile-visits-value').textContent = data.visit_count ? `${data.visit_count} визит(ов)` : '';
+        streakRow.style.display = 'flex';
+      } else {
+        streakRow.style.display = 'none';
+      }
+      // Avg time row
+      const timeRow = document.getElementById('profile-avg-time-row');
+      if (data && data.total_time_minutes > 0 && data.visit_count > 0) {
+        const avgMin = Math.round(data.total_time_minutes / data.visit_count);
+        document.getElementById('profile-avg-time-value').textContent = avgMin;
+        timeRow.style.display = 'flex';
+      } else {
+        timeRow.style.display = 'none';
+      }
+    }).catch(() => {
+      document.getElementById('profile-streak-row').style.display = 'none';
+      document.getElementById('profile-avg-time-row').style.display = 'none';
+    });
 }
 
 function updateProfileCard(course, done, total) {
@@ -7550,8 +7613,77 @@ document.addEventListener('keydown', e => {
 });
 
 // ══════════════════════════════════════════════════════
-// PROFILE NOTES PANEL
+// ТЗ-2: КЕШ РЕНДЕРОВ УРОКОВ
 // ══════════════════════════════════════════════════════
+
+const renderCache = {};
+
+function getCachedHtml(course, idx) {
+  return renderCache[course + ':' + idx] || null;
+}
+
+function setCachedHtml(course, idx, html) {
+  renderCache[course + ':' + idx] = html;
+}
+
+function invalidateCache(course, idx) {
+  delete renderCache[course + ':' + idx];
+}
+
+// ТЗ-5: Предзагрузка следующего урока через requestIdleCallback
+function prefetchNextLesson(course, nextIdx) {
+  if (nextIdx === undefined || nextIdx === null) return;
+  const key = course + ':' + nextIdx;
+  if (renderCache[key]) return; // Already cached
+  const cb = () => {
+    try {
+      let html = '';
+      if (course === 'sql') {
+        const lesson = lessons[nextIdx];
+        if (!lesson) return;
+        if (lesson.tag) html += `<div class="lesson-tag">${lesson.tag}</div>`;
+        if (lesson.title) {
+          html += `<h1>${lesson.title}</h1>`;
+          if (lesson.time) html += `<div class="lesson-meta"><span class="meta-badge">⏱ ${lesson.time}</span></div>`;
+        }
+        html += lesson.render();
+      } else if (course === 'dev' && devLessons[nextIdx]) {
+        html = devLessons[nextIdx]();
+      } else if (course === 'pm' && pmLessons[nextIdx]) {
+        html = pmLessons[nextIdx]();
+      } else if (course === 'vc' && vcLessons[nextIdx]) {
+        html = vcLessons[nextIdx]();
+      }
+      if (html) setCachedHtml(course, nextIdx, html);
+    } catch(e) {} // Silent fail — prefetch is best-effort
+  };
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(cb, { timeout: 2000 });
+  } else {
+    setTimeout(cb, 300);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// ТЗ-4: LOADING SCREEN
+// ══════════════════════════════════════════════════════
+
+function hideLoadingScreen() {
+  const screen = document.getElementById('loading-screen');
+  if (!screen) return;
+  screen.style.opacity = '0';
+  screen.style.transition = 'opacity 0.3s ease';
+  setTimeout(() => screen.style.display = 'none', 300);
+}
+
+// Timeout fallback — если загрузка > 3 сек показываем кнопку retry
+setTimeout(() => {
+  const screen = document.getElementById('loading-screen');
+  if (screen && screen.style.display !== 'none') {
+    const retry = document.getElementById('loading-retry');
+    if (retry) retry.style.display = 'block';
+  }
+}, 3000);
 
 const COURSE_META = {
   sql: { name: 'SQL для PM',                          accent: '#4fffb0', icon: '🗄️', total: 13 },
