@@ -3921,6 +3921,9 @@ function showCourse(course) {
 
   closeSidebar();
 
+  // Restore sidebar checkmarks for the active course
+  if (course !== 'home' && typeof restoreAllSidebars === 'function') restoreAllSidebars();
+
   if (course === 'sql' && currentLesson    === 0) showLesson(0);
   if (course === 'dev' && currentDevLesson === 0) showDevLesson(0);
   if (course === 'pm'  && currentPmLesson  === 0) showPmLesson(0);
@@ -6693,11 +6696,66 @@ async function loadProgressFromDB() {
       if (row.course === 'vc')  lessons.forEach(l => vcCompleted.add(l));
     });
     updateDrawerProgress();
+    // Restore all sidebar checkmarks from loaded data
+    restoreAllSidebars();
     // Refresh current lesson view if inside a course
     if (typeof currentLesson !== 'undefined' && activeCourse === 'sql') showLesson(currentLesson);
     if (typeof currentDevLesson !== 'undefined' && activeCourse === 'dev') showDevLesson(currentDevLesson);
     if (typeof currentPmLesson !== 'undefined' && activeCourse === 'pm') showPmLesson(currentPmLesson);
+    if (typeof currentVcLesson !== 'undefined' && activeCourse === 'vc') showVcLesson(currentVcLesson);
   } catch(e) { console.warn('loadProgressFromDB exception:', e.message); }
+}
+
+// ── Restore all sidebar checkmarks from in-memory Sets ──
+function restoreAllSidebars() {
+  // SQL sidebar
+  completed.forEach(idx => {
+    if (idx <= 0) return;
+    const navEl = document.getElementById('nav-' + idx);
+    if (navEl && !navEl.querySelector('.check-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'check-badge';
+      badge.textContent = '✓';
+      navEl.appendChild(badge);
+      navEl.classList.add('completed');
+    }
+  });
+  // Dev sidebar
+  devCompleted.forEach(idx => {
+    if (idx <= 0) return;
+    const navEl = document.getElementById('dev-nav-' + idx);
+    if (navEl && !navEl.querySelector('.check-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'check-badge';
+      badge.textContent = '✓';
+      navEl.appendChild(badge);
+      navEl.classList.add('completed');
+    }
+  });
+  // PM sidebar
+  pmCompleted.forEach(idx => {
+    if (idx <= 0) return;
+    const navEl = document.getElementById('pm-nav-' + idx);
+    if (navEl && !navEl.querySelector('.check-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'check-badge';
+      badge.textContent = '✓';
+      navEl.appendChild(badge);
+      navEl.classList.add('completed');
+    }
+  });
+  // Vibe Coding sidebar
+  vcCompleted.forEach(idx => {
+    if (idx <= 0) return;
+    const navEl = document.getElementById('vc-nav-' + idx);
+    if (navEl && !navEl.querySelector('.check-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'check-badge';
+      badge.textContent = '✓';
+      navEl.appendChild(badge);
+      navEl.classList.add('completed');
+    }
+  });
 }
 
 async function saveProgressToDB() {
