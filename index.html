@@ -790,6 +790,171 @@
   .quiz-feedback.correct { background: rgba(79,255,176,0.08); border: 1px solid rgba(79,255,176,0.2); color: var(--accent); }
   .quiz-feedback.wrong { background: rgba(255,107,107,0.08); border: 1px solid rgba(255,107,107,0.2); color: #ffb3b3; }
 
+  /* MULTI-QUIZ BLOCK */
+  .multi-quiz-wrap {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin: 32px 0;
+  }
+  .mq-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .mq-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .mq-progress {
+    font-size: 13px;
+    color: var(--text3);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+  }
+  .mq-steps {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .mq-step {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    transition: background 0.3s;
+  }
+  .mq-step.done { background: var(--accent); }
+  .mq-step.wrong-done { background: var(--accent3); }
+  .mq-question-wrap { animation: fadeUp 0.3s ease; }
+  .mq-nav-btn {
+    display: none;
+    margin-top: 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 10px 20px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mq-nav-btn:hover { border-color: var(--accent2); color: var(--text); }
+  .mq-score {
+    display: none;
+    text-align: center;
+    padding: 20px 0 8px;
+    animation: fadeUp 0.4s ease;
+  }
+  .mq-score-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .mq-score-label { font-size: 14px; color: var(--text3); margin-top: 8px; }
+  .mq-continue-btn {
+    display: none;
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent2), #6d28d9);
+    border: none;
+    border-radius: 10px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .mq-continue-btn:hover { opacity: 0.9; }
+
+  /* COURSE COMPLETION OVERLAY */
+  .completion-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    background: rgba(8,10,16,0.96);
+    backdrop-filter: blur(16px);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 32px;
+    animation: fadeIn 0.5s ease;
+  }
+  .completion-overlay.show { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .completion-emoji { font-size: 72px; margin-bottom: 24px; animation: bounce 0.6s ease; }
+  @keyframes bounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+  .completion-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .completion-sub {
+    font-size: 18px;
+    color: var(--text2);
+    margin-bottom: 40px;
+    max-width: 480px;
+    line-height: 1.6;
+  }
+  .completion-stats {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 48px;
+    justify-content: center;
+  }
+  .completion-stat {
+    text-align: center;
+  }
+  .completion-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .completion-stat-label {
+    font-size: 13px;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+  .completion-btn {
+    padding: 16px 40px;
+    border-radius: 12px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+  .completion-btn-primary {
+    background: linear-gradient(135deg, var(--accent2), #6d28d9);
+    color: white;
+  }
+  .completion-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(123,111,255,0.3); }
+  .completion-confetti {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
   /* SCHEMA VIZ */
   .schema-viz {
     display: flex;
@@ -1965,6 +2130,18 @@
 </div>
 
 
+<!-- COURSE COMPLETION OVERLAY -->
+<div class="completion-overlay" id="completion-overlay">
+  <div class="completion-confetti" id="completion-confetti"></div>
+  <div class="completion-emoji" id="completion-emoji">🎉</div>
+  <div class="completion-title" id="completion-title">Курс завершён!</div>
+  <div class="completion-sub" id="completion-sub">Ты прошёл все уроки и ответил на вопросы. Это настоящий результат!</div>
+  <div class="completion-stats" id="completion-stats"></div>
+  <button class="completion-btn completion-btn-primary" onclick="closeCompletion()">
+    🚀 Выбрать следующий курс
+  </button>
+</div>
+
 <!-- SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
@@ -2519,7 +2696,8 @@ const lessons = [
       'Многие-ко-многим (N:M)',
       'Они не связаны'
     ], 1, 'Правильно! Один пользователь может сделать много заказов. Это классическая связь 1:N. В таблице orders поле user_id (FK) хранит id пользователя из таблицы users.')}
-  `, nav: { prev: 1, next: 3 }
+    ${mqRegister('sql-m1', sqlM1Q)}
+`, nav: { prev: 1, next: 3 }
 },
 
 // 3 — ПЕРВЫЕ ЗАПРОСЫ
@@ -2700,7 +2878,8 @@ const lessons = [
       "SELECT plan, COUNT(*) FROM users GROUP BY plan",
       "SELECT plan FROM users COUNT(*) GROUP"
     ], 2, "Верно! Нужно написать SELECT plan, COUNT(*) — указать и группирующую колонку, и агрегат. Затем GROUP BY plan — по какому полю группировать. Без GROUP BY запрос вернёт одну строку с общим подсчётом.")}
-  `, nav: { prev: 4, next: 6 }
+    ${mqRegister('sql-m2', sqlM2Q)}
+`, nav: { prev: 4, next: 6 }
 },
 
 // 6 — JOIN
@@ -2818,7 +2997,8 @@ const lessons = [
         <div>Отличная работа! Вы освоили базовый SQL. Продолжайте — впереди ещё продвинутые темы и метрики продукта!</div>
       </div>
     </div>
-  `, nav: { prev: 6, next: 8 }
+    ${mqRegister('sql-m3', sqlM3Q)}
+`, nav: { prev: 6, next: 8 }
 },
 
 // 8 — CASE WHEN
@@ -2999,7 +3179,8 @@ JOIN repeat_buyers r
       'CTE делает запрос читаемым и позволяет переиспользовать подзапрос',
       'CTE — единственный способ сделать JOIN'
     ], 2, "Главное преимущество CTE — читаемость и возможность переиспользовать один подзапрос несколько раз в основном запросе. Скорость выполнения обычно такая же. CTE — это инструмент организации кода, а не оптимизации.")}
-  `, nav: { prev: 9, next: 11 }
+    ${mqRegister('sql-m4', sqlM4Q)}
+`, nav: { prev: 9, next: 11 }
 },
 
 // 11 — PRODUCT METRICS
@@ -3416,22 +3597,143 @@ function sqlBlock(defaultQuery, hint) {
     </div>`;
 }
 
-function quizBlock(id, question, options, correctIdx, explanation) {
-  const opts = options.map((o, i) => `<div class="quiz-option" onclick="answerQuiz(${id}, ${i}, ${correctIdx}, '${explanation.replace(/'/g,"\\'")}', this)">${o}</div>`).join('');
-  return `
-    <div class="quiz-block" id="quiz-${id}">
-      <div class="quiz-question">🧠 Проверьте себя: ${question}</div>
-      <div class="quiz-options">${opts}</div>
-      <div class="quiz-feedback" id="qf-${id}"></div>
-    </div>`;
+// ─────────────────────────────────────────────
+// MULTI-QUIZ SYSTEM
+// ─────────────────────────────────────────────
+const mqState = {};
+const mqQuestions = {};
+
+function mqRegister(blockId, questions) {
+  mqQuestions[blockId] = questions;
+  mqState[blockId] = { current: 0, score: 0, answered: [], total: questions.length };
+  const stepsHtml = questions.map((_, i) => `<div class="mq-step" id="mq-step-${blockId}-${i}"></div>`).join('');
+  return `<div class="multi-quiz-wrap" id="mqw-${blockId}">
+    <div class="mq-header">
+      <div class="mq-title">🧠 Проверь себя</div>
+      <div class="mq-progress" id="mq-prog-${blockId}">1 / ${questions.length}</div>
+    </div>
+    <div class="mq-steps">${stepsHtml}</div>
+    <div class="mq-question-wrap" id="mq-qwrap-${blockId}">${renderMqQ(blockId, 0)}</div>
+    <div class="mq-score" id="mq-score-${blockId}" style="display:none">
+      <div class="mq-score-num" id="mq-score-num-${blockId}">0/${questions.length}</div>
+      <div class="mq-score-label">правильных ответов</div>
+    </div>
+    <button class="mq-continue-btn" id="mq-continue-${blockId}" style="display:none">Продолжить →</button>
+  </div>`;
 }
 
-function execSQL(id) {
-  const query = document.getElementById(id).value.trim();
-  const resEl = document.getElementById('res_' + id);
-  const result = runSQL(query);
-  resEl.innerHTML = renderResult(result);
-  resEl.style.display = 'block';
+function renderMqQ(blockId, idx) {
+  const questions = mqQuestions[blockId];
+  const q = questions[idx];
+  const opts = q.options.map((o, i) =>
+    `<div class="quiz-option" onclick="mqAnswer('${blockId}', ${idx}, ${i}, ${q.correct}, this)">${o}</div>`
+  ).join('');
+  const isLast = idx >= questions.length - 1;
+  return `<div class="quiz-question">${q.q}</div>
+    <div class="quiz-options">${opts}</div>
+    <div class="quiz-feedback" id="mq-fb-${blockId}"></div>
+    <button class="mq-nav-btn" id="mq-next-${blockId}" style="display:none" onclick="mqNext('${blockId}')">
+      ${isLast ? 'Показать результат' : 'Следующий вопрос →'}
+    </button>`;
+}
+
+function mqAnswer(blockId, qIdx, chosen, correct, el) {
+  const state = mqState[blockId];
+  if (!state || state.answered.includes(qIdx)) return;
+  state.answered.push(qIdx);
+  const explanation = mqQuestions[blockId][qIdx].explanation;
+  const wrap = document.getElementById('mq-qwrap-' + blockId);
+  const opts = wrap.querySelectorAll('.quiz-option');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  el.classList.add(chosen === correct ? 'correct' : 'wrong');
+  if (chosen !== correct) opts[correct].classList.add('correct');
+  const fb = document.getElementById('mq-fb-' + blockId);
+  fb.className = 'quiz-feedback show ' + (chosen === correct ? 'correct' : 'wrong');
+  fb.innerHTML = (chosen === correct ? '✓ ' : '✗ ') + explanation;
+  const step = document.getElementById('mq-step-' + blockId + '-' + qIdx);
+  if (step) step.classList.add(chosen === correct ? 'done' : 'wrong-done');
+  if (chosen === correct) state.score++;
+  document.getElementById('mq-next-' + blockId).style.display = 'block';
+}
+
+function mqNext(blockId) {
+  const state = mqState[blockId];
+  const questions = mqQuestions[blockId];
+  state.current++;
+  const prog = document.getElementById('mq-prog-' + blockId);
+  if (state.current >= questions.length) {
+    document.getElementById('mq-qwrap-' + blockId).style.display = 'none';
+    document.getElementById('mq-next-' + blockId).style.display = 'none';
+    document.getElementById('mq-score-' + blockId).style.display = 'block';
+    document.getElementById('mq-score-num-' + blockId).textContent = state.score + '/' + questions.length;
+    prog.textContent = '✓ Завершено';
+    const btn = document.getElementById('mq-continue-' + blockId);
+    btn.style.display = 'block';
+    btn.onclick = () => {
+      btn.style.display = 'none';
+      document.querySelectorAll('.lesson-nav .btn-nav, .lesson-nav .btn-complete').forEach(b => {
+        b.style.opacity = '1';
+        b.style.pointerEvents = 'auto';
+      });
+    };
+  } else {
+    prog.textContent = (state.current + 1) + ' / ' + questions.length;
+    const qwrap = document.getElementById('mq-qwrap-' + blockId);
+    qwrap.innerHTML = renderMqQ(blockId, state.current);
+    qwrap.style.animation = 'none';
+    void qwrap.offsetWidth;
+    qwrap.style.animation = 'fadeUp 0.3s ease';
+  }
+}
+
+// ─────────────────────────────────────────────
+// COURSE COMPLETION OVERLAY
+// ─────────────────────────────────────────────
+
+function showCompletion(courseName, totalLessons, accentColor) {
+  document.getElementById('completion-title').textContent = courseName + ' — пройден! 🎓';
+  document.getElementById('completion-sub').textContent = 'Ты прошёл все ' + totalLessons + ' уроков. Выбери следующий курс!';
+  document.getElementById('completion-stats').innerHTML =
+    '<div class="completion-stat"><div class="completion-stat-num" style="color:' + accentColor + '">' + totalLessons + '</div><div class="completion-stat-label">уроков пройдено</div></div>' +
+    '<div class="completion-stat"><div class="completion-stat-num" style="color:' + accentColor + '">100%</div><div class="completion-stat-label">прогресс курса</div></div>';
+  spawnConfetti(accentColor);
+  document.getElementById('completion-overlay').classList.add('show');
+}
+
+function closeCompletion() {
+  document.getElementById('completion-overlay').classList.remove('show');
+  showCourse('home');
+}
+
+function spawnConfetti(color) {
+  const container = document.getElementById('completion-confetti');
+  container.innerHTML = '';
+  const colors = [color, '#4fffb0', '#7b6fff', '#ff6b6b', '#f59e0b', '#ec4899'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    const c = colors[Math.floor(Math.random() * colors.length)];
+    const size = 6 + Math.random() * 8;
+    el.style.cssText = 'position:absolute;width:' + size + 'px;height:' + size + 'px;background:' + c +
+      ';border-radius:' + (Math.random() > 0.5 ? '50%' : '2px') + ';left:' + (Math.random() * 100) +
+      '%;top:-20px;animation:confetti-fall ' + (2 + Math.random() * 2) + 's ' + (Math.random() * 2) + 's ease-in forwards;';
+    container.appendChild(el);
+  }
+  if (!document.getElementById('confetti-style')) {
+    const s = document.createElement('style');
+    s.id = 'confetti-style';
+    s.textContent = '@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:.9}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}';
+    document.head.appendChild(s);
+  }
+}
+
+// ─────────────────────────────────────────────
+// LEGACY SINGLE QUIZ (SQL course)
+// ─────────────────────────────────────────────
+function quizBlock(id, question, options, correctIdx, explanation) {
+  const opts = options.map((o, i) =>
+    '<div class="quiz-option" onclick="answerQuiz(' + id + ', ' + i + ', ' + correctIdx + ', \'' + explanation.replace(/'/g,"\\'") + '\', this)">' + o + '</div>'
+  ).join('');
+  return '<div class="quiz-block" id="quiz-' + id + '"><div class="quiz-question">🧠 Проверьте себя: ' + question + '</div><div class="quiz-options">' + opts + '</div><div class="quiz-feedback" id="qf-' + id + '"></div></div>';
 }
 
 function answerQuiz(quizId, chosen, correct, explanation, el) {
@@ -3524,12 +3826,8 @@ function completeLesson(idx) {
     navEl.classList.add('completed');
   }
   updateProgress();
-  document.getElementById('main-content').insertAdjacentHTML('beforeend', `
-    <div class="callout tip" style="margin-top:24px; animation: fadeUp 0.5s ease">
-      <span class="callout-icon">🎉</span>
-      <div><strong>Курс завершён!</strong> Вы прошли все уроки. Теперь вы умеете читать данные из реляционной БД, фильтровать, агрегировать и делать JOIN. Попросите read-only доступ у разработчиков и применяйте это на реальных данных!</div>
-    </div>
-  `);
+  scheduleSyncProgress();
+  setTimeout(() => showCompletion('SQL для PM', 13, '#4fffb0'), 400);
 }
 
 function updateProgress() {
@@ -3880,6 +4178,7 @@ Authorization: Bearer eyJhbGc...
   ${dQuiz(3,'Пользователь вошёл в систему, но видит 403 при попытке удалить запись. В чём проблема?',
     ['Неверный пароль — ошибка аутентификации','Сессия истекла — нужно войти заново','Авторизация — у пользователя нет прав на удаление','Ошибка сервера — нужно перезагрузить страницу'],
     2,'403 после успешного входа — это ошибка авторизации, не аутентификации. Пользователь известен системе (аутентифицирован), но его роль/права не позволяют выполнить действие (не авторизован на удаление).')}
+  ${mqRegister('dev-m1', devM1Q)}
   ${dNav(2, 4)}
 `,
 
@@ -4048,6 +4347,7 @@ Authorization: Bearer eyJhbGc...
   ${dQuiz(7,'Разработчик говорит «PR висит 3 дня без ревью». Что это означает для PM?',
     ['Разработчик не начал задачу','Код написан, но не проверен командой — заблокирован мерж в main','Задача задеплоена, но есть баги','CI/CD пайплайн упал'],
     1,'PR (Pull Request) — это запрос на слияние кода. Если он «висит без ревью» — код написан и готов, но коллеги ещё не проверили. Это блокер для попадания в production. PM должен помочь снять блокер: договориться о ревью, скорректировать приоритеты.')}
+  ${mqRegister('dev-m2', devM2Q)}
   ${dNav(6, 8)}
 `,
 
@@ -4328,12 +4628,8 @@ function devCompleteAndNav(targetIdx) {
 function devCompleteFinal() {
   devCompleted.add(currentDevLesson);
   updateDevProgress();
-  document.getElementById('dev-main-content').insertAdjacentHTML('beforeend', `
-    <div class="callout tip" style="margin-top:24px;animation:fadeUp 0.5s ease">
-      <span class="callout-icon">🎉</span>
-      <div><strong>Курс «Разработка ПО» завершён!</strong> Вы прошли все уроки. Применяйте эти знания в ежедневной работе с командой!</div>
-    </div>
-  `);
+  scheduleSyncProgress();
+  setTimeout(() => showCompletion('Разработка ПО', 12, '#ff9966'), 400);
 }
 
 function updateDevProgress() {
@@ -4465,6 +4761,7 @@ const pmLessons = [
       </div>
     </div>`)}
   ${pCall('tip','💡','<strong>Самые востребованные отрасли</strong> для PM в России: финтех (Сбер, Тинькофф), e-commerce (Ozon, Wildberries), IT-аутсорс, телеком (МТС, Билайн), геймдев и edtech. IT-PM зарабатывает в среднем на 40% больше PM в традиционных отраслях.')}
+  ${mqRegister('pm-m1', pmM1Q)}
   ${pNav(1,3)}
 `,
 
@@ -4655,6 +4952,7 @@ const pmLessons = [
        ['XP (Extreme Programming)','Высококачественная разработка ПО','⭐⭐'],
        ['Crystal','Гибкий, адаптируется под размер команды','⭐']])}
   `)}
+  ${mqRegister('pm-m2', pmM2Q)}
   ${pNav(5,7)}
 `,
 
@@ -4801,6 +5099,7 @@ const pmLessons = [
         `).join('')}
       </div>
     </div>`)}
+  ${mqRegister('pm-m3', pmM3Q)}
   ${pNav(8,10)}
 `,
 
@@ -5113,6 +5412,7 @@ function pmCompleteAndNav(targetIdx) {
 function pmCompleteFinal() {
   pmCompleted.add(currentPmLesson);
   updatePmProgress();
+  scheduleSyncProgress();
   const navEl = document.getElementById('pm-nav-' + currentPmLesson);
   if (navEl && !navEl.querySelector('.check-badge')) {
     const badge = document.createElement('span');
@@ -5122,12 +5422,7 @@ function pmCompleteFinal() {
     navEl.appendChild(badge);
     navEl.classList.add('completed');
   }
-  document.getElementById('pm-main-content').insertAdjacentHTML('beforeend', `
-    <div class="callout tip" style="margin-top:24px;animation:fadeUp 0.5s ease">
-      <span class="callout-icon">🎉</span>
-      <div><strong>Курс «Управление проектами» завершён!</strong> Вы изучили PMBOK 7, Agile, Scrum, Kanban, управление рисками и soft skills. Применяйте это в работе!</div>
-    </div>
-  `);
+  setTimeout(() => showCompletion('Управление проектами', 14, '#a855f7'), 400);
 }
 
 function updatePmProgress() {
@@ -5302,6 +5597,7 @@ git config --global user.email "твой@email.com"`)}
   )}`)}
   ${vcC('warning','⚠️',`Частая ошибка: забыть <code>git add .</code> перед <code>git commit</code>. Тогда commit будет пустым. Порядок всегда: add → commit → push.`)}
   ${vcC('tip','✅',`<strong>Результат:</strong> Git настроен, репозиторий на GitHub создан, ты умеешь делать add → commit → push.`)}
+  ${mqRegister('vc-m1', vcM1Q)}
   ${vcNav(2,4)}`,
 
 // ── 4. Проектирование до кода ──────────────────────────────
@@ -5375,6 +5671,7 @@ git config --global user.email "твой@email.com"`)}
 НЕДЕЛЯ 4: Авторизация + Деплой (модули 5-6)`)}
   `)}
   ${vcC('tip','✅',`<strong>Результат:</strong> Декомпозиция своего проекта на модули + дорожная карта. Теперь у тебя есть план и можно начинать.`)}
+  ${mqRegister('vc-m2', vcM2Q)}
   ${vcNav(4,6)}`,
 
 // ── 6. Анатомия промпта ──────────────────────────────
@@ -5478,6 +5775,7 @@ Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
 Вот мой код: [код]
 Объясни что это значит и как исправить."`)}`)}
   ${vcC('tip','✅',`<strong>Результат:</strong> Ты знаешь 4 главные ошибки в промптах и как их избежать. Теперь твои запросы будут давать предсказуемый результат.`)}
+  ${mqRegister('vc-m3', vcM3Q)}
   ${vcNav(6,8)}`,
 
 // ── 8. HTML/CSS с нуля ──────────────────────────────
@@ -6110,13 +6408,8 @@ function vcCompleteFinal() {
     navEl.appendChild(badge);
     navEl.classList.add('completed');
   }
-  document.getElementById('vc-main-content').insertAdjacentHTML('beforeend', `
-    <div class="callout tip" style="margin-top:24px;animation:fadeUp 0.5s ease">
-      <span class="callout-icon">🎉</span>
-      <div><strong>Курс завершён!</strong> Ты прошёл путь от идеи до продакшна. Теперь создай свой следующий проект — уже самостоятельно!</div>
-    </div>
-  `);
   scheduleSyncProgress();
+  setTimeout(() => showCompletion('Vibe Coding: от идеи до продакшна', 20, '#ec4899'), 400);
 }
 
 function updateVcProgress() {
@@ -6132,6 +6425,120 @@ function updateVcProgress() {
 }
 
 // ══════════════════════════════════════════════════════
+
+// ─────────────────────────────────────────────
+// MODULE QUIZZES DATA
+// ─────────────────────────────────────────────
+// These are registered when lessons render
+
+// SQL Module 1 quiz (lesson 2 — Tables & Relations)
+const sqlM1Q = [
+  {q:'Что такое PRIMARY KEY?', options:['Поле для паролей','Уникальный идентификатор строки','Внешний ключ','Индекс'], correct:1, explanation:'PRIMARY KEY — уникальный идентификатор каждой строки. Не может повторяться и быть NULL.'},
+  {q:'Что означает NULL в SQL?', options:['Ноль','Пустая строка','Отсутствие значения','Ошибка'], correct:2, explanation:'NULL означает отсутствие значения — это не ноль и не пустая строка.'},
+  {q:'Какой тип данных использовать для хранения email?', options:['INTEGER','BOOLEAN','TEXT / VARCHAR','DATE'], correct:2, explanation:'Email — текстовые данные. TEXT или VARCHAR — правильный выбор.'},
+  {q:'Что делает FOREIGN KEY?', options:['Шифрует данные','Создаёт связь между таблицами','Ускоряет запросы','Запрещает дубли'], correct:1, explanation:'FOREIGN KEY создаёт связь между таблицами, ссылаясь на PRIMARY KEY другой таблицы.'},
+  {q:'Как называется связь «один пользователь — много заказов»?', options:['one-to-one','many-to-many','one-to-many','many-to-one'], correct:2, explanation:'One-to-many (один ко многим) — один пользователь может иметь много заказов.'}
+];
+
+// SQL Module 2 quiz (lesson 5 — Aggregation)
+const sqlM2Q = [
+  {q:'Что делает GROUP BY?', options:['Сортирует результаты','Группирует строки по значению столбца','Фильтрует строки','Объединяет таблицы'], correct:1, explanation:'GROUP BY группирует строки с одинаковыми значениями — после этого можно применять агрегатные функции.'},
+  {q:'Какая функция считает количество строк?', options:['SUM()','AVG()','COUNT()','MAX()'], correct:2, explanation:'COUNT() считает количество строк. COUNT(*) — все строки, COUNT(column) — строки где column не NULL.'},
+  {q:'В чём разница между WHERE и HAVING?', options:['Нет разницы','WHERE — до GROUP BY, HAVING — после','HAVING — до GROUP BY, WHERE — после','WHERE быстрее HAVING'], correct:1, explanation:'WHERE фильтрует строки до группировки. HAVING фильтрует группы после GROUP BY.'},
+  {q:'Что вернёт AVG(price) если все price = NULL?', options:['0','NULL','Ошибку','1'], correct:1, explanation:'AVG игнорирует NULL значения. Если все значения NULL — результат NULL, не ноль.'},
+  {q:'Как посчитать уникальных пользователей?', options:['COUNT(user_id)','COUNT(DISTINCT user_id)','SUM(user_id)','MAX(user_id)'], correct:1, explanation:'COUNT(DISTINCT column) считает только уникальные значения — это стандартный способ считать MAU/DAU.'}
+];
+
+// SQL Module 3 quiz (lesson 7 — PM Practice)
+const sqlM3Q = [
+  {q:'Что делает INNER JOIN?', options:['Все строки из обеих таблиц','Только совпадающие строки','Все из левой таблицы','Все из правой таблицы'], correct:1, explanation:'INNER JOIN возвращает только строки где есть совпадение в обеих таблицах.'},
+  {q:'Когда использовать LEFT JOIN?', options:['Только при совпадениях','Все из левой таблицы включая без пары','Все из правой таблицы','Для дублирования данных'], correct:1, explanation:'LEFT JOIN сохраняет все строки левой таблицы. Для строк без совпадения — NULL в полях правой.'},
+  {q:'Как найти пользователей БЕЗ заказов?', options:['INNER JOIN','LEFT JOIN + WHERE orders.id IS NULL','RIGHT JOIN','CROSS JOIN'], correct:1, explanation:'LEFT JOIN + WHERE правая.id IS NULL — классический паттерн для поиска записей без связанных данных.'},
+  {q:'Что такое алиас таблицы?', options:['Индекс','Временное короткое имя (AS)','Тип JOIN','Агрегатная функция'], correct:1, explanation:'Алиас (u AS users) — короткое имя для таблицы в запросе. Упрощает чтение JOIN-запросов.'},
+  {q:'Можно ли JOIN несколько таблиц в одном запросе?', options:['Нет, только 2','Да, но не более 3','Да, любое количество','Да, но только INNER'], correct:2, explanation:'Можно объединять любое количество таблиц через последовательные JOIN операции.'}
+];
+
+// SQL Module 4 quiz (lesson 10 — CTE)  
+const sqlM4Q = [
+  {q:'Что такое CTE (Common Table Expression)?', options:['Тип индекса','Временный именованный результат запроса','Вид JOIN','Функция агрегации'], correct:1, explanation:'CTE — временный именованный результат (WITH name AS (query)) который можно использовать в основном запросе.'},
+  {q:'В чём преимущество CTE перед подзапросом?', options:['CTE быстрее','CTE читаемее и повторно используется в запросе','CTE всегда возвращает больше строк','CTE не поддерживает GROUP BY'], correct:1, explanation:'CTE делает сложные запросы читаемее и позволяет переиспользовать результат несколько раз.'},
+  {q:'Что делает оконная функция ROW_NUMBER()?', options:['Считает строки в таблице','Нумерует строки внутри партиции','Возвращает первую строку','Удаляет дубликаты'], correct:1, explanation:'ROW_NUMBER() присваивает уникальный номер каждой строке внутри PARTITION. Полезно для rank-запросов.'},
+  {q:'Что такое PARTITION BY в оконных функциях?', options:['Разделяет таблицу на физические части','Группирует строки для оконной функции без свёртки','Создаёт индекс','Аналог WHERE'], correct:1, explanation:'PARTITION BY разделяет данные на группы для оконной функции — в отличие от GROUP BY строки не схлопываются.'},
+  {q:'Чем RANK() отличается от ROW_NUMBER()?', options:['Нет разницы','RANK даёт одинаковый ранг при равных значениях, ROW_NUMBER — всегда уникальный','ROW_NUMBER быстрее','RANK работает только с числами'], correct:1, explanation:'RANK() присваивает одинаковый ранг равным значениям (1,1,3). ROW_NUMBER() всегда уникальный (1,2,3).'}
+];
+
+// DEV Module 1 quiz (lesson 3 — Auth & Security)
+const devM1Q = [
+  {q:'В чём разница между аутентификацией и авторизацией?', options:['Нет разницы','Аутентификация — кто ты, авторизация — что тебе можно','Авторизация — кто ты, аутентификация — что тебе можно','Оба означают проверку пароля'], correct:1, explanation:'AuthN (аутентификация) — проверка личности. AuthZ (авторизация) — проверка прав доступа.'},
+  {q:'Что такое JWT токен?', options:['Пароль пользователя','Подписанный токен с данными пользователя','Тип шифрования','Протокол передачи данных'], correct:1, explanation:'JWT — JSON Web Token. Содержит данные пользователя и подпись. Сервер проверяет подпись без обращения к БД.'},
+  {q:'Что означает HTTPS?', options:['HTTP с авторизацией','HTTP с шифрованием (SSL/TLS)','HTTP для мобильных устройств','HTTP версии 2'], correct:1, explanation:'HTTPS = HTTP + шифрование TLS. Данные передаются зашифрованными — перехватить и прочитать невозможно.'},
+  {q:'Что такое хэширование пароля?', options:['Шифрование пароля с возможностью расшифровки','Одностороннее преобразование — нельзя получить пароль обратно','Кодирование в Base64','Сжатие пароля'], correct:1, explanation:'Хэш — одностороннее преобразование. Сервер хранит хэш, не пароль. Даже если БД утечёт — пароли не скомпрометированы.'},
+  {q:'Что такое OAuth?', options:['Протокол хэширования','Стандарт делегированной авторизации (вход через Google)','Алгоритм шифрования','Тип HTTP запроса'], correct:1, explanation:'OAuth — стандарт который позволяет «войти через Google/GitHub» не передавая сторонним сервисам свой пароль.'}
+];
+
+// DEV Module 2 quiz (lesson 7 — Microservices)
+const devM2Q = [
+  {q:'В чём главное отличие микросервисов от монолита?', options:['Микросервисы всегда быстрее','Каждый сервис независимо деплоится и разрабатывается','Монолит надёжнее','Микросервисы не используют базы данных'], correct:1, explanation:'Микросервисы — независимые сервисы с собственными БД. Можно деплоить и масштабировать каждый отдельно.'},
+  {q:'Что такое API Gateway?', options:['База данных для API','Единая точка входа для всех клиентов','Тип микросервиса','Система мониторинга'], correct:1, explanation:'API Gateway — единая точка входа. Роутит запросы к нужным микросервисам, управляет аутентификацией и rate limiting.'},
+  {q:'Что такое Docker контейнер?', options:['Виртуальная машина','Изолированная среда для запуска приложения','Тип сервера','База данных'], correct:1, explanation:'Docker контейнер — изолированная среда со всеми зависимостями. «Работает на моей машине» = работает везде.'},
+  {q:'Что такое CI/CD?', options:['Тип базы данных','Автоматизация сборки, тестирования и деплоя','Система мониторинга','Протокол передачи данных'], correct:1, explanation:'CI — автоматическое тестирование при каждом коммите. CD — автоматический деплой после успешных тестов.'},
+  {q:'Зачем PM знать о time to deploy?', options:['Чтобы писать код','Это метрика скорости доставки фич пользователям','Для настройки серверов','Это не важно для PM'], correct:1, explanation:'Time to deploy — сколько времени от идеи до прода. PM влияет на этот показатель через scope и приоритеты.'}
+];
+
+// PM Module 1 quiz (lesson 2 — Market & Salaries)
+const pmM1Q = [
+  {q:'Что такое продуктовый менеджмент?', options:['Управление складом товаров','Создание и развитие продукта от идеи до результата','Написание кода','Дизайн интерфейсов'], correct:1, explanation:'PM — это создание правильного продукта для правильных пользователей. Discovery (что делать) + Delivery (как делать).'},
+  {q:'В чём разница между PM и Project Manager?', options:['Нет разницы','PM отвечает за продуктовые решения, Project Manager — за процесс выполнения','Project Manager главнее','PM — это должность Project Manager'], correct:1, explanation:'PM (Product Manager) — что строить и почему. Project Manager — как и когда. В стартапах часто совмещается.'},
+  {q:'Что такое discovery в продуктовой работе?', options:['Написание документации','Поиск и валидация проблем пользователей до разработки','Тестирование готового продукта','Планирование спринтов'], correct:1, explanation:'Discovery — исследование: понять проблему пользователя и найти решение ДО того как отдать в разработку.'},
+  {q:'Что такое delivery в продуктовой работе?', options:['Доставка физических товаров','Реализация решения: разработка, тест, запуск','Создание прототипов','Аналитика данных'], correct:1, explanation:'Delivery — реализация: спланировать, разработать, протестировать и запустить решение.'},
+  {q:'Какой навык наиболее важен для PM?', options:['Умение писать код','Понимание пользователей и умение принимать решения в условиях неопределённости','Знание Figma','Опыт в маркетинге'], correct:1, explanation:'PM работает в условиях неопределённости. Главный навык — принимать обоснованные решения с неполными данными.'}
+];
+
+// PM Module 2 quiz (lesson 6 — Kanban)
+const pmM2Q = [
+  {q:'В чём главный принцип Agile?', options:['Строгое следование плану','Адаптация к изменениям и итеративная доставка ценности','Минимальная документация','Отказ от процессов'], correct:1, explanation:'Agile — итеративный подход: быстро доставлять ценность, получать обратную связь и адаптироваться.'},
+  {q:'Что такое спринт в Scrum?', options:['Тип задачи','Фиксированный период работы (обычно 2 недели)','Ежедневная встреча','Роль в команде'], correct:1, explanation:'Спринт — временной ящик (1-4 недели) в конце которого команда должна доставить рабочий инкремент продукта.'},
+  {q:'Что такое Product Backlog?', options:['Список багов','Упорядоченный список всех задач и идей для продукта','Список завершённых задач','Документ с требованиями'], correct:1, explanation:'Product Backlog — приоритизированный список всего что нужно сделать. PM отвечает за его поддержку и приоритизацию.'},
+  {q:'Что такое канбан-доска?', options:['Инструмент планирования спринтов','Визуализация потока работы со статусами задач','Тип ретроспективы','Система мониторинга'], correct:1, explanation:'Канбан — визуализация потока работы. Колонки: To Do → In Progress → Done. Ограничивает WIP (работа в процессе).'},
+  {q:'Зачем ограничивать WIP (Work in Progress)?', options:['Чтобы работать меньше','Чтобы завершать задачи быстрее и снижать контекст-свитчинг','Требование методологии','Чтобы не перегружать PM'], correct:1, explanation:'WIP limit помогает фокусироваться и доводить задачи до конца вместо параллельной работы над всем сразу.'}
+];
+
+// PM Module 3 quiz (lesson 9 — Metrics)
+const pmM3Q = [
+  {q:'Что такое PMBOK 7?', options:['Язык программирования','Стандарт управления проектами от PMI','Метод приоритизации','Фреймворк продуктовой аналитики'], correct:1, explanation:'PMBOK (Project Management Body of Knowledge) — стандарт PMI. 7-е издание перешло от процессов к 12 принципам и 8 доменам.'},
+  {q:'Что такое жизненный цикл проекта?', options:['Срок службы продукта','Последовательность фаз от инициации до закрытия','Методология разработки','Тип контракта'], correct:1, explanation:'Жизненный цикл — фазы проекта: инициация → планирование → исполнение → мониторинг → закрытие.'},
+  {q:'Что такое устав проекта?', options:['Бюджет проекта','Документ авторизующий проект и PM','Список требований','Расписание задач'], correct:1, explanation:'Устав проекта (Project Charter) — официально авторизует проект, назначает PM и определяет цели верхнего уровня.'},
+  {q:'Чем предиктивный подход отличается от адаптивного?', options:['Нет разницы','Предиктивный — детальное планирование заранее, адаптивный — итеративно','Адаптивный медленнее','Предиктивный только для ПО'], correct:1, explanation:'Предиктивный (waterfall) — планируем всё заранее. Адаптивный (agile) — планируем итеративно, адаптируясь к изменениям.'},
+  {q:'Что такое управление стейкхолдерами?', options:['Управление командой разработчиков','Выявление и вовлечение всех заинтересованных сторон','Управление бюджетом','Ведение документации'], correct:1, explanation:'Стейкхолдеры — все кто влияет на проект или испытывает его влияние. Правильное управление ими — ключ к успеху проекта.'}
+];
+
+// VC Module 1 quiz (lesson 3 — Git & GitHub)
+const vcM1Q = [
+  {q:'Зачем нужен Git?', options:['Для написания кода','Для отслеживания изменений и возможности вернуться к любой версии','Для публикации сайта','Для написания промптов'], correct:1, explanation:'Git — система контроля версий. Каждый commit — снимок проекта. Можно вернуться к любому моменту истории.'},
+  {q:'Что делает команда git commit?', options:['Отправляет код на GitHub','Сохраняет снимок текущего состояния проекта локально','Скачивает изменения','Создаёт новую ветку'], correct:1, explanation:'git commit сохраняет снимок проекта локально с комментарием. Это как Ctrl+S с описанием что изменил.'},
+  {q:'Что делает git push?', options:['Удаляет файлы','Скачивает изменения с GitHub','Отправляет локальные commits на GitHub','Создаёт новый репозиторий'], correct:2, explanation:'git push отправляет ваши локальные commits на удалённый репозиторий (GitHub). После этого изменения видны всем.'},
+  {q:'Что такое ветка (branch) в Git?', options:['Папка в проекте','Параллельная версия кода для работы без влияния на основную','Тип commit','Удалённый репозиторий'], correct:1, explanation:'Branch — независимая копия кода. Можно разрабатывать фичу в ветке, не затрагивая рабочую версию.'},
+  {q:'Чем GitHub отличается от Git?', options:['Это одно и то же','Git — локальная система контроля версий, GitHub — облачный хостинг для Git репозиториев','GitHub быстрее','Git только для команд'], correct:1, explanation:'Git — инструмент на вашем компьютере. GitHub — веб-сервис для хранения Git репозиториев в облаке и совместной работы.'}
+];
+
+// VC Module 2 quiz (lesson 5 — Decomposition)
+const vcM2Q = [
+  {q:'Почему нужно проектировать архитектуру до написания кода?', options:['Это необязательно','Чтобы понять что делать и в каком порядке до начала разработки','Требование Claude','Для написания документации'], correct:1, explanation:'Архитектура до кода — основной принцип. Без плана Claude будет угадывать, а вы перепишете всё через неделю.'},
+  {q:'Что такое MVP в продуктовой разработке?', options:['Самый сложный продукт','Минимально жизнеспособный продукт с ключевыми функциями','Черновик дизайна','Список требований'], correct:1, explanation:'MVP — минимальный набор функций для проверки гипотезы. Всё лишнее — в блок «Не входит в MVP».'},
+  {q:'Что такое декомпозиция проекта?', options:['Удаление лишнего кода','Разбивка большого проекта на конкретные модули','Написание тестов','Деплой на сервер'], correct:1, explanation:'Декомпозиция — разбить слона на бифштексы. Большая задача → конкретные понятные шаги с результатом.'},
+  {q:'Зачем нужен блок «Не входит в MVP»?', options:['Для скрытия идей','Защита от scope creep — фиксирует что не делаем в первой версии','Список будущих проектов','Документация'], correct:1, explanation:'«Не входит в MVP» — самый важный блок. Он защищает от бесконечного добавления фич и помогает запустить быстро.'},
+  {q:'Что такое scope creep?', options:['Тип ошибки в коде','Неконтролируемое расширение требований проекта','Метод тестирования','Вид деплоя'], correct:1, explanation:'Scope creep — постепенное добавление требований без пересмотра сроков. Убивает проекты. MVP и чёткий scope — защита от него.'}
+];
+
+// VC Module 3 quiz (lesson 7 — Anti-patterns)
+const vcM3Q = [
+  {q:'Какой главный принцип хорошего промпта?', options:['Он должен быть коротким','Чёткие роль, контекст, задача и ограничения','Без знаков препинания','На английском языке'], correct:1, explanation:'Хороший промпт = роль + контекст + задача + ограничения. Claude — отличный строитель, но ему нужен ваш план.'},
+  {q:'Почему нельзя давать несколько задач в одном промпте?', options:['Claude не может это сделать','Сложно понять что сломалось если что-то пошло не так','Это запрещено','Промпт будет слишком длинным'], correct:1, explanation:'Одна задача = один промпт. При ошибке сразу понятно где проблема. При нескольких задачах — непонятно.'},
+  {q:'Что нужно делать если увидел ошибку в консоли браузера?', options:['Игнорировать','Скопировать ошибку и вставить в промпт Claude','Перезагрузить страницу','Удалить файл'], correct:1, explanation:'Ошибка в консоли = точный диагноз. Скопируй полный текст ошибки и вставь в промпт — Claude найдёт причину.'},
+  {q:'Что значит «начинать с данных а не с дизайна»?', options:['Дизайн не важен','Сначала рабочая логика на некрасивом HTML, потом CSS','HTML писать до CSS','Дизайн делает дизайнер'], correct:1, explanation:'Сначала рабочая логика — некрасивый но функциональный. Потом дизайн. Красивый нерабочий продукт — потеря времени.'},
+  {q:'Как правильно передать Claude контекст при отладке?', options:['Написать «что-то не работает»','Показать код + описать ожидаемое поведение + вставить текст ошибки','Попросить переписать всё','Удалить и начать заново'], correct:1, explanation:'Claude не видит ваш экран. Нужно: код + что должно происходить + что происходит на самом деле + текст ошибки.'}
+];
+
 // SUPABASE AUTH & PROFILE  (v2)
 // ══════════════════════════════════════════════════════
 
