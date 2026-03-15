@@ -1573,6 +1573,92 @@
   }
   .profile-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
+  /* ── Notes block ── */
+  .notes-block {
+    margin: 32px 0 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+  .notes-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 20px; cursor: pointer;
+    background: var(--bg2); border-bottom: 1px solid transparent;
+    transition: background 0.15s; user-select: none;
+  }
+  .notes-header:hover { background: var(--bg3); }
+  .notes-header.open { border-bottom-color: var(--border); }
+  .notes-header-title { font-size: 14px; font-weight: 600; color: var(--text2); flex: 1; }
+  .notes-header-arrow { font-size: 12px; color: var(--text3); transition: transform 0.2s; }
+  .notes-header.open .notes-header-arrow { transform: rotate(180deg); }
+  .notes-body { display: none; padding: 16px 20px; }
+  .notes-body.open { display: block; }
+  .notes-textarea {
+    width: 100%; min-height: 120px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px;
+    font-family: 'Instrument Sans', sans-serif; font-size: 14px;
+    color: var(--text); resize: vertical; outline: none;
+    transition: border-color 0.15s; line-height: 1.6;
+  }
+  .notes-textarea:focus { border-color: var(--accent2); }
+  .notes-textarea::placeholder { color: var(--text3); }
+  .notes-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+  .notes-status { font-size: 12px; color: var(--text3); }
+  .notes-status.saving { color: var(--accent2); }
+  .notes-status.saved  { color: var(--accent); }
+  /* Note indicator on sidebar item */
+  .note-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent2); flex-shrink: 0; margin-left: 4px;
+  }
+
+  /* ── Reset progress button ── */
+  .btn-reset-course {
+    display: flex; align-items: center; gap: 6px;
+    background: none; border: 1px solid rgba(255,107,107,0.2);
+    border-radius: 7px; padding: 5px 10px;
+    font-family: 'Instrument Sans', sans-serif; font-size: 11px;
+    font-weight: 600; color: rgba(255,107,107,0.6);
+    cursor: pointer; transition: all 0.15s; margin-left: auto;
+  }
+  .btn-reset-course:hover { color: #ff6b6b; border-color: rgba(255,107,107,0.5); background: rgba(255,107,107,0.06); }
+
+  /* ── Certificate modal ── */
+  .cert-overlay {
+    position: fixed; inset: 0; z-index: 3000;
+    background: rgba(8,10,16,0.92); backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .cert-overlay.show { opacity: 1; pointer-events: all; }
+  .cert-modal {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 18px; padding: 32px 36px; width: 100%; max-width: 500px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.7);
+    transform: translateY(16px); transition: transform 0.25s;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+  }
+  .cert-overlay.show .cert-modal { transform: translateY(0); }
+  .cert-canvas-wrap { border-radius: 12px; overflow: hidden; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+  .cert-canvas-wrap canvas { display: block; width: 100%; height: auto; }
+  .cert-actions { display: flex; gap: 12px; width: 100%; }
+  .btn-cert-download {
+    flex: 1; background: linear-gradient(135deg, var(--accent2), #6d28d9);
+    border: none; border-radius: 10px; padding: 13px;
+    font-family: 'Instrument Sans', sans-serif; font-size: 14px; font-weight: 700;
+    color: white; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-cert-download:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-cert-close {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 10px; padding: 13px 20px;
+    font-family: 'Instrument Sans', sans-serif; font-size: 14px;
+    color: var(--text2); cursor: pointer; transition: all 0.15s;
+  }
+  .btn-cert-close:hover { color: var(--text); }
+
   .profile-form { display:flex; flex-direction:column; gap:14px; }
   .profile-actions {
     display:flex; gap:10px; padding: 0 32px 28px; margin-top: 4px;
@@ -1951,7 +2037,9 @@
 <div class="course-area" id="course-sql">
   <div class="layout">
   <nav class="sidebar" id="sidebar">
-    <div class="sidebar-section">Курс</div>
+    <div class="sidebar-section" style="display:flex;align-items:center;">Курс
+      <button class="btn-reset-course" onclick="resetCourseProgress('sql')" title="Начать заново">↺ Сброс</button>
+    </div>
     <div class="sidebar-item active" onclick="showLesson(0)" id="nav-0">
       <span class="item-num">00</span>
       <span class="item-icon">🏠</span>
@@ -2035,7 +2123,9 @@
 <div class="course-area" id="course-dev">
   <div class="layout">
     <nav class="sidebar dev-sidebar" id="dev-sidebar">
-      <div class="sidebar-section">Курс</div>
+      <div class="sidebar-section" style="display:flex;align-items:center;">Курс
+        <button class="btn-reset-course" onclick="resetCourseProgress('dev')" title="Начать заново">↺ Сброс</button>
+      </div>
       <div class="sidebar-item active" onclick="showDevLesson(0)" id="dev-nav-0">
         <span class="item-num">00</span><span class="item-icon">🏠</span>
         <span>Введение</span>
@@ -2107,7 +2197,9 @@
 <div class="course-area" id="course-pm">
   <div class="layout">
     <nav class="sidebar pm-sidebar" id="pm-sidebar" style="border-right-color:rgba(168,85,247,0.2)">
-      <div class="sidebar-section">Курс</div>
+      <div class="sidebar-section" style="display:flex;align-items:center;">Курс
+        <button class="btn-reset-course" onclick="resetCourseProgress('pm')" title="Начать заново">↺ Сброс</button>
+      </div>
       <div class="sidebar-item active" onclick="showPmLesson(0)" id="pm-nav-0">
         <span class="item-num">00</span><span class="item-icon">🏠</span><span>Введение</span>
       </div>
@@ -2174,7 +2266,9 @@
 <div class="course-area" id="course-vc" style="display:none">
   <div class="layout">
     <nav class="sidebar vc-sidebar" id="vc-sidebar" style="border-right-color:rgba(236,72,153,0.2)">
-      <div class="sidebar-section">Курс</div>
+      <div class="sidebar-section" style="display:flex;align-items:center;">Курс
+        <button class="btn-reset-course" onclick="resetCourseProgress('vc')" title="Начать заново">↺ Сброс</button>
+      </div>
       <div class="sidebar-item active" onclick="showVcLesson(0)" id="vc-nav-0"><span class="item-num">00</span><span class="item-icon">🤖</span><span>Введение</span></div>
       <div class="sidebar-section">Модуль 1 · Среда разработки</div>
       <div class="sidebar-item" onclick="showVcLesson(1)" id="vc-nav-1"><span class="item-num">01</span><span class="item-icon">💻</span><span>Установка VS Code</span></div>
@@ -2222,9 +2316,24 @@
   <div class="completion-title" id="completion-title">Курс завершён!</div>
   <div class="completion-sub" id="completion-sub">Ты прошёл все уроки и ответил на вопросы. Это настоящий результат!</div>
   <div class="completion-stats" id="completion-stats"></div>
-  <button class="completion-btn completion-btn-primary" onclick="closeCompletion()">
-    🚀 Выбрать следующий курс
+  <button class="completion-btn completion-btn-primary" onclick="openCertificate()">
+    🎓 Получить сертификат
   </button>
+  <button class="completion-btn" onclick="closeCompletion()" style="margin-top:10px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:var(--text2);">
+    Выбрать следующий курс →
+  </button>
+</div>
+
+<!-- ══ CERTIFICATE MODAL ══ -->
+<div class="cert-overlay" id="cert-overlay" onclick="handleCertOverlayClick(event)">
+  <div class="cert-modal">
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--text)">🎓 Ваш сертификат</div>
+    <div class="cert-canvas-wrap" id="cert-canvas-wrap"></div>
+    <div class="cert-actions">
+      <button class="btn-cert-download" onclick="downloadCertificate()">⬇ Скачать PNG</button>
+      <button class="btn-cert-close" onclick="closeCertificate()">Закрыть</button>
+    </div>
+  </div>
 </div>
 
 <!-- SIDEBAR OVERLAY -->
@@ -3883,6 +3992,9 @@ function showLesson(idx) {
   main.innerHTML = html;
   main.scrollTo(0, 0);
   updateProgress();
+  // Inject notes block and restore last position
+  injectNotesBlock('sql', idx, main);
+  saveLastLesson('sql', idx);
 }
 
 function completeAndNav(targetIdx) {
@@ -3973,10 +4085,10 @@ function showCourse(course) {
   // Restore sidebar checkmarks for the active course
   if (course !== 'home' && typeof restoreAllSidebars === 'function') restoreAllSidebars();
 
-  if (course === 'sql' && currentLesson    === 0) showLesson(0);
-  if (course === 'dev' && currentDevLesson === 0) showDevLesson(0);
-  if (course === 'pm'  && currentPmLesson  === 0) showPmLesson(0);
-  if (course === 'vc'  && currentVcLesson  === 0) showVcLesson(0);
+  if (course === 'sql') showLesson(lastLessonCache?.sql || 0);
+  if (course === 'dev') showDevLesson(lastLessonCache?.dev || 0);
+  if (course === 'pm')  showPmLesson(lastLessonCache?.pm  || 0);
+  if (course === 'vc')  showVcLesson(lastLessonCache?.vc  || 0);
 }
 
 // ── COURSE DRAWER ──────────────────────────────
@@ -4696,6 +4808,8 @@ function showDevLesson(idx) {
   main.innerHTML = devLessons[idx]();
   main.scrollTo(0, 0);
   updateDevProgress();
+  injectNotesBlock('dev', idx, main);
+  saveLastLesson('dev', idx);
 }
 
 function devCompleteAndNav(targetIdx) {
@@ -5480,6 +5594,8 @@ function showPmLesson(idx) {
   updatePmProgress();
   setTimeout(wrapTables, 50);
   closeSidebar();
+  injectNotesBlock('pm', idx, main);
+  saveLastLesson('pm', idx);
 }
 
 function pmCompleteAndNav(targetIdx) {
@@ -6466,6 +6582,8 @@ function showVcLesson(idx) {
   }
   closeSidebar();
   updateVcProgress();
+  injectNotesBlock('vc', idx, main);
+  saveLastLesson('vc', idx);
 }
 
 function vcCompleteAndNav(targetIdx) {
@@ -6747,6 +6865,10 @@ async function loadProgressFromDB() {
     updateDrawerProgress();
     // Restore all sidebar checkmarks from loaded data
     restoreAllSidebars();
+    // Restore last lesson positions
+    restoreLastLessons(data);
+    // Load notes
+    loadAllNotes();
     // Refresh current lesson view if inside a course
     if (typeof currentLesson !== 'undefined' && activeCourse === 'sql') showLesson(currentLesson);
     if (typeof currentDevLesson !== 'undefined' && activeCourse === 'dev') showDevLesson(currentDevLesson);
@@ -7308,7 +7430,7 @@ async function uploadAvatarFile(file) {
 
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeAuthModal(); closeProfileModal(); closeCameraOverlay(); }
+  if (e.key === 'Escape') { closeAuthModal(); closeProfileModal(); closeCameraOverlay(); closeCertificate(); }
   if (e.key === 'Enter') {
     const loginForm = document.getElementById('form-login');
     const regForm = document.getElementById('form-register');
@@ -7318,6 +7440,344 @@ document.addEventListener('keydown', e => {
     else if (regForm && !regForm.classList.contains('hidden')) handleRegister();
   }
 });
+
+// ══════════════════════════════════════════════════════
+// TASK 1 — RESET COURSE PROGRESS
+// ══════════════════════════════════════════════════════
+
+async function resetCourseProgress(course) {
+  const names = { sql: 'SQL для PM', dev: 'Разработка ПО', pm: 'Управление проектами', vc: 'Vibe Coding' };
+  if (!confirm(`Сбросить весь прогресс курса «${names[course]}»?\n\nЭто действие нельзя отменить.`)) return;
+
+  // Clear in-memory Set
+  if (course === 'sql') { completed.clear(); }
+  if (course === 'dev') { devCompleted.clear(); }
+  if (course === 'pm')  { pmCompleted.clear(); }
+  if (course === 'vc')  { vcCompleted.clear(); }
+
+  // Remove check-badges and completed classes from sidebar
+  const prefix = course === 'sql' ? 'nav-' : course + '-nav-';
+  document.querySelectorAll(`[id^="${prefix}"]`).forEach(el => {
+    el.classList.remove('completed');
+    const badge = el.querySelector('.check-badge');
+    if (badge) badge.remove();
+    const noteDot = el.querySelector('.note-dot');
+    if (noteDot) noteDot.remove();
+  });
+
+  // Delete from Supabase
+  if (currentUser) {
+    try {
+      await sb.from('user_progress')
+        .delete()
+        .eq('user_id', currentUser.id)
+        .eq('course', course);
+    } catch(e) { console.warn('Reset progress error:', e.message); }
+  }
+
+  // Update progress bar + go to lesson 0
+  lastLessonCache[course] = 0;
+  if (course === 'sql') { updateProgress(); showLesson(0); }
+  if (course === 'dev') { updateDevProgress(); showDevLesson(0); }
+  if (course === 'pm')  { updatePmProgress(); showPmLesson(0); }
+  if (course === 'vc')  { updateVcProgress(); showVcLesson(0); }
+
+  showToast('↺ Прогресс курса сброшен');
+}
+
+// ══════════════════════════════════════════════════════
+// TASK 2 — RESTORE LAST LESSON POSITION
+// ══════════════════════════════════════════════════════
+
+// In-memory cache: course → last lesson idx
+const lastLessonCache = { sql: 0, dev: 0, pm: 0, vc: 0 };
+let saveLastLessonTimer = null;
+
+function saveLastLesson(course, idx) {
+  lastLessonCache[course] = idx;
+  if (!currentUser || idx === 0) return;
+  // Debounced save to Supabase
+  if (saveLastLessonTimer) clearTimeout(saveLastLessonTimer);
+  saveLastLessonTimer = setTimeout(async () => {
+    try {
+      const { data: rows } = await sb.from('user_progress')
+        .select('id').eq('user_id', currentUser.id).eq('course', course).limit(1);
+      if (rows && rows.length > 0) {
+        await sb.from('user_progress')
+          .update({ last_lesson_idx: idx })
+          .eq('user_id', currentUser.id)
+          .eq('course', course);
+      }
+    } catch(e) {}
+  }, 1000);
+}
+
+// Called after loadProgressFromDB — restores last open lesson
+function restoreLastLessons(rows) {
+  rows.forEach(row => {
+    const idx = row.last_lesson_idx || 0;
+    if (idx <= 0) return;
+    if (row.course === 'sql') lastLessonCache.sql = idx;
+    if (row.course === 'dev') lastLessonCache.dev = idx;
+    if (row.course === 'pm')  lastLessonCache.pm  = idx;
+    if (row.course === 'vc')  lastLessonCache.vc  = idx;
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// TASK 3 — CERTIFICATE
+// ══════════════════════════════════════════════════════
+
+let currentCertData = null; // { courseName, accentColor, date }
+
+function openCertificate() {
+  if (!currentCertData) return;
+  const name = currentUser?._profile?.name || currentUser?.email?.split('@')[0] || 'Пользователь';
+  drawCertificate(name, currentCertData.courseName, currentCertData.accentColor, currentCertData.date);
+  document.getElementById('cert-overlay').classList.add('show');
+}
+
+function closeCertificate() {
+  document.getElementById('cert-overlay').classList.remove('show');
+}
+
+function handleCertOverlayClick(e) {
+  if (e.target === document.getElementById('cert-overlay')) closeCertificate();
+}
+
+function drawCertificate(userName, courseName, accentColor, dateStr) {
+  const W = 900, H = 600;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  ctx.fillStyle = '#0d0f14';
+  ctx.fillRect(0, 0, W, H);
+
+  // Outer border
+  ctx.strokeStyle = accentColor;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(16, 16, W - 32, H - 32);
+
+  // Inner decorative border
+  ctx.strokeStyle = accentColor + '33';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(26, 26, W - 52, H - 52);
+
+  // Corner accents
+  const corners = [[30,30],[W-30,30],[30,H-30],[W-30,H-30]];
+  corners.forEach(([x,y]) => {
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = accentColor;
+    ctx.fill();
+  });
+
+  // Glow top center
+  const grad = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, 300);
+  grad.addColorStop(0, accentColor + '22');
+  grad.addColorStop(1, 'transparent');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Badge icon
+  ctx.font = '56px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('🎓', W/2, 140);
+
+  // "СЕРТИФИКАТ" label — manual letter spacing for cross-browser support
+  ctx.font = 'bold 13px sans-serif';
+  ctx.fillStyle = accentColor;
+  const certLabel = 'СЕРТИФИКАТ О ПРОХОЖДЕНИИ';
+  const letterGap = 4;
+  const totalWidth = ctx.measureText(certLabel).width + (certLabel.length - 1) * letterGap;
+  let lx = W/2 - totalWidth/2;
+  for (const ch of certLabel) {
+    ctx.fillText(ch, lx, 175);
+    lx += ctx.measureText(ch).width + letterGap;
+  }
+
+  // Course name
+  ctx.font = 'bold 32px sans-serif';
+  ctx.fillStyle = '#e8eaf0';
+  ctx.fillText(courseName, W/2, 240);
+
+  // Divider
+  ctx.beginPath();
+  ctx.moveTo(W/2 - 120, 262); ctx.lineTo(W/2 + 120, 262);
+  ctx.strokeStyle = accentColor + '66'; ctx.lineWidth = 1; ctx.stroke();
+
+  // "выдан" text
+  ctx.font = '15px sans-serif';
+  ctx.fillStyle = '#8890a8';
+  ctx.fillText('выдан', W/2, 295);
+
+  // User name
+  ctx.font = 'bold 38px sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText(userName, W/2, 350);
+
+  // Date
+  ctx.font = '14px sans-serif';
+  ctx.fillStyle = '#5a6278';
+  ctx.fillText(dateStr, W/2, 395);
+
+  // Bottom brand
+  ctx.font = 'bold 16px sans-serif';
+  ctx.fillStyle = accentColor;
+  ctx.fillText('● PM Academy', W/2, H - 48);
+
+  ctx.font = '12px sans-serif';
+  ctx.fillStyle = '#3a4055';
+  ctx.fillText('garms1995.github.io/pm-academy', W/2, H - 28);
+
+  // Place canvas in modal
+  const wrap = document.getElementById('cert-canvas-wrap');
+  wrap.innerHTML = '';
+  wrap.appendChild(canvas);
+}
+
+function downloadCertificate() {
+  const canvas = document.querySelector('#cert-canvas-wrap canvas');
+  if (!canvas) return;
+  const link = document.createElement('a');
+  const courseSafe = (currentCertData?.courseName || 'certificate').replace(/[^а-яёa-z0-9]/gi, '_');
+  link.download = `pm_academy_certificate_${courseSafe}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// Patch showCompletion to store cert data
+const _origShowCompletion = showCompletion;
+showCompletion = function(courseName, totalLessons, accentColor) {
+  currentCertData = {
+    courseName,
+    accentColor,
+    date: new Date().toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' })
+  };
+  _origShowCompletion(courseName, totalLessons, accentColor);
+};
+
+// ══════════════════════════════════════════════════════
+// TASK 4 — NOTES
+// ══════════════════════════════════════════════════════
+
+// In-memory notes cache: 'course:idx' → text
+const notesCache = {};
+let notesSaveTimer = null;
+
+async function loadAllNotes() {
+  if (!currentUser) return;
+  try {
+    const { data } = await sb.from('user_notes')
+      .select('course, lesson_idx, note_text')
+      .eq('user_id', currentUser.id);
+    if (data) {
+      data.forEach(row => {
+        notesCache[row.course + ':' + row.lesson_idx] = row.note_text || '';
+      });
+      // Mark sidebar items that have notes
+      refreshNoteDots();
+    }
+  } catch(e) { console.warn('loadAllNotes:', e.message); }
+}
+
+function refreshNoteDots() {
+  // Remove all existing dots first
+  document.querySelectorAll('.note-dot').forEach(el => el.remove());
+  Object.keys(notesCache).forEach(key => {
+    if (!notesCache[key]) return;
+    const [course, idx] = key.split(':');
+    const prefix = course === 'sql' ? 'nav-' : course + '-nav-';
+    const navEl = document.getElementById(prefix + idx);
+    if (navEl && !navEl.querySelector('.note-dot')) {
+      const dot = document.createElement('span');
+      dot.className = 'note-dot';
+      dot.title = 'Есть заметка';
+      navEl.appendChild(dot);
+    }
+  });
+}
+
+function injectNotesBlock(course, idx, mainEl) {
+  const key = course + ':' + idx;
+  const existingText = notesCache[key] || '';
+
+  const block = document.createElement('div');
+  block.className = 'notes-block';
+  block.innerHTML = `
+    <div class="notes-header" id="notes-header-${course}-${idx}" onclick="toggleNotes('${course}',${idx})">
+      <span>📝</span>
+      <span class="notes-header-title">Мои заметки${existingText ? ' <span style="color:var(--accent2);font-size:11px">● есть запись</span>' : ''}</span>
+      <span class="notes-header-arrow">▼</span>
+    </div>
+    <div class="notes-body" id="notes-body-${course}-${idx}">
+      <textarea class="notes-textarea" id="notes-ta-${course}-${idx}"
+        placeholder="Записывайте ключевые мысли, вопросы, идеи по этому уроку..."
+        oninput="onNoteInput('${course}',${idx})">${existingText}</textarea>
+      <div class="notes-footer">
+        <span class="notes-status" id="notes-status-${course}-${idx}">
+          ${existingText ? '● Сохранено' : 'Начните вводить — сохраняется автоматически'}
+        </span>
+      </div>
+    </div>`;
+  mainEl.appendChild(block);
+}
+
+function toggleNotes(course, idx) {
+  const header = document.getElementById(`notes-header-${course}-${idx}`);
+  const body = document.getElementById(`notes-body-${course}-${idx}`);
+  if (!header || !body) return;
+  const isOpen = body.classList.contains('open');
+  header.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
+  if (!isOpen) {
+    // Focus textarea when opening
+    setTimeout(() => document.getElementById(`notes-ta-${course}-${idx}`)?.focus(), 50);
+  }
+}
+
+function onNoteInput(course, idx) {
+  const ta = document.getElementById(`notes-ta-${course}-${idx}`);
+  const status = document.getElementById(`notes-status-${course}-${idx}`);
+  if (!ta || !status) return;
+  const text = ta.value;
+  const key = course + ':' + idx;
+  notesCache[key] = text;
+  status.textContent = 'Сохраняем...';
+  status.className = 'notes-status saving';
+
+  if (notesSaveTimer) clearTimeout(notesSaveTimer);
+  notesSaveTimer = setTimeout(() => saveNote(course, idx, text, status), 1500);
+}
+
+async function saveNote(course, idx, text, statusEl) {
+  if (!currentUser) return;
+  try {
+    if (text.trim()) {
+      const { data: rows } = await sb.from('user_notes')
+        .select('id').eq('user_id', currentUser.id).eq('course', course).eq('lesson_idx', idx).limit(1);
+      if (rows && rows.length > 0) {
+        await sb.from('user_notes').update({ note_text: text, updated_at: new Date().toISOString() })
+          .eq('user_id', currentUser.id).eq('course', course).eq('lesson_idx', idx);
+      } else {
+        await sb.from('user_notes').insert({
+          user_id: currentUser.id, course, lesson_idx: idx,
+          note_text: text, updated_at: new Date().toISOString()
+        });
+      }
+    } else {
+      // Empty note — delete from DB
+      await sb.from('user_notes').delete()
+        .eq('user_id', currentUser.id).eq('course', course).eq('lesson_idx', idx);
+    }
+    if (statusEl) { statusEl.textContent = '✓ Сохранено'; statusEl.className = 'notes-status saved'; }
+    refreshNoteDots();
+  } catch(e) {
+    if (statusEl) { statusEl.textContent = 'Ошибка сохранения'; statusEl.className = 'notes-status'; }
+  }
+}
 
 </script>
 
