@@ -345,17 +345,33 @@
   }
   .btn-cta-register:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(123,111,255,0.45); }
 
-  .courses-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: left; }
+  .courses-grid {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    text-align: left;
+  }
+  .courses-grid::-webkit-scrollbar { height: 4px; }
+  .courses-grid::-webkit-scrollbar-track { background: var(--bg2); border-radius: 2px; }
+  .courses-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   .course-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 20px 22px 52px;
+    padding: 20px 22px 48px;
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
     overflow: hidden;
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
   }
+
   .course-card::before {
     content: '';
     position: absolute;
@@ -367,17 +383,50 @@
   .course-card:hover { border-color: var(--accent2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
   .course-card.dev:hover { border-color: #ff9966; }
   .course-card-icon { font-size: 28px; margin-bottom: 12px; }
-  .course-card h2 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 6px; color: var(--text); }
-  .course-card p { font-size: 13px; color: var(--text3); line-height: 1.55; margin-bottom: 16px; }
-  .course-card-meta { display: flex; gap: 10px; flex-wrap: wrap; }
+  /* Fixed-height title zone — 2 lines */
+  .course-card h2 {
+    font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800;
+    margin-bottom: 8px; color: var(--text);
+    min-height: 44px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  /* Fixed-height description — 4 lines */
+  .course-card p {
+    font-size: 13px; color: var(--text3); line-height: 1.55;
+    margin-bottom: 14px;
+    min-height: 80px;
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  /* Fixed-height badge zone — 2 rows */
+  .course-card-meta { display: flex; gap: 8px; flex-wrap: wrap; min-height: 56px; align-content: flex-start; }
   .c-badge { font-size: 11px; padding: 3px 9px; border-radius: 10px; font-weight: 600; }
   .c-badge.green { background: rgba(79,255,176,0.1); color: var(--accent); }
   .c-badge.orange { background: rgba(255,153,102,0.12); color: #ff9966; }
   .c-badge.purple { background: rgba(123,111,255,0.12); color: var(--accent2); }
-  .course-card-arrow { position: absolute; bottom: 24px; right: 24px; font-size: 20px; color: var(--text3); transition: transform 0.2s; }
+  .course-card-arrow { position: absolute; bottom: 20px; right: 22px; font-size: 20px; color: var(--text3); transition: transform 0.2s; }
   .course-card:hover .course-card-arrow { transform: translateX(4px); color: var(--text2); }
-  .coming-soon-banner { grid-column: 1 / -1; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); border-radius: 12px; padding: 20px 24px; display: flex; align-items: center; gap: 14px; color: var(--text3); font-size: 14px; }
 
+  /* Progress bar — always reserves space, hidden until logged in with progress */
+  .course-card-progress {
+    display: block;
+    margin-top: 10px;
+    min-height: 36px;
+    visibility: hidden;
+  }
+  .course-card-progress.visible { visibility: visible; }
+  .course-card-progress-bar {
+    height: 3px; background: rgba(255,255,255,0.08);
+    border-radius: 2px; overflow: hidden; margin-bottom: 6px;
+  }
+  .course-card-progress-fill {
+    height: 100%; border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+  .course-card-progress-label {
+    font-size: 11px; font-weight: 600; color: var(--text3);
+    display: flex; justify-content: space-between;
+  }
+  .course-card-progress-label .pct { font-family: 'Syne', sans-serif; font-size: 12px; }
   /* COURSE AREA */
   .course-area { display: none; flex: 1; height: calc(100vh - 56px); overflow: hidden; }
   .course-area.active { display: flex; }
@@ -496,7 +545,6 @@
     flex: 1;
     overflow-y: auto;
     padding: 40px 48px;
-    max-width: 860px;
   }
   .lesson-layout {
     display: flex;
@@ -508,11 +556,10 @@
     flex: 1;
     min-width: 0;
     overflow-y: auto;
-    padding: 40px 48px 80px;
-    max-width: 860px;
+    padding: 40px 44px 80px;
   }
   .lesson-notes-panel {
-    width: 300px;
+    width: 340px;
     flex-shrink: 0;
     border-left: 1px solid var(--border);
     background: var(--bg2);
@@ -1662,11 +1709,18 @@
   }
   .profile-course-card {
     background: var(--bg3); border: 1px solid var(--border);
-    border-radius: 12px; padding: 14px 16px;
+    border-radius: 12px; padding: 0;
     cursor: pointer; transition: border-color 0.15s, background 0.15s;
-    display: flex; flex-direction: column; gap: 0;
+    display: flex; flex-direction: column;
+    overflow: hidden;
   }
   .profile-course-card:hover { border-color: var(--accent2); background: rgba(123,111,255,0.05); }
+  /* Fixed top section — always same height */
+  .pcc-top {
+    padding: 14px 16px;
+    min-height: 110px;
+    display: flex; flex-direction: column;
+  }
   .pcc-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
   .pcc-icon { font-size:18px; }
   .pcc-name { font-size:13px; font-weight:600; color:var(--text2); flex:1; }
@@ -1677,9 +1731,64 @@
   .pcc-pct::before, .pcc-pct::after { content: none !important; display: none !important; }
   .pcc-action {
     font-size:11px; font-weight:600; color:var(--text3);
-    margin-top:10px; letter-spacing:0.02em; transition:color 0.15s;
+    margin-top:auto; padding-top:8px; letter-spacing:0.02em; transition:color 0.15s;
   }
   .profile-course-card:hover .pcc-action { color: var(--accent2); }
+  /* Notes pin button in profile card header */
+  .pcc-notes-pin {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .btn-pcc-notes {
+    background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; gap: 4px;
+    padding: 3px 7px; border-radius: 8px;
+    font-size: 11px; font-weight: 700;
+    color: var(--text3); transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+  .btn-pcc-notes:hover { color: var(--accent2); border-color: rgba(123,111,255,0.3); background: rgba(123,111,255,0.08); }
+  .btn-pcc-notes.has-notes { color: var(--accent2); }
+  .btn-pcc-notes .pin-count {
+    background: var(--accent2); color: white;
+    border-radius: 8px; padding: 0 5px;
+    font-size: 10px; font-weight: 800; line-height: 16px;
+  }
+  /* Dropdown notes list */
+  .pcc-notes-dropdown {
+    display: none;
+    position: absolute; right: 0; top: calc(100% + 6px);
+    width: 260px; z-index: 100;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+  .pcc-notes-dropdown.open { display: block; }
+  .pcc-notes-dropdown-header {
+    padding: 10px 14px 8px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text3);
+    border-bottom: 1px solid var(--border);
+  }
+  .pcc-notes-dropdown-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 9px 14px; cursor: pointer;
+    transition: background 0.12s; border: none;
+    background: none; width: 100%; text-align: left;
+  }
+  .pcc-notes-dropdown-item:hover { background: rgba(123,111,255,0.08); }
+  .pcc-notes-dropdown-lesson { font-size: 11px; font-weight: 700; color: var(--text3); flex-shrink: 0; }
+  .pcc-notes-dropdown-text { font-size: 12px; color: var(--text2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+
+  /* Notes zone — OUTSIDE the card, doesn't affect card height */
+  .pcc-notes-zone {
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    background: var(--bg2);
+    overflow: hidden;
+    margin-top: -4px;
+  }
 
   /* Avg time row */
   .profile-avg-time-row {
@@ -1819,7 +1928,70 @@
   .pcc-note-lesson { font-size: 11px; font-weight: 600; color: var(--text2); white-space: nowrap; flex-shrink: 0; }
   .pcc-note-preview { font-size: 11px; color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
 
-  /* ── Profile certificates section ── */
+  /* ── Notes modal ── */
+  .notes-modal-overlay {
+    position: fixed; inset: 0; z-index: 2500;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .notes-modal-overlay.show { opacity: 1; pointer-events: all; }
+  .notes-modal {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 16px; width: 520px; max-width: calc(100vw - 32px);
+    max-height: 80vh; display: flex; flex-direction: column;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    transform: translateY(12px); transition: transform 0.2s;
+  }
+  .notes-modal-overlay.show .notes-modal { transform: translateY(0); }
+  .notes-modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .notes-modal-title {
+    font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800;
+    color: var(--text);
+  }
+  .btn-notes-modal-close {
+    background: none; border: none; cursor: pointer;
+    color: var(--text3); font-size: 20px; padding: 4px 8px;
+    border-radius: 6px; transition: all 0.15s; line-height: 1;
+  }
+  .btn-notes-modal-close:hover { color: var(--text); background: var(--bg2); }
+  .notes-modal-body { overflow-y: auto; flex: 1; padding: 12px 16px; }
+  .notes-modal-item {
+    border: 1px solid var(--border); border-radius: 10px;
+    margin-bottom: 10px; overflow: hidden;
+    transition: border-color 0.15s, background 0.15s;
+    cursor: pointer;
+  }
+  .notes-modal-item:hover { border-color: rgba(123,111,255,0.4); background: rgba(123,111,255,0.04); }
+  .notes-modal-item-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; background: var(--bg2);
+  }
+  .notes-modal-lesson {
+    font-size: 11px; font-weight: 700; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0;
+  }
+  .notes-modal-lesson-title {
+    font-size: 13px; font-weight: 600; color: var(--text2); flex: 1;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .notes-modal-goto-hint {
+    font-size: 11px; color: var(--text3); flex-shrink: 0;
+    transition: color 0.15s;
+  }
+  .notes-modal-item:hover .notes-modal-goto-hint { color: var(--accent2); }
+  .notes-modal-text {
+    padding: 10px 14px; font-size: 13px; color: var(--text2);
+    line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+  }
+  .notes-modal-empty {
+    text-align: center; padding: 40px 20px;
+    color: var(--text3); font-size: 14px;
+  }
   .profile-certs-section { margin-top: 24px; }
   .profile-cert-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
   .profile-cert-item {
@@ -2055,54 +2227,70 @@
       <div class="profile-progress-grid">
         <div class="profile-progress-col">
         <div class="profile-course-card" id="pcc-sql-card">
-          <div class="pcc-head" onclick="goToCourseFromProfile('sql')"><span class="pcc-icon">🗄️</span><span class="pcc-name">SQL</span></div>
-          <div class="pcc-pct" id="pcc-sql-pct" style="color:var(--accent)">0%</div>
-          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-sql-fill" style="background:var(--accent);width:0%"></div></div>
-          <div class="pcc-action" id="pcc-sql-action" onclick="goToCourseFromProfile('sql')">Начать →</div>
-          <div class="pcc-notes-toggle" id="pcc-sql-notes-toggle" onclick="toggleProfileNotes('sql', event)" style="display:none">
-            <span>📝</span><span>Заметки</span>
-            <span class="pcc-notes-count" id="pcc-sql-notes-count">0</span>
-            <span class="pcc-notes-arrow">▼</span>
+          <div class="pcc-top">
+            <div class="pcc-head" onclick="goToCourseFromProfile('sql')">
+              <span class="pcc-icon">🗄️</span><span class="pcc-name">SQL</span>
+              <div class="pcc-notes-pin" id="pcc-sql-pin" style="display:none">
+                <button class="btn-pcc-notes" onclick="togglePccNotes('sql', event)">
+                  📌 <span class="pin-count" id="pcc-sql-notes-count">0</span>
+                </button>
+                <div class="pcc-notes-dropdown" id="pcc-sql-notes-list"></div>
+              </div>
+            </div>
+            <div class="pcc-pct" id="pcc-sql-pct" style="color:var(--accent)">0%</div>
+            <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-sql-fill" style="background:var(--accent);width:0%"></div></div>
+            <div class="pcc-action" id="pcc-sql-action" onclick="goToCourseFromProfile('sql')">Начать →</div>
           </div>
-          <div class="pcc-notes-list" id="pcc-sql-notes-list"></div>
         </div>
         <div class="profile-course-card" id="pcc-pm-card">
-          <div class="pcc-head" onclick="goToCourseFromProfile('pm')"><span class="pcc-icon">📋</span><span class="pcc-name">Управление проектами</span></div>
-          <div class="pcc-pct" id="pcc-pm-pct" style="color:#a855f7">0%</div>
-          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-pm-fill" style="background:#a855f7;width:0%"></div></div>
-          <div class="pcc-action" id="pcc-pm-action" onclick="goToCourseFromProfile('pm')">Начать →</div>
-          <div class="pcc-notes-toggle" id="pcc-pm-notes-toggle" onclick="toggleProfileNotes('pm', event)" style="display:none">
-            <span>📝</span><span>Заметки</span>
-            <span class="pcc-notes-count" id="pcc-pm-notes-count">0</span>
-            <span class="pcc-notes-arrow">▼</span>
+          <div class="pcc-top">
+            <div class="pcc-head" onclick="goToCourseFromProfile('pm')">
+              <span class="pcc-icon">📋</span><span class="pcc-name">Управление проектами</span>
+              <div class="pcc-notes-pin" id="pcc-pm-pin" style="display:none">
+                <button class="btn-pcc-notes" onclick="togglePccNotes('pm', event)">
+                  📌 <span class="pin-count" id="pcc-pm-notes-count">0</span>
+                </button>
+                <div class="pcc-notes-dropdown" id="pcc-pm-notes-list"></div>
+              </div>
+            </div>
+            <div class="pcc-pct" id="pcc-pm-pct" style="color:#a855f7">0%</div>
+            <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-pm-fill" style="background:#a855f7;width:0%"></div></div>
+            <div class="pcc-action" id="pcc-pm-action" onclick="goToCourseFromProfile('pm')">Начать →</div>
           </div>
-          <div class="pcc-notes-list" id="pcc-pm-notes-list"></div>
         </div>
         </div>
         <div class="profile-progress-col">
         <div class="profile-course-card" id="pcc-dev-card">
-          <div class="pcc-head" onclick="goToCourseFromProfile('dev')"><span class="pcc-icon">💻</span><span class="pcc-name">Разработка ПО</span></div>
-          <div class="pcc-pct" id="pcc-dev-pct" style="color:#ff9966">0%</div>
-          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-dev-fill" style="background:#ff9966;width:0%"></div></div>
-          <div class="pcc-action" id="pcc-dev-action" onclick="goToCourseFromProfile('dev')">Начать →</div>
-          <div class="pcc-notes-toggle" id="pcc-dev-notes-toggle" onclick="toggleProfileNotes('dev', event)" style="display:none">
-            <span>📝</span><span>Заметки</span>
-            <span class="pcc-notes-count" id="pcc-dev-notes-count">0</span>
-            <span class="pcc-notes-arrow">▼</span>
+          <div class="pcc-top">
+            <div class="pcc-head" onclick="goToCourseFromProfile('dev')">
+              <span class="pcc-icon">💻</span><span class="pcc-name">Разработка ПО</span>
+              <div class="pcc-notes-pin" id="pcc-dev-pin" style="display:none">
+                <button class="btn-pcc-notes" onclick="togglePccNotes('dev', event)">
+                  📌 <span class="pin-count" id="pcc-dev-notes-count">0</span>
+                </button>
+                <div class="pcc-notes-dropdown" id="pcc-dev-notes-list"></div>
+              </div>
+            </div>
+            <div class="pcc-pct" id="pcc-dev-pct" style="color:#ff9966">0%</div>
+            <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-dev-fill" style="background:#ff9966;width:0%"></div></div>
+            <div class="pcc-action" id="pcc-dev-action" onclick="goToCourseFromProfile('dev')">Начать →</div>
           </div>
-          <div class="pcc-notes-list" id="pcc-dev-notes-list"></div>
         </div>
         <div class="profile-course-card" id="pcc-vc-card">
-          <div class="pcc-head" onclick="goToCourseFromProfile('vc')"><span class="pcc-icon">🤖</span><span class="pcc-name">Vibe Coding</span></div>
-          <div class="pcc-pct" id="pcc-vc-pct" style="color:#ec4899">0%</div>
-          <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-vc-fill" style="background:#ec4899;width:0%"></div></div>
-          <div class="pcc-action" id="pcc-vc-action" onclick="goToCourseFromProfile('vc')">Начать →</div>
-          <div class="pcc-notes-toggle" id="pcc-vc-notes-toggle" onclick="toggleProfileNotes('vc', event)" style="display:none">
-            <span>📝</span><span>Заметки</span>
-            <span class="pcc-notes-count" id="pcc-vc-notes-count">0</span>
-            <span class="pcc-notes-arrow">▼</span>
+          <div class="pcc-top">
+            <div class="pcc-head" onclick="goToCourseFromProfile('vc')">
+              <span class="pcc-icon">🤖</span><span class="pcc-name">Vibe Coding</span>
+              <div class="pcc-notes-pin" id="pcc-vc-pin" style="display:none">
+                <button class="btn-pcc-notes" onclick="togglePccNotes('vc', event)">
+                  📌 <span class="pin-count" id="pcc-vc-notes-count">0</span>
+                </button>
+                <div class="pcc-notes-dropdown" id="pcc-vc-notes-list"></div>
+              </div>
+            </div>
+            <div class="pcc-pct" id="pcc-vc-pct" style="color:#ec4899">0%</div>
+            <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-vc-fill" style="background:#ec4899;width:0%"></div></div>
+            <div class="pcc-action" id="pcc-vc-action" onclick="goToCourseFromProfile('vc')">Начать →</div>
           </div>
-          <div class="pcc-notes-list" id="pcc-vc-notes-list"></div>
         </div>
         </div>
       </div>
@@ -2125,6 +2313,17 @@
       <button class="btn-profile-close" onclick="closeProfileModal()">Закрыть</button>
       <button class="btn-sign-out" onclick="handleSignOut()">Выйти</button>
     </div>
+  </div>
+</div>
+
+<!-- ══ NOTES MODAL ══ -->
+<div class="notes-modal-overlay" id="notes-modal-overlay" onclick="handleNotesModalOverlayClick(event)">
+  <div class="notes-modal">
+    <div class="notes-modal-header">
+      <div class="notes-modal-title" id="notes-modal-title">📝 Заметки</div>
+      <button class="btn-notes-modal-close" onclick="closeNotesModal()">✕</button>
+    </div>
+    <div class="notes-modal-body" id="notes-modal-body"></div>
   </div>
 </div>
 
@@ -2246,8 +2445,8 @@
       </div>
       <button class="btn-cta-register" onclick="openRegisterModal()">Начать бесплатно →</button>
     </div>
-    <div class="courses-grid">
-      <div class="course-card sql" onclick="showCourse('sql')">
+    <div class="courses-grid" id="courses-grid">
+      <div class="course-card sql" data-course="sql" onclick="showCourse('sql')">
         <div class="course-card-icon">🗄️</div>
         <h2>SQL для PM</h2>
         <p>Реляционные БД, язык запросов, продуктовые метрики. Пишите запросы прямо в браузере на живых данных.</p>
@@ -2256,9 +2455,13 @@
           <span class="c-badge purple">5 модулей</span>
           <span class="c-badge green">Интерактивный SQL</span>
         </div>
+        <div class="course-card-progress" id="home-sql-progress">
+          <div class="course-card-progress-bar"><div class="course-card-progress-fill" id="home-sql-fill" style="background:var(--accent);width:0%"></div></div>
+          <div class="course-card-progress-label"><span id="home-sql-label">В процессе</span><span class="pct" id="home-sql-pct" style="color:var(--accent)">0%</span></div>
+        </div>
         <div class="course-card-arrow">→</div>
       </div>
-      <div class="course-card dev" onclick="showCourse('dev')">
+      <div class="course-card dev" data-course="dev" onclick="showCourse('dev')">
         <div class="course-card-icon">💻</div>
         <h2>Основы разработки ПО</h2>
         <p>Как работает интернет, что такое API, Git, CI/CD, архитектура — всё что PM должен знать о технологиях.</p>
@@ -2267,9 +2470,13 @@
           <span class="c-badge purple">5 модулей</span>
           <span class="c-badge orange">Для PM</span>
         </div>
+        <div class="course-card-progress" id="home-dev-progress">
+          <div class="course-card-progress-bar"><div class="course-card-progress-fill" id="home-dev-fill" style="background:#ff9966;width:0%"></div></div>
+          <div class="course-card-progress-label"><span id="home-dev-label">В процессе</span><span class="pct" id="home-dev-pct" style="color:#ff9966">0%</span></div>
+        </div>
         <div class="course-card-arrow">→</div>
       </div>
-      <div class="course-card" style="border-top:3px solid #a855f7;cursor:pointer" onclick="showCourse('pm')">
+      <div class="course-card" data-course="pm" style="border-top:3px solid #a855f7;cursor:pointer" onclick="showCourse('pm')">
         <div class="course-card-icon">📋</div>
         <h2 style="color:var(--text)">Управление проектами</h2>
         <p>PMBOK 7, Agile, Scrum, Kanban, модели управления, soft skills, рынок труда PM в России — полный курс.</p>
@@ -2278,9 +2485,13 @@
           <span class="c-badge purple">6 модулей</span>
           <span class="c-badge" style="background:rgba(168,85,247,0.1);color:#a855f7">Новый курс</span>
         </div>
+        <div class="course-card-progress" id="home-pm-progress">
+          <div class="course-card-progress-bar"><div class="course-card-progress-fill" id="home-pm-fill" style="background:#a855f7;width:0%"></div></div>
+          <div class="course-card-progress-label"><span id="home-pm-label">В процессе</span><span class="pct" id="home-pm-pct" style="color:#a855f7">0%</span></div>
+        </div>
         <div class="course-card-arrow">→</div>
       </div>
-      <div class="course-card" style="border-top:3px solid #ec4899;cursor:pointer" onclick="showCourse('vc')">
+      <div class="course-card" data-course="vc" style="border-top:3px solid #ec4899;cursor:pointer" onclick="showCourse('vc')">
         <div class="course-card-icon">🤖</div>
         <h2 style="color:var(--text)">Vibe Coding: от идеи до продакшна</h2>
         <p>Среда разработки, архитектурное мышление, промптинг для Claude, frontend, базы данных, деплой — всё с нуля для PM.</p>
@@ -2289,11 +2500,11 @@
           <span class="c-badge" style="background:rgba(236,72,153,0.1);color:#ec4899">8 модулей</span>
           <span class="c-badge" style="background:rgba(236,72,153,0.1);color:#ec4899">🔥 Новый!</span>
         </div>
+        <div class="course-card-progress" id="home-vc-progress">
+          <div class="course-card-progress-bar"><div class="course-card-progress-fill" id="home-vc-fill" style="background:#ec4899;width:0%"></div></div>
+          <div class="course-card-progress-label"><span id="home-vc-label">В процессе</span><span class="pct" id="home-vc-pct" style="color:#ec4899">0%</span></div>
+        </div>
         <div class="course-card-arrow">→</div>
-      </div>
-      <div class="coming-soon-banner">
-        <span style="font-size:22px">🚀</span>
-        <div><strong style="color:var(--text2)">Скоро:</strong> Основы аналитики данных · Продуктовые метрики и фреймворки · Основы UX для PM</div>
       </div>
     </div>
   </div>
@@ -4297,6 +4508,7 @@ function showLesson(idx) {
   saveLastLesson('sql', idx);
   // ТЗ-5: Load side panel note
   loadSidePanelNote('sql', idx);
+  markNewLessonSeen('sql', idx);
   // ТЗ-5: Prefetch next lesson
   const nav = lesson.nav || {};
   if (nav.next !== undefined) prefetchNextLesson('sql', nav.next);
@@ -5122,6 +5334,7 @@ function showDevLesson(idx) {
   injectNotesBlock('dev', idx, main);
   saveLastLesson('dev', idx);
   loadSidePanelNote('dev', idx);
+  markNewLessonSeen('dev', idx);
   prefetchNextLesson('dev', idx + 1 <= 12 ? idx + 1 : undefined);
 }
 
@@ -5916,6 +6129,7 @@ function showPmLesson(idx) {
   injectNotesBlock('pm', idx, main);
   saveLastLesson('pm', idx);
   loadSidePanelNote('pm', idx);
+  markNewLessonSeen('pm', idx);
   prefetchNextLesson('pm', idx + 1 <= 14 ? idx + 1 : undefined);
 }
 
@@ -6912,6 +7126,7 @@ function showVcLesson(idx) {
   injectNotesBlock('vc', idx, main);
   saveLastLesson('vc', idx);
   loadSidePanelNote('vc', idx);
+  markNewLessonSeen('vc', idx);
   prefetchNextLesson('vc', idx + 1 <= 20 ? idx + 1 : undefined);
 }
 
@@ -7121,13 +7336,12 @@ const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, vc: 20 };
     const { data: { session } } = await sb.auth.getSession();
     if (session) {
       currentUser = session.user;
-      // ТЗ-1: Параллельная инициализация — все независимые запросы одновременно
       await Promise.allSettled([
         loadProfile(currentUser),
         loadProgressFromDB(),
-        trackActivity()
+        trackActivity(),
+        loadSeenNewLessons()
       ]);
-      // loadAllNotes вызывается внутри loadProgressFromDB (await)
       renderLoggedIn();
     } else {
       renderLoggedOut();
@@ -7145,7 +7359,8 @@ const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, vc: 20 };
       await Promise.allSettled([
         loadProfile(currentUser),
         loadProgressFromDB(),
-        trackActivity()
+        trackActivity(),
+        loadSeenNewLessons()
       ]);
       renderLoggedIn();
       closeAuthModal();
@@ -7158,6 +7373,7 @@ const COURSE_TOTALS = { sql: 13, dev: 12, pm: 14, vc: 20 };
     } else if (event === 'SIGNED_OUT') {
       currentUser = null;
       clearSyncTimer();
+      seenNewLessons.clear();
       renderLoggedOut();
     }
   });
@@ -7213,6 +7429,10 @@ async function loadProgressFromDB() {
     restoreLastLessons(data);
     // Load notes
     await loadAllNotes();
+    // Update home screen progress cards
+    updateHomeCourseProgress();
+    // Sort course cards by progress
+    sortCourseCards();
     // Refresh current lesson view if inside a course
     if (typeof currentLesson !== 'undefined' && activeCourse === 'sql') showLesson(currentLesson);
     if (typeof currentDevLesson !== 'undefined' && activeCourse === 'dev') showDevLesson(currentDevLesson);
@@ -7426,6 +7646,7 @@ function renderLoggedIn() {
   document.getElementById('nav-user-name').textContent = name;
   renderAvatar(null, document.getElementById('nav-avatar'), avatarUrl, name);
   updateHomeCTA();
+  updateHomeCourseProgress();
 }
 
 // ── UI: render logged-out ──
@@ -7685,6 +7906,33 @@ function togglePwVisibility(inputId, btn) {
   btn.textContent = isHidden ? '🙈' : '👁';
 }
 
+function updateHomeCourseProgress() {
+  if (!currentUser) return;
+  const courses = [
+    { key: 'sql', set: completed,      total: 13, accent: 'var(--accent)' },
+    { key: 'dev', set: devCompleted,   total: 12, accent: '#ff9966' },
+    { key: 'pm',  set: pmCompleted,    total: 14, accent: '#a855f7' },
+    { key: 'vc',  set: vcCompleted,    total: 20, accent: '#ec4899' },
+  ];
+  courses.forEach(({ key, set, total, accent }) => {
+    const done = [...set].filter(x => x > 0).length;
+    const pct  = Math.round(done / total * 100);
+    const bar  = document.getElementById('home-' + key + '-progress');
+    const fill = document.getElementById('home-' + key + '-fill');
+    const pctEl = document.getElementById('home-' + key + '-pct');
+    const lbl  = document.getElementById('home-' + key + '-label');
+    if (!bar) return;
+    if (pct === 0) { bar.classList.remove('visible'); return; }
+    bar.classList.add('visible');
+    if (fill)  fill.style.width = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (lbl) {
+      lbl.textContent = pct === 100 ? '✓ Пройден' : 'В процессе';
+      lbl.style.color = pct === 100 ? accent : '';
+    }
+  });
+}
+
 function openRegisterModal() {
   openAuthModal();
   switchAuthTab('register');
@@ -7695,6 +7943,47 @@ function updateHomeCTA() {
   if (!cta) return;
   cta.classList.toggle('hidden', !!currentUser);
 }
+
+// ТЗ-3: Sort course cards by progress (in-progress → not-started → completed)
+function sortCourseCards() {
+  const grid = document.querySelector('.courses-grid');
+  if (!grid) return;
+
+  const totals = { sql: 13, dev: 12, pm: 14, vc: 20 };
+  const sets   = { sql: completed, dev: devCompleted, pm: pmCompleted, vc: vcCompleted };
+  const order  = { sql: 0, dev: 1, pm: 2, vc: 3 };
+
+  // Get cards and compute priority
+  const cards = [...grid.querySelectorAll('.course-card')].filter(c => c.dataset.course);
+  cards.sort((a, b) => {
+    const getPriority = (course) => {
+      const done = typeof sets[course] !== 'undefined'
+        ? [...sets[course]].filter(x => x > 0).length : 0;
+      const total = totals[course];
+      if (done === 0) return 1;          // not started
+      if (done >= total) return 2;       // completed
+      return 0;                          // in-progress (first)
+    };
+    const pa = getPriority(a.dataset.course);
+    const pb = getPriority(b.dataset.course);
+    if (pa !== pb) return pa - pb;
+    return order[a.dataset.course] - order[b.dataset.course];
+  });
+
+  cards.forEach(card => grid.appendChild(card));
+}
+
+// Load student count from Supabase
+async function loadStudentCount() {
+  try {
+    const { count } = await sb.from('profiles').select('*', { count: 'exact', head: true });
+    const el = document.getElementById('stat-students');
+    if (el && count !== null) el.textContent = count;
+  } catch(e) {}
+}
+
+// Call on page load
+loadStudentCount();
 
 function goToCourseFromProfile(course) {
   closeProfileModal();
@@ -7804,7 +8093,7 @@ async function uploadAvatarFile(file) {
 
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeAuthModal(); closeProfileModal(); closeCameraOverlay(); closeCertificate(); }
+  if (e.key === 'Escape') { closeAuthModal(); closeProfileModal(); closeCameraOverlay(); closeCertificate(); closeNotesModal(); }
   if (e.key === 'Enter') {
     const loginForm = document.getElementById('form-login');
     const regForm = document.getElementById('form-register');
@@ -7913,44 +8202,88 @@ function fillProfileNotes() {
       .map(key => ({ idx: parseInt(key.split(':')[1]), text: notesCache[key] }))
       .sort((a, b) => a.idx - b.idx);
 
-    const toggle = document.getElementById('pcc-' + course + '-notes-toggle');
-    const list   = document.getElementById('pcc-' + course + '-notes-list');
-    const count  = document.getElementById('pcc-' + course + '-notes-count');
-
-    if (!toggle || !list || !count) return;
+    const pin   = document.getElementById('pcc-' + course + '-pin');
+    const list  = document.getElementById('pcc-' + course + '-notes-list');
+    const count = document.getElementById('pcc-' + course + '-notes-count');
+    if (!pin || !list || !count) return;
 
     if (courseNotes.length === 0) {
-      toggle.style.display = 'none';
-      list.innerHTML = '';
+      pin.style.display = 'none';
       return;
     }
-
-    toggle.style.display = 'flex';
+    pin.style.display = 'flex';
     count.textContent = courseNotes.length;
 
-    list.innerHTML = courseNotes.map(({ idx, text }) => {
-      const title = getLessonTitle(course, idx);
-      const preview = text.replace(/\n/g, ' ').slice(0, 60) + (text.length > 60 ? '…' : '');
-      return `<button class="pcc-note-item" onclick="goToNoteLesson('${course}', ${idx})">
-        <span class="pcc-note-lesson">Урок ${idx}</span>
-        <span class="pcc-note-preview">${title} — ${preview}</span>
-      </button>`;
-    }).join('');
+    list.innerHTML = `<div class="pcc-notes-dropdown-header">📝 Заметки к урокам</div>` +
+      courseNotes.map(({ idx, text }) => {
+        const title = getLessonTitle(course, idx);
+        return `<button class="pcc-notes-dropdown-item" onclick="goToNoteLesson('${course}', ${idx})">
+          <span class="pcc-notes-dropdown-lesson">Урок ${idx}</span>
+          <span class="pcc-notes-dropdown-text">${title}</span>
+        </button>`;
+      }).join('');
   });
 }
 
-function toggleProfileNotes(course, e) {
-  if (e) e.stopPropagation();
-  const toggle = document.getElementById('pcc-' + course + '-notes-toggle');
-  const list   = document.getElementById('pcc-' + course + '-notes-list');
-  if (!toggle || !list) return;
-  const isOpen = list.classList.contains('open');
-  toggle.classList.toggle('open', !isOpen);
-  list.classList.toggle('open', !isOpen);
+function openNotesModal(course) {
+  const meta = COURSE_META[course];
+  const courseNotes = Object.keys(notesCache)
+    .filter(key => key.startsWith(course + ':') && notesCache[key]?.trim())
+    .map(key => ({ idx: parseInt(key.split(':')[1]), text: notesCache[key] }))
+    .sort((a, b) => a.idx - b.idx);
+
+  const title = document.getElementById('notes-modal-title');
+  const body  = document.getElementById('notes-modal-body');
+  if (!title || !body) return;
+
+  title.textContent = `📝 Заметки — ${meta.name}`;
+
+  if (courseNotes.length === 0) {
+    body.innerHTML = `<div class="notes-modal-empty">Нет заметок по этому курсу</div>`;
+  } else {
+    body.innerHTML = courseNotes.map(({ idx, text }) => {
+      const lessonTitle = getLessonTitle(course, idx);
+      const escaped = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return `<div class="notes-modal-item" onclick="goToNoteLesson('${course}', ${idx})">
+        <div class="notes-modal-item-head">
+          <span class="notes-modal-lesson">Урок ${idx}</span>
+          <span class="notes-modal-lesson-title">${lessonTitle}</span>
+          <span class="notes-modal-goto-hint">→</span>
+        </div>
+        <div class="notes-modal-text">${escaped}</div>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('notes-modal-overlay').classList.add('show');
 }
+
+function closeNotesModal() {
+  document.getElementById('notes-modal-overlay')?.classList.remove('show');
+}
+
+function handleNotesModalOverlayClick(e) {
+  if (e.target === document.getElementById('notes-modal-overlay')) closeNotesModal();
+}
+
+function togglePccNotes(course, e) {
+  if (e) e.stopPropagation();
+  openNotesModal(course);
+}
+
+// Legacy — kept for safety
+function toggleProfileNotes(course, e) { togglePccNotes(course, e); }
+
+// Close pin dropdowns on outside click
+document.addEventListener('click', () => {
+  ['sql','dev','pm','vc'].forEach(c => {
+    document.getElementById('pcc-' + c + '-notes-list')?.classList.remove('open');
+  });
+});
 
 function goToNoteLesson(course, idx) {
   closeProfileModal();
+  closeNotesModal();
   showCourse(course);
   // Wait for course to render then jump to specific lesson
   setTimeout(() => {
@@ -8084,6 +8417,70 @@ function loadSidePanelNote(course, idx) {
     if (sidePanelTimers[course]) clearTimeout(sidePanelTimers[course]);
     sidePanelTimers[course] = setTimeout(() => saveNote(course, idx, val, st), 1500);
   });
+}
+
+// ══════════════════════════════════════════════════════
+// УМНЫЙ NEW БЕЙДЖ
+// ══════════════════════════════════════════════════════
+
+// Реестр уроков помеченных как NEW (добавляй сюда при выходе нового контента)
+const NEW_LESSONS = {
+  sql: [8, 9, 10, 11, 12, 13],
+  dev: [],
+  pm:  [],
+  vc:  [],
+};
+
+// Set seen lesson keys: 'sql:8', 'dev:3' etc — loaded from DB on login
+const seenNewLessons = new Set();
+
+async function loadSeenNewLessons() {
+  if (!currentUser) return;
+  try {
+    const { data } = await sb.from('seen_new_lessons')
+      .select('course, lesson_idx')
+      .eq('user_id', currentUser.id);
+    if (data) {
+      data.forEach(row => seenNewLessons.add(row.course + ':' + row.lesson_idx));
+    }
+    applySeenNewBadges();
+  } catch(e) { console.warn('loadSeenNewLessons:', e.message); }
+}
+
+function applySeenNewBadges() {
+  Object.keys(NEW_LESSONS).forEach(course => {
+    NEW_LESSONS[course].forEach(idx => {
+      if (seenNewLessons.has(course + ':' + idx)) {
+        // Remove badge from sidebar
+        const prefix = course === 'sql' ? 'nav-' : course + '-nav-';
+        const el = document.getElementById(prefix + idx);
+        if (el) {
+          el.querySelectorAll('.new-badge').forEach(b => b.remove());
+        }
+      }
+    });
+  });
+}
+
+async function markNewLessonSeen(course, idx) {
+  const key = course + ':' + idx;
+  if (!NEW_LESSONS[course]?.includes(idx)) return;
+  if (seenNewLessons.has(key)) return;
+  seenNewLessons.add(key);
+
+  // Remove badge from DOM immediately
+  const prefix = course === 'sql' ? 'nav-' : course + '-nav-';
+  const el = document.getElementById(prefix + idx);
+  if (el) el.querySelectorAll('.new-badge').forEach(b => b.remove());
+
+  // Save to DB
+  if (currentUser) {
+    try {
+      await sb.from('seen_new_lessons').upsert({
+        user_id: currentUser.id, course, lesson_idx: idx
+      }, { onConflict: 'user_id,course,lesson_idx' });
+    } catch(e) { console.warn('markNewLessonSeen:', e.message); }
+  }
 }
 
 async function resetCourseProgress(course) {
