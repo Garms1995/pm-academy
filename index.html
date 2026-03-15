@@ -1414,6 +1414,21 @@
     padding: 10px 12px; display: none;
   }
   .auth-success.show { display: block; }
+  .btn-forgot {
+    background: none; border: none; cursor: pointer;
+    font-family: 'Instrument Sans', sans-serif; font-size: 12.5px;
+    color: var(--text3); transition: color 0.15s; padding: 2px 0;
+  }
+  .btn-forgot:hover { color: var(--accent2); }
+  .profile-streak-row {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,200,50,0.06); border: 1px solid rgba(255,200,50,0.15);
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;
+  }
+  .streak-fire { font-size: 20px; }
+  .streak-value { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: #ffd04b; }
+  .streak-label { font-size: 13px; color: var(--text2); }
+  .streak-visits { font-size: 12px; color: var(--text3); margin-left: auto; }
 
   /* ── Top Nav user button ── */
   .nav-user-btn {
@@ -1622,6 +1637,21 @@
       </div>
       <div class="auth-error" id="login-error"></div>
       <button class="btn-auth-submit" id="btn-login" onclick="handleLogin()">Войти</button>
+      <div style="text-align:center;margin-top:4px">
+        <button class="btn-forgot" onclick="switchAuthTab('forgot')">Забыли пароль?</button>
+      </div>
+    </div>
+    <div class="auth-form hidden" id="form-forgot">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="forgot-email" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="auth-error" id="forgot-error"></div>
+      <div class="auth-success" id="forgot-success"></div>
+      <button class="btn-auth-submit" id="btn-forgot" onclick="handleForgotPassword()">Отправить ссылку</button>
+      <div style="text-align:center;margin-top:4px">
+        <button class="btn-forgot" onclick="switchAuthTab('login')">← Назад к входу</button>
+      </div>
     </div>
     <div class="auth-form hidden" id="form-register">
       <div class="form-group">
@@ -1660,6 +1690,12 @@
     </div>
     <div class="profile-body">
       <div class="profile-section-title">📊 Прогресс по курсам</div>
+      <div class="profile-streak-row" id="profile-streak-row" style="display:none">
+        <span class="streak-fire">🔥</span>
+        <span id="profile-streak-value" class="streak-value">0</span>
+        <span class="streak-label">дней подряд</span>
+        <span class="streak-visits" id="profile-visits-value"></span>
+      </div>
       <div class="profile-progress-grid">
         <div class="profile-course-card">
           <div class="pcc-head"><span class="pcc-icon">🗄️</span><span class="pcc-name">SQL</span></div>
@@ -6843,14 +6879,16 @@ function handleAuthOverlayClick(e) {
 }
 function switchAuthTab(tab) {
   const isLogin = tab === 'login';
+  const isForgot = tab === 'forgot';
   document.getElementById('tab-login').classList.toggle('active', isLogin);
-  document.getElementById('tab-register').classList.toggle('active', !isLogin);
+  document.getElementById('tab-register').classList.toggle('active', !isLogin && !isForgot);
   document.getElementById('form-login').classList.toggle('hidden', !isLogin);
-  document.getElementById('form-register').classList.toggle('hidden', isLogin);
+  document.getElementById('form-register').classList.toggle('hidden', isLogin || isForgot);
+  document.getElementById('form-forgot').classList.toggle('hidden', !isForgot);
   clearAuthErrors();
 }
 function clearAuthErrors() {
-  ['login-error','reg-error','reg-success'].forEach(id => {
+  ['login-error','reg-error','reg-success','forgot-error','forgot-success'].forEach(id => {
     const el = document.getElementById(id);
     if (el) { el.classList.remove('show'); el.textContent = ''; }
   });
@@ -6858,6 +6896,27 @@ function clearAuthErrors() {
 function showAuthError(id, msg) {
   const el = document.getElementById(id);
   if (el) { el.textContent = msg; el.classList.add('show'); }
+}
+
+// ── FORGOT PASSWORD ──
+async function handleForgotPassword() {
+  const email = document.getElementById('forgot-email').value.trim();
+  const btn = document.getElementById('btn-forgot');
+  if (!email) { showAuthError('forgot-error', 'Введите email'); return; }
+  btn.disabled = true; btn.textContent = 'Отправляем...';
+  try {
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.href
+    });
+    if (error) {
+      showAuthError('forgot-error', error.message);
+    } else {
+      const suc = document.getElementById('forgot-success');
+      suc.textContent = '✓ Ссылка для сброса отправлена на ' + email;
+      suc.classList.add('show');
+    }
+  } catch(e) { showAuthError('forgot-error', 'Ошибка подключения.'); }
+  btn.disabled = false; btn.textContent = 'Отправить ссылку';
 }
 
 // ── LOGIN ──
@@ -6945,6 +7004,18 @@ function fillProfileModal() {
   updateProfileCard('dev', devDone, 12);
   updateProfileCard('pm',  pmDone,  14);
   updateProfileCard('vc',  vcDone,  20);
+
+  // Load and display streak
+  sb.from('user_activity').select('streak_days,visit_count').eq('user_id', user.id).single().then(({ data }) => {
+    const row = document.getElementById('profile-streak-row');
+    if (data && data.streak_days > 0) {
+      document.getElementById('profile-streak-value').textContent = data.streak_days;
+      document.getElementById('profile-visits-value').textContent = data.visit_count ? `${data.visit_count} визит(ов)` : '';
+      row.style.display = 'flex';
+    } else {
+      row.style.display = 'none';
+    }
+  }).catch(() => {});
 }
 
 function updateProfileCard(course, done, total) {
@@ -7027,6 +7098,12 @@ async function uploadAvatarFile(file) {
   const ext = file.name.split('.').pop() || 'jpg';
   const path = `${currentUser.id}/avatar.${ext}`;
   try {
+    // Cleanup: remove old avatar files before uploading new one
+    const { data: existingFiles } = await sb.storage.from('avatars').list(currentUser.id);
+    if (existingFiles && existingFiles.length > 0) {
+      const oldPaths = existingFiles.map(f => `${currentUser.id}/${f.name}`);
+      await sb.storage.from('avatars').remove(oldPaths);
+    }
     const { error: upErr } = await sb.storage.from('avatars').upload(path, file, { upsert: true });
     if (upErr) throw upErr;
     const { data } = sb.storage.from('avatars').getPublicUrl(path);
