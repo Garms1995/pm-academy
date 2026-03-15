@@ -427,6 +427,16 @@
     color: #000;
     font-weight: 700;
   }
+  /* Per-course check-badge colors */
+  .dev-sidebar  .check-badge { background: #ff9966; }
+  .pm-sidebar   .check-badge { background: #a855f7; }
+  .vc-sidebar   .check-badge { background: #ec4899; }
+  /* SQL sidebar uses default var(--accent) = #4fffb0 — already correct */
+
+  /* Per-course completed icon color */
+  .dev-sidebar .sidebar-item.completed .item-icon { color: #ff9966; }
+  .pm-sidebar  .sidebar-item.completed .item-icon { color: #a855f7; }
+  .vc-sidebar  .sidebar-item.completed .item-icon { color: #ec4899; }
 
   /* MAIN CONTENT */
   .main {
@@ -1523,15 +1533,45 @@
   .profile-course-card {
     background: var(--bg3); border: 1px solid var(--border);
     border-radius: 12px; padding: 14px 16px;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    display: flex; flex-direction: column; gap: 0;
   }
+  .profile-course-card:hover { border-color: var(--accent2); background: rgba(123,111,255,0.05); }
   .pcc-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
   .pcc-icon { font-size:18px; }
-  .pcc-name { font-size:13px; font-weight:600; color:var(--text2); }
+  .pcc-name { font-size:13px; font-weight:600; color:var(--text2); flex:1; }
   .pcc-pct { font-size:20px; font-weight:800; font-family:'Syne',sans-serif; margin-bottom:4px; }
   .pcc-bar { height:4px; background:var(--bg2); border-radius:2px; overflow:hidden; position:relative; }
   .pcc-bar-fill { height:100%; border-radius:2px; transition:width 0.4s ease; }
   .pcc-bar-fill[style*="width:0%"] { display: none; }
   .pcc-pct::before, .pcc-pct::after { content: none !important; display: none !important; }
+  .pcc-action {
+    font-size:11px; font-weight:600; color:var(--text3);
+    margin-top:10px; letter-spacing:0.02em; transition:color 0.15s;
+  }
+  .profile-course-card:hover .pcc-action { color: var(--accent2); }
+
+  /* Avg time row */
+  .profile-avg-time-row {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(79,255,176,0.05); border: 1px solid rgba(79,255,176,0.12);
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;
+  }
+  .avg-time-icon { font-size: 18px; }
+  .avg-time-value { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:var(--accent); }
+  .avg-time-label { font-size:13px; color:var(--text2); }
+
+  /* Save toast */
+  .profile-toast {
+    position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-80px);
+    background: #1a2e22; border: 1px solid rgba(79,255,176,0.35);
+    border-radius: 12px; padding: 12px 24px;
+    font-size: 14px; font-weight: 600; color: var(--accent);
+    z-index: 9999; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+    opacity: 0; white-space: nowrap; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .profile-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
   .profile-form { display:flex; flex-direction:column; gap:14px; }
   .profile-actions {
@@ -1696,26 +1736,35 @@
         <span class="streak-label">дней подряд</span>
         <span class="streak-visits" id="profile-visits-value"></span>
       </div>
+      <div class="profile-avg-time-row" id="profile-avg-time-row" style="display:none">
+        <span class="avg-time-icon">⏱</span>
+        <span id="profile-avg-time-value" class="avg-time-value">0</span>
+        <span class="avg-time-label">мин/день среднее время занятий</span>
+      </div>
       <div class="profile-progress-grid">
-        <div class="profile-course-card">
+        <div class="profile-course-card" onclick="goToCourseFromProfile('sql')">
           <div class="pcc-head"><span class="pcc-icon">🗄️</span><span class="pcc-name">SQL</span></div>
           <div class="pcc-pct" id="pcc-sql-pct" style="color:var(--accent)">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-sql-fill" style="background:var(--accent);width:0%"></div></div>
+          <div class="pcc-action" id="pcc-sql-action">Начать →</div>
         </div>
-        <div class="profile-course-card">
+        <div class="profile-course-card" onclick="goToCourseFromProfile('dev')">
           <div class="pcc-head"><span class="pcc-icon">💻</span><span class="pcc-name">Разработка ПО</span></div>
           <div class="pcc-pct" id="pcc-dev-pct" style="color:#ff9966">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-dev-fill" style="background:#ff9966;width:0%"></div></div>
+          <div class="pcc-action" id="pcc-dev-action">Начать →</div>
         </div>
-        <div class="profile-course-card">
+        <div class="profile-course-card" onclick="goToCourseFromProfile('pm')">
           <div class="pcc-head"><span class="pcc-icon">📋</span><span class="pcc-name">Управление проектами</span></div>
           <div class="pcc-pct" id="pcc-pm-pct" style="color:#a855f7">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-pm-fill" style="background:#a855f7;width:0%"></div></div>
+          <div class="pcc-action" id="pcc-pm-action">Начать →</div>
         </div>
-        <div class="profile-course-card">
+        <div class="profile-course-card" onclick="goToCourseFromProfile('vc')">
           <div class="pcc-head"><span class="pcc-icon">🤖</span><span class="pcc-name">Vibe Coding</span></div>
           <div class="pcc-pct" id="pcc-vc-pct" style="color:#ec4899">0%</div>
           <div class="pcc-bar"><div class="pcc-bar-fill" id="pcc-vc-fill" style="background:#ec4899;width:0%"></div></div>
+          <div class="pcc-action" id="pcc-vc-action">Начать →</div>
         </div>
       </div>
       <div class="profile-section-title" style="margin-top:24px">✏️ Редактировать профиль</div>
@@ -2057,7 +2106,7 @@
 <!-- PM MANAGEMENT COURSE -->
 <div class="course-area" id="course-pm">
   <div class="layout">
-    <nav class="sidebar" id="pm-sidebar" style="border-right-color:rgba(168,85,247,0.2)">
+    <nav class="sidebar pm-sidebar" id="pm-sidebar" style="border-right-color:rgba(168,85,247,0.2)">
       <div class="sidebar-section">Курс</div>
       <div class="sidebar-item active" onclick="showPmLesson(0)" id="pm-nav-0">
         <span class="item-num">00</span><span class="item-icon">🏠</span><span>Введение</span>
@@ -2124,7 +2173,7 @@
 <!-- VIBE CODING COURSE -->
 <div class="course-area" id="course-vc" style="display:none">
   <div class="layout">
-    <nav class="sidebar" id="vc-sidebar" style="border-right-color:rgba(236,72,153,0.2)">
+    <nav class="sidebar vc-sidebar" id="vc-sidebar" style="border-right-color:rgba(236,72,153,0.2)">
       <div class="sidebar-section">Курс</div>
       <div class="sidebar-item active" onclick="showVcLesson(0)" id="vc-nav-0"><span class="item-num">00</span><span class="item-icon">🤖</span><span>Введение</span></div>
       <div class="sidebar-section">Модуль 1 · Среда разработки</div>
@@ -6888,8 +6937,7 @@ async function handleOnboardingSubmit() {
     await sb.from('profiles').upsert({ id: currentUser.id, name, email: currentUser.email });
     currentUser._profile = { ...(currentUser._profile || {}), name };
     document.getElementById('nav-user-name').textContent = name;
-    const navAvatar = document.getElementById('nav-avatar');
-    navAvatar.innerHTML = `<span>${name[0].toUpperCase()}</span>`;
+    renderAvatar(null, document.getElementById('nav-avatar'), currentUser._profile?.avatar_url || null, name);
     closeOnboardingModal();
   } catch(e) {
     errEl.textContent = 'Ошибка сохранения. Попробуйте ещё раз.';
@@ -6910,11 +6958,7 @@ function renderLoggedIn() {
   const userBtn = document.getElementById('nav-user-btn');
   userBtn.style.display = 'flex';
   document.getElementById('nav-user-name').textContent = name;
-
-  const navAvatar = document.getElementById('nav-avatar');
-  navAvatar.innerHTML = avatarUrl
-    ? `<img src="${avatarUrl}" alt="avatar">`
-    : `<span>${name[0].toUpperCase()}</span>`;
+  renderAvatar(null, document.getElementById('nav-avatar'), avatarUrl, name);
 }
 
 // ── UI: render logged-out ──
@@ -7017,6 +7061,7 @@ async function handleRegister() {
 
 // ── SIGN OUT ──
 async function handleSignOut() {
+  await flushSessionTime();
   await saveProgressToDB();
   await sb.auth.signOut();
   closeProfileModal();
@@ -7035,6 +7080,25 @@ function handleProfileOverlayClick(e) {
   if (e.target === document.getElementById('profile-overlay')) closeProfileModal();
 }
 
+// ── Unified avatar renderer ──
+function renderAvatar(containerEl, navEl, avatarUrl, name) {
+  const letter = (name || '?')[0].toUpperCase();
+  if (containerEl) {
+    if (avatarUrl) {
+      containerEl.innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"><div class="avatar-edit-hint">✏️</div>`;
+    } else {
+      containerEl.innerHTML = `<span style="font-size:28px;font-weight:700;color:white;">${letter}</span><div class="avatar-edit-hint">✏️</div>`;
+    }
+  }
+  if (navEl) {
+    if (avatarUrl) {
+      navEl.innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`;
+    } else {
+      navEl.innerHTML = `<span>${letter}</span>`;
+    }
+  }
+}
+
 function fillProfileModal() {
   const user = currentUser;
   const profile = user._profile || {};
@@ -7047,12 +7111,13 @@ function fillProfileModal() {
   document.getElementById('profile-joined').textContent = 'С нами с ' + joined;
   document.getElementById('profile-name-input').value = name;
 
-  const bigAvatar = document.getElementById('profile-avatar-big');
-  if (avatarUrl) {
-    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"><div class="avatar-edit-hint">✏️</div>`;
-  } else {
-    bigAvatar.innerHTML = `<span class="avatar-letter-big">${name[0].toUpperCase()}</span><div class="avatar-edit-hint">✏️</div>`;
-  }
+  // Avatar — unified renderer fixes display bug
+  renderAvatar(
+    document.getElementById('profile-avatar-big'),
+    null,
+    avatarUrl,
+    name
+  );
 
   const sqlDone = typeof completed !== 'undefined' ? [...completed].filter(x=>x>0).length : 0;
   const devDone = typeof devCompleted !== 'undefined' ? [...devCompleted].filter(x=>x>0).length : 0;
@@ -7063,7 +7128,7 @@ function fillProfileModal() {
   updateProfileCard('pm',  pmDone,  14);
   updateProfileCard('vc',  vcDone,  20);
 
-  // Load and display streak
+  // Load streak + visit_count (always works, no new columns needed)
   sb.from('user_activity').select('streak_days,visit_count').eq('user_id', user.id).single().then(({ data }) => {
     const row = document.getElementById('profile-streak-row');
     if (data && data.streak_days > 0) {
@@ -7074,16 +7139,34 @@ function fillProfileModal() {
       row.style.display = 'none';
     }
   }).catch(() => {});
+
+  // Load avg time — separate query, fails gracefully if column not yet added
+  sb.from('user_activity').select('total_time_minutes,visit_count').eq('user_id', user.id).single().then(({ data }) => {
+    const timeRow = document.getElementById('profile-avg-time-row');
+    if (data && data.total_time_minutes > 0 && data.visit_count > 0) {
+      const avgMin = Math.round(data.total_time_minutes / data.visit_count);
+      document.getElementById('profile-avg-time-value').textContent = avgMin;
+      timeRow.style.display = 'flex';
+    } else {
+      timeRow.style.display = 'none';
+    }
+  }).catch(() => { document.getElementById('profile-avg-time-row').style.display = 'none'; });
 }
 
 function updateProfileCard(course, done, total) {
   const pct = Math.round(done / total * 100);
   const el = document.getElementById('pcc-' + course + '-pct');
   const fill = document.getElementById('pcc-' + course + '-fill');
+  const action = document.getElementById('pcc-' + course + '-action');
   if (el) el.textContent = pct + '%';
   if (fill) {
     fill.style.width = pct + '%';
     fill.style.display = pct === 0 ? 'none' : 'block';
+  }
+  if (action) {
+    if (pct === 0) action.textContent = 'Начать →';
+    else if (pct === 100) action.textContent = '✓ Пройден';
+    else action.textContent = 'Продолжить →';
   }
 }
 
@@ -7096,13 +7179,56 @@ async function saveProfile() {
     currentUser._profile = { ...(currentUser._profile || {}), name };
     document.getElementById('profile-name-display').textContent = name;
     document.getElementById('nav-user-name').textContent = name;
-    const navAvatar = document.getElementById('nav-avatar');
-    if (!currentUser._profile?.avatar_url) navAvatar.innerHTML = `<span>${name[0].toUpperCase()}</span>`;
-    const msg = document.getElementById('profile-save-msg');
-    msg.classList.add('show');
-    setTimeout(() => msg.classList.remove('show'), 2500);
+    // Update nav avatar letter if no photo
+    if (!currentUser._profile?.avatar_url) {
+      renderAvatar(null, document.getElementById('nav-avatar'), null, name);
+    }
+    // Show toast + close profile + go home
+    showToast('✓ Изменения сохранены');
+    setTimeout(() => {
+      closeProfileModal();
+      showCourse('home');
+    }, 1500);
   } catch(e) {}
 }
+
+function showToast(msg) {
+  const toast = document.getElementById('profile-toast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+function goToCourseFromProfile(course) {
+  closeProfileModal();
+  showCourse(course);
+}
+
+// ── SESSION TIME TRACKING ──
+let sessionStart = Date.now();
+
+async function flushSessionTime() {
+  if (!currentUser) return;
+  const elapsedMin = Math.round((Date.now() - sessionStart) / 60000);
+  if (elapsedMin < 1) return;
+  sessionStart = Date.now(); // reset after flush
+  try {
+    const { data: existing } = await sb.from('user_activity')
+      .select('total_time_minutes').eq('user_id', currentUser.id).single();
+    if (existing) {
+      await sb.from('user_activity').update({
+        total_time_minutes: (existing.total_time_minutes || 0) + elapsedMin
+      }).eq('user_id', currentUser.id);
+    }
+  } catch(e) {}
+}
+
+// Flush time on page hide / sign-out
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') flushSessionTime();
+  else sessionStart = Date.now(); // reset timer when tab becomes visible again
+});
 
 // ── AVATAR: upload OR camera ──
 function showAvatarOptions() {
@@ -7166,11 +7292,17 @@ async function uploadAvatarFile(file) {
     if (upErr) throw upErr;
     const { data } = sb.storage.from('avatars').getPublicUrl(path);
     const avatarUrl = data.publicUrl + '?t=' + Date.now();
-    await sb.from('profiles').upsert({ id: currentUser.id, avatar_url: avatarUrl });
+    await sb.from('profiles').upsert({ id: currentUser.id, avatar_url: avatarUrl, email: currentUser.email });
     currentUser._profile = { ...(currentUser._profile || {}), avatar_url: avatarUrl };
-    const bigAvatar = document.getElementById('profile-avatar-big');
-    bigAvatar.innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"><div class="avatar-edit-hint">✏️</div>`;
-    document.getElementById('nav-avatar').innerHTML = `<img src="${avatarUrl}" alt="avatar">`;
+    // Use unified renderer — fixes display bug with overlapping letter span
+    const name = currentUser._profile?.name || currentUser.email.split('@')[0];
+    renderAvatar(
+      document.getElementById('profile-avatar-big'),
+      document.getElementById('nav-avatar'),
+      avatarUrl,
+      name
+    );
+    showToast('✓ Фото обновлено');
   } catch(e) { alert('Ошибка загрузки аватара: ' + e.message); }
 }
 
@@ -7188,5 +7320,9 @@ document.addEventListener('keydown', e => {
 });
 
 </script>
+
+<!-- ══ GLOBAL TOAST ══ -->
+<div class="profile-toast" id="profile-toast"></div>
+
 </body>
 </html>
