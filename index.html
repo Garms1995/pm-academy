@@ -291,28 +291,66 @@
 
   /* HOME SCREEN */
   .home-screen {
-    padding: 60px 80px;
-    max-width: 1000px;
+    padding: 48px 40px 80px;
+    max-width: 960px;
     margin: 0 auto;
     width: 100%;
     animation: fadeUp 0.4s ease;
+    text-align: center;
   }
   .home-screen h1 {
     font-family: 'Syne', sans-serif;
-    font-size: 44px;
+    font-size: 52px;
     font-weight: 800;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     background: linear-gradient(135deg, var(--text), var(--text2));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .home-subtitle { font-size: 16px; color: var(--text2); margin-bottom: 48px; line-height: 1.6; }
-  .courses-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .home-subtitle { font-size: 16px; color: var(--text2); margin-bottom: 32px; line-height: 1.6; }
+
+  /* CTA block — shown only for guests */
+  .home-cta-block {
+    background: linear-gradient(135deg, rgba(123,111,255,0.12), rgba(79,255,176,0.06));
+    border: 1px solid rgba(123,111,255,0.25);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    text-align: left;
+  }
+  .home-cta-block.hidden { display: none; }
+  .home-cta-text { flex: 1; }
+  .home-cta-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .home-cta-sub { font-size: 14px; color: var(--text2); line-height: 1.5; }
+  .btn-cta-register {
+    background: linear-gradient(135deg, var(--accent2), #6d28d9);
+    border: none; border-radius: 10px;
+    padding: 13px 28px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 15px; font-weight: 700;
+    color: white; cursor: pointer;
+    transition: all 0.2s; white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(123,111,255,0.35);
+    flex-shrink: 0;
+  }
+  .btn-cta-register:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(123,111,255,0.45); }
+
+  .courses-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: left; }
   .course-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 28px;
+    border-radius: 12px;
+    padding: 20px 22px 52px;
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
@@ -328,9 +366,9 @@
   .course-card.dev::before { background: linear-gradient(90deg, #ff6b6b, #ff9966); }
   .course-card:hover { border-color: var(--accent2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
   .course-card.dev:hover { border-color: #ff9966; }
-  .course-card-icon { font-size: 36px; margin-bottom: 16px; }
-  .course-card h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 8px; color: var(--text); }
-  .course-card p { font-size: 14px; color: var(--text3); line-height: 1.6; margin-bottom: 20px; }
+  .course-card-icon { font-size: 28px; margin-bottom: 12px; }
+  .course-card h2 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 6px; color: var(--text); }
+  .course-card p { font-size: 13px; color: var(--text3); line-height: 1.55; margin-bottom: 16px; }
   .course-card-meta { display: flex; gap: 10px; flex-wrap: wrap; }
   .c-badge { font-size: 11px; padding: 3px 9px; border-radius: 10px; font-weight: 600; }
   .c-badge.green { background: rgba(79,255,176,0.1); color: var(--accent); }
@@ -390,6 +428,21 @@
     color: var(--text2);
     transition: all 0.15s;
     position: relative;
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+  .sidebar-item > span:not(.item-num):not(.item-icon):not(.check-badge):not(.note-dot) {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* Badge container — always at the right, never wraps */
+  .sidebar-item .check-badge,
+  .sidebar-item .note-dot {
+    flex-shrink: 0;
+    margin-left: 0;
   }
 
   .sidebar-item:hover { background: var(--bg3); color: var(--text); }
@@ -444,6 +497,65 @@
     overflow-y: auto;
     padding: 40px 48px;
     max-width: 860px;
+  }
+  .lesson-layout {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    gap: 0;
+  }
+  .lesson-content {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    padding: 40px 48px 80px;
+    max-width: 860px;
+  }
+  .lesson-notes-panel {
+    width: 300px;
+    flex-shrink: 0;
+    border-left: 1px solid var(--border);
+    background: var(--bg2);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+  .lesson-notes-panel-header {
+    padding: 20px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text3);
+    display: flex; align-items: center; gap: 8px;
+    flex-shrink: 0;
+  }
+  .lesson-notes-panel-body {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 16px; overflow: hidden;
+  }
+  .lesson-notes-panel textarea {
+    flex: 1; width: 100%;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px;
+    font-family: 'Instrument Sans', sans-serif; font-size: 13px;
+    color: var(--text); resize: none; outline: none;
+    transition: border-color 0.15s; line-height: 1.6;
+    min-height: 0;
+  }
+  .lesson-notes-panel textarea:focus { border-color: var(--accent2); }
+  .lesson-notes-panel textarea::placeholder { color: var(--text3); }
+  .lesson-notes-panel-status {
+    font-size: 11px; color: var(--text3); margin-top: 8px;
+    min-height: 16px; transition: color 0.2s;
+  }
+  .lesson-notes-panel-status.saving { color: var(--accent2); }
+  .lesson-notes-panel-status.saved  { color: var(--accent); }
+
+  /* Hide panel on narrow screens — notes fall back to bottom block */
+  @media (max-width: 1100px) {
+    .lesson-notes-panel { display: none; }
+    .lesson-content { padding: 24px 20px 100px; max-width: 100%; }
   }
 
   .lesson-tag {
@@ -1294,6 +1406,7 @@
 
     /* ── MAIN CONTENT ── */
     .main { padding: 24px 16px 100px; max-width: 100%; width: 100%; }
+    .lesson-content { padding: 24px 16px 100px; max-width: 100%; }
 
     /* ── HOME SCREEN ── */
     .home-screen { padding: 28px 16px 100px; }
@@ -1400,6 +1513,16 @@
   }
   .form-input:focus { border-color: var(--accent2); }
   .form-input::placeholder { color: var(--text3); }
+  /* Password field wrapper */
+  .password-wrap { position: relative; }
+  .password-wrap .form-input { padding-right: 44px; }
+  .btn-pw-toggle {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer;
+    color: var(--text3); font-size: 16px; padding: 4px;
+    transition: color 0.15s; line-height: 1;
+  }
+  .btn-pw-toggle:hover { color: var(--text2); }
 
   .btn-auth-submit {
     background: linear-gradient(135deg, var(--accent2), #6d28d9);
@@ -1523,9 +1646,13 @@
 
   .profile-section-title {
     font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; color: var(--text3); margin-bottom: 14px; margin-top: 24px;
+    letter-spacing: 1px; color: var(--text3);
+    margin-bottom: 14px; margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
   }
-  .profile-section-title:first-child { margin-top: 0; }
+  .profile-section-title:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 
   .profile-progress-grid {
     display: flex; gap: 10px; align-items: flex-start;
@@ -1851,7 +1978,10 @@
       </div>
       <div class="form-group">
         <label class="form-label">Пароль</label>
-        <input class="form-input" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+        <div class="password-wrap">
+          <input class="form-input" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+          <button type="button" class="btn-pw-toggle" onclick="togglePwVisibility('login-password', this)" tabindex="-1">👁</button>
+        </div>
       </div>
       <div class="auth-error" id="login-error"></div>
       <button class="btn-auth-submit" id="btn-login" onclick="handleLogin()">Войти</button>
@@ -1882,7 +2012,10 @@
       </div>
       <div class="form-group">
         <label class="form-label">Пароль</label>
-        <input class="form-input" type="password" id="reg-password" placeholder="Минимум 6 символов" autocomplete="new-password">
+        <div class="password-wrap">
+          <input class="form-input" type="password" id="reg-password" placeholder="Минимум 6 символов" autocomplete="new-password">
+          <button type="button" class="btn-pw-toggle" onclick="togglePwVisibility('reg-password', this)" tabindex="-1">👁</button>
+        </div>
       </div>
       <div class="auth-error" id="reg-error"></div>
       <div class="auth-success" id="reg-success"></div>
@@ -1978,7 +2111,7 @@
         <div class="profile-section-title">🎓 Мои сертификаты</div>
         <div class="profile-cert-list" id="profile-cert-list"></div>
       </div>
-      <div class="profile-section-title" style="margin-top:24px">✏️ Редактировать профиль</div>
+      <div class="profile-section-title">✏️ Редактировать профиль</div>
       <div class="profile-form">
         <div class="form-group">
           <label class="form-label">Имя</label>
@@ -2105,6 +2238,14 @@
   <div class="home-screen">
     <h1>PM Academy</h1>
     <p class="home-subtitle">Технические знания для Product Manager. Изучайте SQL, основы разработки ПО<br>и другие дисциплины — с интерактивными примерами и практикой.</p>
+    <!-- CTA: shown only for guests -->
+    <div class="home-cta-block" id="home-cta-block">
+      <div class="home-cta-text">
+        <div class="home-cta-title">🎓 Зарегистрируйся и начни обучение</div>
+        <div class="home-cta-sub">Сохраняй прогресс, делай заметки и получай сертификаты — бесплатно</div>
+      </div>
+      <button class="btn-cta-register" onclick="openRegisterModal()">Начать бесплатно →</button>
+    </div>
     <div class="courses-grid">
       <div class="course-card sql" onclick="showCourse('sql')">
         <div class="course-card-icon">🗄️</div>
@@ -2240,8 +2381,17 @@
     </div>
   </nav>
 
-  <main class="main" id="main-content"></main>
-</div>
+  <div class="lesson-layout">
+    <main class="main lesson-content" id="main-content"></main>
+    <aside class="lesson-notes-panel" id="sql-notes-panel">
+      <div class="lesson-notes-panel-header">📝 Заметки к уроку</div>
+      <div class="lesson-notes-panel-body">
+        <textarea id="sql-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..."></textarea>
+        <div class="lesson-notes-panel-status" id="sql-notes-status">Начните вводить — сохраняется автоматически</div>
+      </div>
+    </aside>
+  </div>
+  </div>
 </div>
 
 <!-- DEV COURSE -->
@@ -2314,7 +2464,16 @@
         <span>Глоссарий разработчика</span>
       </div>
     </nav>
-    <main class="main" id="dev-main-content"></main>
+    <div class="lesson-layout">
+      <main class="main lesson-content" id="dev-main-content"></main>
+      <aside class="lesson-notes-panel" id="dev-notes-panel">
+        <div class="lesson-notes-panel-header">📝 Заметки к уроку</div>
+        <div class="lesson-notes-panel-body">
+          <textarea id="dev-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..."></textarea>
+          <div class="lesson-notes-panel-status" id="dev-notes-status">Начните вводить — сохраняется автоматически</div>
+        </div>
+      </aside>
+    </div>
   </div>
 </div>
 
@@ -2383,7 +2542,16 @@
         <span class="item-num">14</span><span class="item-icon">📋</span><span>Шпаргалка PM</span>
       </div>
     </nav>
-    <main class="main" id="pm-main-content"></main>
+    <div class="lesson-layout">
+      <main class="main lesson-content" id="pm-main-content"></main>
+      <aside class="lesson-notes-panel" id="pm-notes-panel">
+        <div class="lesson-notes-panel-header">📝 Заметки к уроку</div>
+        <div class="lesson-notes-panel-body">
+          <textarea id="pm-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..."></textarea>
+          <div class="lesson-notes-panel-status" id="pm-notes-status">Начните вводить — сохраняется автоматически</div>
+        </div>
+      </aside>
+    </div>
   </div>
 </div>
 
@@ -2429,7 +2597,16 @@
         <div class="sp-bar"><div class="sp-fill" id="vc-progress-fill" style="background:linear-gradient(90deg,#ec4899,#be185d);width:0%"></div></div>
       </div>
     </nav>
-    <main class="main" id="vc-main-content"></main>
+    <div class="lesson-layout">
+      <main class="main lesson-content" id="vc-main-content"></main>
+      <aside class="lesson-notes-panel" id="vc-notes-panel">
+        <div class="lesson-notes-panel-header">📝 Заметки к уроку</div>
+        <div class="lesson-notes-panel-body">
+          <textarea id="vc-notes-ta" placeholder="Записывайте мысли, вопросы, идеи..."></textarea>
+          <div class="lesson-notes-panel-status" id="vc-notes-status">Начните вводить — сохраняется автоматически</div>
+        </div>
+      </aside>
+    </div>
   </div>
 </div>
 
@@ -4118,6 +4295,8 @@ function showLesson(idx) {
   updateProgress();
   injectNotesBlock('sql', idx, main);
   saveLastLesson('sql', idx);
+  // ТЗ-5: Load side panel note
+  loadSidePanelNote('sql', idx);
   // ТЗ-5: Prefetch next lesson
   const nav = lesson.nav || {};
   if (nav.next !== undefined) prefetchNextLesson('sql', nav.next);
@@ -4942,6 +5121,7 @@ function showDevLesson(idx) {
   updateDevProgress();
   injectNotesBlock('dev', idx, main);
   saveLastLesson('dev', idx);
+  loadSidePanelNote('dev', idx);
   prefetchNextLesson('dev', idx + 1 <= 12 ? idx + 1 : undefined);
 }
 
@@ -5735,6 +5915,7 @@ function showPmLesson(idx) {
   closeSidebar();
   injectNotesBlock('pm', idx, main);
   saveLastLesson('pm', idx);
+  loadSidePanelNote('pm', idx);
   prefetchNextLesson('pm', idx + 1 <= 14 ? idx + 1 : undefined);
 }
 
@@ -6730,6 +6911,7 @@ function showVcLesson(idx) {
   updateVcProgress();
   injectNotesBlock('vc', idx, main);
   saveLastLesson('vc', idx);
+  loadSidePanelNote('vc', idx);
   prefetchNextLesson('vc', idx + 1 <= 20 ? idx + 1 : undefined);
 }
 
@@ -7243,12 +7425,14 @@ function renderLoggedIn() {
   userBtn.style.display = 'flex';
   document.getElementById('nav-user-name').textContent = name;
   renderAvatar(null, document.getElementById('nav-avatar'), avatarUrl, name);
+  updateHomeCTA();
 }
 
 // ── UI: render logged-out ──
 function renderLoggedOut() {
   document.getElementById('btn-open-auth').style.display = '';
   document.getElementById('nav-user-btn').style.display = 'none';
+  updateHomeCTA();
 }
 
 // ── AUTH MODAL ──
@@ -7491,6 +7675,25 @@ function showToast(msg) {
   toast.textContent = msg;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+function togglePwVisibility(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  btn.textContent = isHidden ? '🙈' : '👁';
+}
+
+function openRegisterModal() {
+  openAuthModal();
+  switchAuthTab('register');
+}
+
+function updateHomeCTA() {
+  const cta = document.getElementById('home-cta-block');
+  if (!cta) return;
+  cta.classList.toggle('hidden', !!currentUser);
 }
 
 function goToCourseFromProfile(course) {
@@ -7845,6 +8048,44 @@ function downloadCertFromProfile(course) {
   link.click();
 }
 
+// ══════════════════════════════════════════════════════
+// SIDE NOTES PANEL (ТЗ-5)
+// ══════════════════════════════════════════════════════
+
+let sidePanelTimers = {};
+
+function loadSidePanelNote(course, idx) {
+  const taId = course + '-notes-ta';
+  const statusId = course + '-notes-status';
+  const ta = document.getElementById(taId);
+  const status = document.getElementById(statusId);
+  if (!ta) return;
+
+  const key = course + ':' + idx;
+  const text = notesCache[key] || '';
+
+  // Swap node to remove old event listeners
+  const newTa = ta.cloneNode(false);
+  newTa.id = taId;
+  newTa.placeholder = 'Записывайте мысли, вопросы, идеи...';
+  newTa.value = text;
+  ta.parentNode.replaceChild(newTa, ta);
+
+  if (status) {
+    status.textContent = text ? '● Сохранено' : 'Начните вводить — сохраняется автоматически';
+    status.className = 'lesson-notes-panel-status' + (text ? ' saved' : '');
+  }
+
+  newTa.addEventListener('input', () => {
+    const val = newTa.value;
+    const st = document.getElementById(statusId);
+    notesCache[key] = val;
+    if (st) { st.textContent = 'Сохраняем...'; st.className = 'lesson-notes-panel-status saving'; }
+    if (sidePanelTimers[course]) clearTimeout(sidePanelTimers[course]);
+    sidePanelTimers[course] = setTimeout(() => saveNote(course, idx, val, st), 1500);
+  });
+}
+
 async function resetCourseProgress(course) {
   const names = { sql: 'SQL для PM', dev: 'Разработка ПО', pm: 'Управление проектами', vc: 'Vibe Coding' };
   if (!confirm(`Сбросить весь прогресс курса «${names[course]}»?\n\nЭто действие нельзя отменить.`)) return;
@@ -8038,6 +8279,12 @@ async function loadAllNotes() {
       });
       // Mark sidebar items that have notes
       refreshNoteDots();
+      // Refresh side panel if a course is currently open
+      const panels = { sql: currentLesson, dev: currentDevLesson, pm: currentPmLesson, vc: currentVcLesson };
+      Object.keys(panels).forEach(course => {
+        const idx = panels[course];
+        if (typeof idx !== 'undefined' && activeCourse === course) loadSidePanelNote(course, idx);
+      });
     }
   } catch(e) { console.warn('loadAllNotes:', e.message); }
 }
@@ -8060,6 +8307,10 @@ function refreshNoteDots() {
 }
 
 function injectNotesBlock(course, idx, mainEl) {
+  // On wide screens side panel handles notes — skip bottom block
+  const sidePanel = document.getElementById(course + '-notes-panel');
+  if (sidePanel && window.innerWidth > 1100) return;
+
   const key = course + ':' + idx;
   const existingText = notesCache[key] || '';
 
